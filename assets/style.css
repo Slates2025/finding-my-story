@@ -1,0 +1,363 @@
+/* ----------------------------------------------------
+   FINDING MY STORY
+   Prototype 0.2
+----------------------------------------------------- */
+
+:root {
+
+    --paper: #fcfcfa;
+
+    --ink: #323640;
+    --steel: #5C6373;
+
+    --content-width: 760px;
+
+    --space-xs: .4rem;
+    --space-s: .8rem;
+    --space-m: 1.6rem;
+    --space-l: 3rem;
+    --space-xl: 6rem;
+
+    --transition: 340ms cubic-bezier(.22,.61,.36,1);
+
+}
+
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    margin:0;
+
+    background:var(--paper);
+
+    color:var(--ink);
+
+    font-family:
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+
+}
+
+.page{
+
+    max-width:var(--content-width);
+
+    margin:0 auto;
+
+    padding:2.5rem;
+
+}
+
+.top-nav{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:2rem;
+
+    margin-bottom:5rem;
+
+}
+
+.top-nav a{
+
+    text-decoration:none;
+
+    color:var(--steel);
+
+    font-size:.95rem;
+
+    transition:color var(--transition);
+
+}
+
+.top-nav a:hover{
+
+    color:var(--ink);
+
+}
+
+.hero{
+
+    margin-bottom:5rem;
+
+}
+
+.hero h1{
+
+    margin:0;
+
+    font-size:3rem;
+
+    font-weight:700;
+
+    letter-spacing:-.04em;
+
+    color:var(--ink);
+
+}
+
+.hero h2{
+
+    margin:.25rem 0 0;
+
+    font-size:2rem;
+
+    font-weight:300;
+
+    letter-spacing:-.03em;
+
+    color:var(--ink);
+
+}
+
+.cursor{
+
+    display:inline-block;
+
+    width:2px;
+
+    height:1em;
+
+    background:var(--ink);
+
+    margin-left:6px;
+
+    animation:blink 1.4s infinite;
+
+}
+
+@keyframes blink{
+
+    0%,45%{opacity:1;}
+
+    46%,100%{opacity:0;}
+
+}
+
+.thought-line{
+
+    display:flex;
+
+    align-items:center;
+
+    flex-wrap:nowrap;
+
+    margin-top:2.0rem;
+
+    min-height:1.5rem;
+
+    color:var(--ink);
+
+    font-size:1rem;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+}
+
+#thoughts{
+
+    display:inline;
+
+}
+
+.cursor{
+
+    width:2px;
+
+    height:1.1em;
+
+    background:var(--ink);
+
+    margin-left:4px;
+
+    display:inline-block;
+
+    position:relative;
+
+    top:4px;
+
+    animation:blink .9s infinite;
+
+}
+
+.standfirst{
+
+    margin-top:2.2rem;
+
+    max-width:34rem;
+
+    line-height:1.75;
+
+    color:var(--steel);
+
+    font-size:1.1rem;
+
+}
+
+.chapters{
+
+    margin-top:5rem;
+
+}
+
+details{
+
+    border-top:1px solid rgba(92,99,115,.18);
+
+    padding:1rem 0;
+
+}
+
+details:last-child{
+
+    border-bottom:1px solid rgba(92,99,115,.18);
+
+}
+
+summary{
+
+    list-style:none;
+
+    display:flex;
+
+    align-items:center;
+
+    cursor:pointer;
+
+    gap:1rem;
+
+    user-select:none;
+
+}
+
+summary::-webkit-details-marker{
+
+    display:none;
+
+}
+
+.icon{
+
+    width:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:var(--steel);
+
+    font-size:1.45rem;
+
+    line-height:1;
+
+    transform-origin:center;
+
+    transition:
+        transform var(--transition),
+        color var(--transition);
+
+}
+
+details[open] .icon{
+
+    transform:rotate(45deg);
+
+    color:var(--ink);
+
+}
+
+.title{
+
+    font-size:1.2rem;
+
+    font-weight:400;
+
+    letter-spacing:-.01em;
+
+}
+
+.content{
+
+    padding-left:2rem;
+
+    padding-top:1rem;
+
+}
+
+.content p{
+
+    margin:0;
+
+    color:var(--steel);
+
+    line-height:1.8;
+
+    max-width:38rem;
+
+}
+
+footer{
+
+    margin-top:6rem;
+
+    padding-top:3rem;
+
+    border-top:1px solid rgba(92,99,115,.18);
+
+}
+
+footer h3{
+
+    font-size:1rem;
+
+    font-weight:400;
+
+    color:var(--steel);
+
+}
+
+@media (max-width:700px){
+
+    .page{
+
+        padding:1.5rem;
+
+    }
+
+    .hero h1{
+
+        font-size:2.4rem;
+
+    }
+
+    .hero h2{
+
+    margin:.25rem 0 1.75rem;
+
+}
+
+    .standfirst{
+
+        font-size:1rem;
+
+    }
+
+}

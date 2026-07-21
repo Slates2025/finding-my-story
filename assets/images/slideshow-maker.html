@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8" />
+  <title>Slideshow Maker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+
+    /* =========================================================
+       Editor tokens. The embed output uses its own --sm-* tokens
+       scoped to .slideshow-embed.
+       ========================================================= */
+    :root {
+      --red: #C1121F;
+      --red-dark: #8F0D17;
+      --ink: #111111;
+      --paper: #ffffff;
+      --bg: #f5f3ef;
+      --rule: #e5e1d8;
+      --muted: #777;
+      --field: #fdfdfd;
+      --field-border: #d7d2c9;
+      --field-focus: var(--red);
+      --radius: 2px;
+      /* Updated by JS once the page is laid out so the sticky preview
+         sits flush below the header at every viewport width. */
+      --header-h: 64px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    /* ---------- App header ---------- */
+    .app-header {
+      background: var(--ink);
+      color: var(--paper);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 24px;
+      border-bottom: 1px solid #000;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .app-header__logo { flex-shrink: 0; width: 34px; height: 34px; }
+    .app-header__text { line-height: 1.1; }
+    .app-header__title { font-weight: 800; font-size: 18px; letter-spacing: -0.01em; }
+    .app-header__sub {
+      font-size: 11px; opacity: 0.75; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-top: 4px; font-weight: 500;
+    }
+    .app-header__actions { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .btn {
+      font: inherit; font-weight: 600; font-size: 13px;
+      padding: 10px 16px; border: 1.5px solid currentColor;
+      background: transparent; color: inherit; cursor: pointer;
+      letter-spacing: 0.02em; transition: background 0.15s, color 0.15s;
+      border-radius: var(--radius);
+    }
+    .app-header .btn { color: var(--paper); border-color: var(--paper); }
+    .app-header .btn:hover { background: var(--paper); color: var(--ink); }
+    .btn--primary {
+      background: var(--red); border-color: var(--red); color: var(--paper);
+    }
+    .app-header .btn--primary { color: var(--paper); border-color: var(--red); }
+    .btn--primary:hover, .app-header .btn--primary:hover {
+      background: var(--red-dark); border-color: var(--red-dark); color: var(--paper);
+    }
+    .btn:disabled, .btn[aria-disabled="true"] { opacity: 0.35; cursor: not-allowed; }
+
+    /* ---------- Main grid ---------- */
+    .app-main {
+      display: grid;
+      grid-template-columns: minmax(320px, 1fr) minmax(360px, 1fr);
+      gap: 24px;
+      padding: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    @media (max-width: 980px) {
+      .app-main { grid-template-columns: 1fr; }
+    }
+
+    .pane {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      padding: 22px 24px;
+    }
+    /* Preview pane pins to the top of the viewport (below the sticky header)
+       so it stays visible as you scroll the long slide list on the left.
+       Reverts to normal flow on the single-column layout. */
+    .pane--preview {
+      align-self: start;
+      position: sticky;
+      top: calc(var(--header-h) + 24px);
+      max-height: calc(100vh - var(--header-h) - 48px);
+      overflow: auto;
+    }
+    @media (max-width: 980px) {
+      .pane--preview {
+        position: static;
+        max-height: none;
+        overflow: visible;
+      }
+    }
+    .pane__title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+      margin: 0 0 18px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .pane__title + .pane__title {
+      margin-top: 28px;
+    }
+
+    /* ---------- Fields ---------- */
+    .field { margin-bottom: 18px; }
+    .field:last-child { margin-bottom: 0; }
+    .field__label {
+      display: block; font-weight: 700; font-size: 13px; margin-bottom: 6px;
+    }
+    .field__label small {
+      font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px;
+      text-transform: none; letter-spacing: 0;
+    }
+    .field__input, .field__textarea {
+      width: 100%; font: inherit; font-size: 14px;
+      padding: 10px 12px;
+      background: var(--field);
+      border: 1px solid var(--field-border);
+      border-radius: var(--radius);
+      color: var(--ink);
+      transition: border-color 0.15s;
+    }
+    .field__textarea { resize: vertical; min-height: 120px; line-height: 1.5; }
+    .field__input:focus, .field__textarea:focus {
+      outline: none; border-color: var(--field-focus);
+    }
+    .field__hint {
+      font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.4;
+    }
+    /* Input + Browse button on one row */
+    .field__row { display: flex; gap: 8px; align-items: stretch; }
+    .field__row .field__input { flex: 1; min-width: 0; }
+    .btn-pick {
+      flex-shrink: 0;
+      font: inherit; font-size: 13px; font-weight: 600;
+      padding: 0 14px;
+      background: var(--field);
+      border: 1px solid var(--field-border);
+      border-radius: var(--radius);
+      color: var(--ink);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .btn-pick:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .field__hint code {
+      background: #eee9df; padding: 1px 5px; border-radius: 2px;
+      font-size: 11px; color: var(--ink);
+    }
+
+    /* ---------- Segmented (panel colour) ---------- */
+    .segmented {
+      display: inline-flex;
+      border: 1px solid var(--field-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .segmented__option {
+      position: relative;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 9px 18px;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      background: var(--field);
+      transition: background 0.15s, color 0.15s;
+    }
+    .segmented__option + .segmented__option { border-left: 1px solid var(--field-border); }
+    .segmented__option input { position: absolute; opacity: 0; pointer-events: none; }
+    .segmented__option.is-selected {
+      background: var(--ink); color: var(--paper);
+    }
+
+    /* ---------- Slide list ---------- */
+    .slide-list {
+      list-style: none; padding: 0; margin: 0 0 14px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .slide-card {
+      border: 1px solid var(--rule);
+      background: #fafaf7;
+      padding: 14px 16px;
+      border-radius: var(--radius);
+    }
+    .slide-card__header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .slide-card__num {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .slide-card__actions { display: flex; gap: 4px; }
+    .slide-card__btn {
+      width: 28px; height: 28px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: transparent;
+      border: 1px solid var(--field-border);
+      border-radius: var(--radius);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 14px; line-height: 1;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .slide-card__btn:hover:not(:disabled) {
+      background: var(--ink); color: var(--paper); border-color: var(--ink);
+    }
+    .slide-card__btn--del:hover:not(:disabled) {
+      background: var(--red); color: var(--paper); border-color: var(--red);
+    }
+    .slide-card__btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* Preview-side crop controls — operate on the slide currently visible in
+       the live preview iframe via postMessage. */
+    .preview-crop {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .preview-crop__label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .preview-crop__zoom {
+      flex: 1;
+      -webkit-appearance: none; appearance: none;
+      height: 4px;
+      background: var(--field-border);
+      border-radius: 2px;
+      cursor: pointer;
+      outline: none;
+    }
+    .preview-crop__zoom::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 16px; height: 16px;
+      background: var(--ink);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .preview-crop__zoom::-moz-range-thumb {
+      width: 16px; height: 16px;
+      background: var(--ink);
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+    .preview-crop__zoom:disabled { opacity: 0.35; cursor: not-allowed; }
+    .preview-crop__reset {
+      font: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      background: var(--field);
+      border: 1px solid var(--field-border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      color: var(--ink);
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .preview-crop__reset:hover {
+      background: var(--ink); color: var(--paper); border-color: var(--ink);
+    }
+    .preview-crop__reset:disabled { opacity: 0.35; cursor: not-allowed; }
+    .preview-crop__hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* Caption B/I toolbar (sits above the textarea) */
+    .caption-toolbar {
+      display: flex;
+      gap: 4px;
+      margin: 0 0 6px;
+    }
+    .caption-toolbar__btn {
+      width: 28px; height: 28px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--field);
+      border: 1px solid var(--field-border);
+      border-radius: var(--radius);
+      font: inherit;
+      font-size: 14px;
+      line-height: 1;
+      cursor: pointer;
+      color: var(--ink);
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .caption-toolbar__btn--bold   { font-weight: 800; }
+    .caption-toolbar__btn--italic { font-style: italic; }
+    .caption-toolbar__btn:hover {
+      background: var(--ink); color: var(--paper); border-color: var(--ink);
+    }
+    .caption-toolbar__btn:focus-visible {
+      outline: none; box-shadow: 0 0 0 2px var(--red);
+    }
+
+    /* Caption-overflow warning */
+    .slide-card.is-caption-overflow .field__textarea {
+      color: var(--red);
+      border-color: var(--red);
+    }
+    .slide-card.is-caption-overflow .field__textarea:focus {
+      border-color: var(--red);
+    }
+    .slide-card__warn {
+      display: none;
+      font-size: 12px;
+      color: var(--red);
+      margin-top: 6px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .slide-card.is-caption-overflow .slide-card__warn { display: block; }
+
+    .slide-list__add {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px dashed var(--field-border);
+      background: transparent;
+      color: var(--muted);
+      font: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .slide-list__add:hover {
+      border-color: var(--ink); color: var(--ink);
+    }
+
+    /* ---------- Preview pane ---------- */
+    .preview-wrap {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      overflow: hidden;
+    }
+    .preview-iframe {
+      display: block; width: 100%;
+      height: 620px;
+      border: 0;
+      background: #fff;
+    }
+    .preview-note {
+      margin: 12px 0 0;
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+    }
+
+    /* ---------- Footer ---------- */
+    .app-footer {
+      max-width: 1400px; margin: 0 auto;
+      padding: 0 24px 24px;
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+    }
+    .app-footer code {
+      background: #eee9df; padding: 2px 5px; border-radius: 2px;
+      font-size: 11px;
+    }
+
+    /* ---------- Toast ---------- */
+    .toast {
+      position: fixed; right: 24px; bottom: 24px;
+      background: var(--ink); color: var(--paper);
+      padding: 12px 18px;
+      border-radius: var(--radius);
+      font-size: 13px; font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+      opacity: 0; transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 220ms ease, transform 220ms ease;
+      z-index: 9999;
+    }
+    .toast.is-shown { opacity: 1; transform: translateY(0); }
+    .toast--error { background: var(--red); }
+  </style>
+</head>
+<body>
+<header class="app-header">
+  <svg class="app-header__logo" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+    <circle cx="8.5" cy="10" r="1.5"></circle>
+    <path d="M21 15l-5-5L5 19"></path>
+  </svg>
+  <div class="app-header__text">
+    <div class="app-header__title">Slideshow Maker</div>
+    <div class="app-header__sub">Build an image slideshow, then copy the embed code into your page</div>
+  </div>
+  <div class="app-header__actions">
+    <input type="file" id="file-load" accept="application/json,.json" hidden />
+    <input type="file" id="img-picker" accept="image/*" hidden />
+    <button class="btn" id="btn-new" type="button" title="Start a fresh project (clears current work)">New project</button>
+    <button class="btn" id="btn-load" type="button">Load project</button>
+    <button class="btn" id="btn-save" type="button">Save project</button>
+    <button class="btn" id="btn-download" type="button">Download slideshow</button>
+    <button class="btn btn--primary" id="btn-copy" type="button">Copy iframe</button>
+  </div>
+</header>
+
+<main class="app-main">
+  <!-- ============== EDIT PANE ============== -->
+  <section class="pane" aria-labelledby="pane-edit">
+    <h2 class="pane__title" id="pane-edit">Project</h2>
+
+    <div class="field">
+      <label class="field__label" for="cfg-name">Project name</label>
+      <input class="field__input" id="cfg-name" type="text" maxlength="80" placeholder="e.g. All Whites — Players to watch" />
+      <div class="field__hint">Used as the saved-project and downloaded-embed filename.</div>
+    </div>
+
+    <div class="field">
+      <label class="field__label">Caption panel colour</label>
+      <div class="segmented" id="cfg-panel-color">
+        <label class="segmented__option is-selected">
+          <input type="radio" name="panel-color" value="black" checked />
+          Black
+        </label>
+        <label class="segmented__option">
+          <input type="radio" name="panel-color" value="white" />
+          White
+        </label>
+      </div>
+      <div class="field__hint">80% opacity panel that covers the image when a caption is showing. White panels use dark text; black panels use white text.</div>
+    </div>
+
+    <h2 class="pane__title">Cover slide <small style="font-size: 10px; color: var(--muted); text-transform: none; letter-spacing: 0; font-weight: 500;">image only — no caption</small></h2>
+    <div class="field">
+      <label class="field__label" for="cfg-cover-desktop">Image</label>
+      <div class="field__row">
+        <input class="field__input" id="cfg-cover-desktop" type="text" placeholder="cover.jpg" />
+        <button class="btn-pick" type="button" data-pick="cfg-cover-desktop">Browse…</button>
+      </div>
+      <div class="field__hint">Click <strong>Browse…</strong> to pick an image from this folder, or type a filename like <code>cover.jpg</code>. Full URLs also work. Leave blank if your slideshow has no cover.</div>
+    </div>
+
+    <h2 class="pane__title">Story slides</h2>
+    <ol class="slide-list" id="slide-list" aria-live="polite"></ol>
+    <button class="slide-list__add" id="btn-add-slide" type="button">+ Add slide</button>
+  </section>
+
+  <!-- ============== PREVIEW PANE ============== -->
+  <section class="pane pane--preview" aria-labelledby="pane-preview">
+    <h2 class="pane__title" id="pane-preview">Live preview</h2>
+    <div class="preview-wrap">
+      <iframe class="preview-iframe" id="preview-iframe" title="Slideshow preview" sandbox="allow-scripts allow-same-origin"></iframe>
+    </div>
+    <div class="preview-crop">
+      <span class="preview-crop__label">Crop zoom</span>
+      <input type="range" class="preview-crop__zoom" id="preview-crop-zoom" min="1" max="4" step="0.01" value="1" disabled />
+      <button type="button" class="preview-crop__reset" id="preview-crop-reset" disabled>Reset</button>
+    </div>
+    <div class="preview-crop__hint">Drag the image in the preview to pan it. The slider above (and the mouse wheel) zoom the currently-visible slide.</div>
+    <p class="preview-note">Use <strong>Browse…</strong> to pick images from this folder. Click <strong>Download slideshow</strong> to save the player <code>.html</code>, then <strong>Copy iframe</strong> for the snippet that embeds it. Because this tool sits in your images folder, picked images show up in the preview automatically. Use <strong>Save project</strong> to keep a re-editable copy.</p>
+  </section>
+</main>
+
+<footer class="app-footer">
+  <strong>Browse…</strong> next to each image field picks a file from this folder and stores just its filename, so keep your images beside the slideshow file. <strong>Download slideshow</strong> saves a standalone <code>.html</code> player; put it in that same folder, then use <strong>Copy iframe</strong> to embed it in a page. Project files (<code>.json</code>) are re-editable — share them, reload them, iterate.
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  // ====================================================================
+  // Helpers
+  // ====================================================================
+  var $  = function (sel, root) { return (root || document).querySelector(sel); };
+  var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+
+  function escapeHTML(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+  function escapeAttr(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;');
+  }
+  function slugify(s) {
+    return String(s || '').toLowerCase().trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+  function uid() {
+    return 's_' + Math.random().toString(36).slice(2, 9);
+  }
+
+  // Normalise an image URL — just trims whitespace; use full URLs.
+  function normaliseURL(u) {
+    if (!u) return '';
+    return String(u).trim();
+  }
+
+  // Strip any kind of line break (regular newlines, carriage returns,
+  // Unicode line separators U+2028, paragraph separators U+2029, etc.)
+  // and collapse multi-space runs. CSS `white-space: normal` handles plain
+  // \n / \r but is powerless against U+2028 / U+2029, which Word, PDFs,
+  // and some web sources emit as their preferred line breaks.
+  function cleanCaption(s) {
+    return String(s == null ? '' : s).replace(/\s+/g, ' ').trim();
+  }
+
+  // Convert lightweight Markdown markers to safe HTML.
+  //   **bold**  ->  <strong>bold</strong>
+  //   _italic_  ->  <em>italic</em>
+  // Safety: everything is HTML-escaped FIRST, then our two known patterns are
+  // converted to tags. Pasted HTML can't survive because the < / > were already
+  // escaped before we ran the marker substitutions.
+  function renderInlineMarkup(text) {
+    var html = escapeHTML(cleanCaption(text));
+    if (!html) return '';
+    // Bold first so its asterisks don't collide with italics.
+    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    // Italic via underscores (avoids the asterisks ambiguity with bold).
+    html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
+    return html;
+  }
+
+  // ====================================================================
+  // State
+  // ====================================================================
+  var STORAGE_KEY = 'slideshow-maker-autosave-v1';
+  var PROJECT_VERSION = 1;
+
+  function defCrop() { return { scale: 1, x: 0.5, y: 0.5 }; }
+  function freshState() {
+    return {
+      name: '',
+      panelColor: 'black',
+      cover: { desktop: '', mobile: '', cropDesktop: defCrop(), cropMobile: defCrop() },
+      slides: [
+        { id: uid(), desktop: '', mobile: '', heading: '', caption: '',
+          cropDesktop: defCrop(), cropMobile: defCrop() }
+      ]
+    };
+  }
+
+  var state = freshState();
+
+  // ====================================================================
+  // DOM refs
+  // ====================================================================
+  var els = {
+    name:         $('#cfg-name'),
+    coverDesktop: $('#cfg-cover-desktop'),
+    panelGroup:   $('#cfg-panel-color'),
+    slideList:    $('#slide-list'),
+    btnAdd:       $('#btn-add-slide'),
+    btnNew:       $('#btn-new'),
+    btnSave:      $('#btn-save'),
+    btnLoad:      $('#btn-load'),
+    btnCopy:      $('#btn-copy'),
+    btnDownload:  $('#btn-download'),
+    fileInput:    $('#file-load'),
+    imgPicker:    $('#img-picker'),
+    iframe:       $('#preview-iframe'),
+    cropZoom:     $('#preview-crop-zoom'),
+    cropReset:    $('#preview-crop-reset'),
+    toast:        $('#toast')
+  };
+
+  // ====================================================================
+  // Toast
+  // ====================================================================
+  var toastTimer = null;
+  function showToast(msg, isError) {
+    els.toast.textContent = msg;
+    els.toast.className = 'toast is-shown' + (isError ? ' toast--error' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      els.toast.className = 'toast';
+    }, 2800);
+  }
+
+  // ====================================================================
+  // Slide-list rendering (re-render on structural change only)
+  // ====================================================================
+  function renderSlides() {
+    els.slideList.innerHTML = '';
+    state.slides.forEach(function (s, i) {
+      var li = document.createElement('li');
+      li.className = 'slide-card';
+      li.dataset.id = s.id;
+      li.innerHTML =
+        '<div class="slide-card__header">' +
+          '<span class="slide-card__num">Slide ' + (i + 1) + '</span>' +
+          '<div class="slide-card__actions">' +
+            '<button type="button" class="slide-card__btn" data-act="up"   aria-label="Move slide up"   title="Move up"   ' + (i === 0 ? 'disabled' : '') + '>&uarr;</button>' +
+            '<button type="button" class="slide-card__btn" data-act="down" aria-label="Move slide down" title="Move down" ' + (i === state.slides.length - 1 ? 'disabled' : '') + '>&darr;</button>' +
+            '<button type="button" class="slide-card__btn slide-card__btn--del" data-act="del" aria-label="Remove slide" title="Remove">&times;</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="field">' +
+          '<label class="field__label">Image</label>' +
+          '<div class="field__row">' +
+            '<input class="field__input" data-field="desktop" type="text" value="' + escapeAttr(s.desktop) + '" placeholder="photo1.jpg" />' +
+            '<button type="button" class="btn-pick" data-pick-field="desktop">Browse…</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="field">' +
+          '<label class="field__label">Heading <small>optional &middot; one short line above the caption</small></label>' +
+          '<input class="field__input" data-field="heading" type="text" maxlength="120" value="' + escapeAttr(s.heading) + '" placeholder="" />' +
+        '</div>' +
+        '<div class="field">' +
+          '<label class="field__label">Caption <small>fades in over the image</small></label>' +
+          '<div class="caption-toolbar" role="toolbar" aria-label="Caption formatting">' +
+            '<button type="button" class="caption-toolbar__btn caption-toolbar__btn--bold" data-fmt="bold" title="Bold (wrap selection in **)" aria-label="Bold">B</button>' +
+            '<button type="button" class="caption-toolbar__btn caption-toolbar__btn--italic" data-fmt="italic" title="Italic (wrap selection in _)" aria-label="Italic">i</button>' +
+          '</div>' +
+          '<textarea class="field__textarea" data-field="caption" rows="5" maxlength="1200">' + escapeHTML(s.caption) + '</textarea>' +
+          '<div class="field__hint">Select text and click <strong>B</strong> for bold or <strong>i</strong> for italic. You can also type <code>**bold**</code> or <code>_italic_</code> directly. Leave blank for a clean image with no caption overlay.</div>' +
+          '<div class="slide-card__warn">Heading + caption is too long &mdash; the trailing text will be cut off in the embed. Shorten it to fit.</div>' +
+        '</div>';
+
+      // Field listeners — update state in place, no re-render needed
+      $$('[data-field]', li).forEach(function (inp) {
+        inp.addEventListener('input', function () {
+          s[inp.dataset.field] = inp.value;
+          schedulePreview();
+          scheduleAutosave();
+        });
+      });
+
+      // Browse buttons — open the shared image picker for this card's field
+      $$('[data-pick-field]', li).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          openPicker($('[data-field="' + btn.dataset.pickField + '"]', li));
+        });
+      });
+
+      // Caption toolbar — wraps the textarea's current selection with **/_ markers
+      $$('[data-fmt]', li).forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          var ta = $('[data-field="caption"]', li);
+          if (!ta) return;
+          var markers = btn.dataset.fmt === 'bold' ? '**' : '_';
+          var start = ta.selectionStart;
+          var end   = ta.selectionEnd;
+          var v     = ta.value;
+          var selected = v.substring(start, end);
+          // If the selection is empty, drop the markers in and place the caret between them
+          var insert  = markers + selected + markers;
+          ta.value = v.substring(0, start) + insert + v.substring(end);
+          ta.focus();
+          if (selected) {
+            ta.setSelectionRange(start + markers.length, start + markers.length + selected.length);
+          } else {
+            var caret = start + markers.length;
+            ta.setSelectionRange(caret, caret);
+          }
+          // Trigger an input event so state, preview and autosave all update.
+          ta.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+      });
+
+      // Action buttons
+      $$('[data-act]', li).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var act = btn.dataset.act;
+          var idx = state.slides.findIndex(function (x) { return x.id === s.id; });
+          if (idx < 0) return;
+          if (act === 'up' && idx > 0) {
+            var tmp = state.slides[idx - 1];
+            state.slides[idx - 1] = state.slides[idx];
+            state.slides[idx] = tmp;
+          } else if (act === 'down' && idx < state.slides.length - 1) {
+            var tmp2 = state.slides[idx + 1];
+            state.slides[idx + 1] = state.slides[idx];
+            state.slides[idx] = tmp2;
+          } else if (act === 'del') {
+            state.slides.splice(idx, 1);
+            if (state.slides.length === 0) {
+              state.slides.push({ id: uid(), desktop: '', mobile: '', caption: '' });
+            }
+          } else {
+            return;
+          }
+          renderSlides();
+          schedulePreview();
+          scheduleAutosave();
+        });
+      });
+
+      els.slideList.appendChild(li);
+    });
+  }
+
+  // ====================================================================
+  // Top-level form wiring (name, cover, panel colour)
+  // ====================================================================
+  function writeStateToForm() {
+    els.name.value         = state.name || '';
+    els.coverDesktop.value = state.cover.desktop || '';
+    $$('input[name="panel-color"]').forEach(function (r) {
+      r.checked = (r.value === state.panelColor);
+    });
+    syncSegmented();
+  }
+
+  function syncSegmented() {
+    $$('.segmented__option', els.panelGroup).forEach(function (o) {
+      var inp = $('input', o);
+      o.classList.toggle('is-selected', !!inp && inp.checked);
+    });
+  }
+
+  els.name.addEventListener('input', function () {
+    state.name = els.name.value; schedulePreview(); scheduleAutosave();
+  });
+
+  // --------------------------------------------------------------
+  // Image picker: a Browse button fills its field with the chosen
+  // file's NAME. Browsers never expose a real disk path, but since
+  // this tool lives in the images folder, the filename IS the correct
+  // relative path — and the preview resolves it against this folder.
+  // --------------------------------------------------------------
+  var pendingPickTarget = null;
+  function openPicker(targetInput) {
+    if (!targetInput) return;
+    pendingPickTarget = targetInput;
+    els.imgPicker.value = '';
+    els.imgPicker.click();
+  }
+  els.imgPicker.addEventListener('change', function () {
+    var f = els.imgPicker.files && els.imgPicker.files[0];
+    if (f && pendingPickTarget) {
+      pendingPickTarget.value = f.name;                       // bare filename
+      pendingPickTarget.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    pendingPickTarget = null;
+    els.imgPicker.value = '';
+  });
+  // Cover Browse buttons (static markup)
+  $$('[data-pick]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      openPicker(document.getElementById(btn.dataset.pick));
+    });
+  });
+
+  els.coverDesktop.addEventListener('input', function () {
+    state.cover.desktop = els.coverDesktop.value;
+    schedulePreview(); scheduleAutosave();
+  });
+  $$('input[name="panel-color"]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      if (r.checked) {
+        state.panelColor = r.value;
+        syncSegmented();
+        schedulePreview();
+        scheduleAutosave();
+      }
+    });
+  });
+
+  els.btnAdd.addEventListener('click', function () {
+    state.slides.push({
+      id: uid(), desktop: '', mobile: '', heading: '', caption: '',
+      cropDesktop: defCrop(), cropMobile: defCrop()
+    });
+    renderSlides();
+    schedulePreview();
+    scheduleAutosave();
+  });
+
+  // ====================================================================
+  // Preview rendering
+  // ====================================================================
+  var previewTimer = null;
+  function schedulePreview() {
+    clearTimeout(previewTimer);
+    previewTimer = setTimeout(renderPreview, 220);
+  }
+
+  function renderPreview() {
+    var fragment = buildEmbedHTML(state, true);
+    var doc =
+      '<!DOCTYPE html><html><head><meta charset="utf-8">' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+      '<style>html,body{margin:0;background:#fff;}body{padding:0;}</style>' +
+      '</head><body>' + fragment + '</body></html>';
+    els.iframe.srcdoc = doc;
+  }
+
+  // After every iframe (re)render, measure caption overflow and flag any
+  // editor cards whose caption is too long for the panel. Re-measure once
+  // more on a short delay so we catch late image loads (which can change
+  // the frame's aspect ratio, and therefore the panel height).
+  els.iframe.addEventListener('load', function () {
+    measureCaptionOverflow();
+    setTimeout(measureCaptionOverflow, 600);
+  });
+
+  function measureCaptionOverflow() {
+    var doc;
+    try { doc = els.iframe.contentDocument; } catch (e) { return; }
+    if (!doc) return;
+    var overlays = doc.querySelectorAll('.ss-overlay');
+    var coverPresent = !!(state.cover && state.cover.desktop);
+    var overflowing = {};
+    overlays.forEach(function (ov) {
+      // Measure the body wrapper since it's now what clips (the heading +
+      // caption stack together inside body's max-height: 100%).
+      var body = ov.querySelector('.ss-overlay__body');
+      if (!body) return;
+      // 2px tolerance for sub-pixel rounding
+      if (body.scrollHeight > body.clientHeight + 2) {
+        var dataIdx = parseInt(ov.getAttribute('data-idx'), 10);
+        var editorIdx = dataIdx - (coverPresent ? 1 : 0);
+        if (editorIdx >= 0) overflowing[editorIdx] = true;
+      }
+    });
+    var cards = els.slideList.querySelectorAll('.slide-card');
+    cards.forEach(function (card, i) {
+      card.classList.toggle('is-caption-overflow', !!overflowing[i]);
+    });
+  }
+
+  // ====================================================================
+  // Preview-iframe crop bridge — slider + reset operate on the slide
+  // currently visible in the preview, via postMessage in both directions.
+  // ====================================================================
+  var previewState = { contentIdx: 0, viewport: 'desktop' };
+
+  // Resolve which state object the iframe's contentIdx refers to.
+  // If cover is present, contentIdx 0 = cover, 1.. = state.slides[i-1].
+  function targetForContentIdx(contentIdx) {
+    var coverPresent = !!(state.cover && state.cover.desktop);
+    if (coverPresent && contentIdx === 0) return state.cover;
+    var slideIdx = contentIdx - (coverPresent ? 1 : 0);
+    return state.slides[slideIdx] || null;
+  }
+  function postToIframe(msg) {
+    try { if (els.iframe.contentWindow) els.iframe.contentWindow.postMessage(msg, '*'); }
+    catch (e) {}
+  }
+  function updateCropControls() {
+    var t = targetForContentIdx(previewState.contentIdx);
+    var crop = t && (previewState.viewport === 'mobile' ? t.cropMobile : t.cropDesktop);
+    var enabled = !!(t && (previewState.viewport === 'mobile' ? (t.mobile || t.desktop) : t.desktop));
+    els.cropZoom.disabled = !enabled;
+    els.cropReset.disabled = !enabled;
+    if (enabled && crop) els.cropZoom.value = crop.scale;
+  }
+
+  els.cropZoom.addEventListener('input', function () {
+    postToIframe({ type: 'sm-ss-setScale', value: parseFloat(els.cropZoom.value) });
+  });
+  els.cropReset.addEventListener('click', function () {
+    postToIframe({ type: 'sm-ss-resetCrop' });
+    els.cropZoom.value = 1;
+  });
+
+  // Receive crop / slide changes from the iframe.
+  window.addEventListener('message', function (e) {
+    var d = e.data;
+    if (!d || typeof d !== 'object' || !d.type) return;
+    if (d.type === 'sm-ss-cropChanged' || d.type === 'sm-ss-slideChanged') {
+      previewState.contentIdx = d.contentIdx;
+      previewState.viewport   = d.viewport;
+      var t = targetForContentIdx(d.contentIdx);
+      if (t) {
+        var key = d.viewport === 'mobile' ? 'cropMobile' : 'cropDesktop';
+        t[key] = { scale: +d.scale || 1, x: +d.x || 0, y: +d.y || 0 };
+        scheduleAutosave(); // persist crop change without re-rendering preview
+      }
+      updateCropControls();
+    }
+  });
+
+  // ====================================================================
+  // Save / Load project (.json)
+  // ====================================================================
+  function projectFilename() {
+    var s = slugify(state.name);
+    return 'slideshow-' + (s || 'untitled') + '.json';
+  }
+  function embedFilename() {
+    var s = slugify(state.name);
+    return 'slideshow-' + (s || 'untitled') + '.html';
+  }
+
+  // Heuristic for "has the user got real work in progress?"
+  // Anything beyond a single blank slide counts as work.
+  function hasContent() {
+    if (state.name) return true;
+    if (state.cover && (state.cover.desktop || state.cover.mobile)) return true;
+    if (state.slides && state.slides.length > 1) return true;
+    var s = state.slides && state.slides[0];
+    return !!(s && (s.desktop || s.mobile || s.caption));
+  }
+
+  els.btnNew.addEventListener('click', function () {
+    if (hasContent()) {
+      var ok = window.confirm(
+        'Start a new project? Your current work will be cleared from this editor.\n\n' +
+        'If you want to keep it, click Cancel and use Save project first.'
+      );
+      if (!ok) return;
+    }
+    // Reset in-memory state + form + slide list
+    state = freshState();
+    writeStateToForm();
+    renderSlides();
+    // Wipe this tool's autosave so a reload starts fresh too
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    schedulePreview();
+    // Focus the project-name field — the natural next thing to type
+    if (els.name && els.name.focus) els.name.focus();
+    showToast('New project started');
+  });
+
+  els.btnSave.addEventListener('click', function () {
+    var payload = {
+      version: PROJECT_VERSION,
+      kind: 'slideshow-maker',
+      name: state.name,
+      panelColor: state.panelColor,
+      cover: { desktop: state.cover.desktop, mobile: state.cover.mobile },
+      slides: state.slides.map(function (s) {
+        return {
+          desktop: s.desktop,
+          mobile:  s.mobile,
+          heading: s.heading || '',
+          caption: s.caption,
+          cropDesktop: s.cropDesktop || defCrop(),
+          cropMobile:  s.cropMobile  || defCrop()
+        };
+      })
+    };
+    // Cover gets its crops persisted too
+    payload.cover.cropDesktop = state.cover.cropDesktop || defCrop();
+    payload.cover.cropMobile  = state.cover.cropMobile  || defCrop();
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    triggerDownload(blob, projectFilename());
+    showToast('Saved ' + projectFilename());
+  });
+
+  els.btnLoad.addEventListener('click', function () { els.fileInput.click(); });
+  els.fileInput.addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var data = JSON.parse(reader.result);
+        loadStateFromProject(data);
+        showToast('Loaded ' + file.name);
+      } catch (err) {
+        showToast('Could not parse JSON: ' + err.message, true);
+      }
+    };
+    reader.onerror = function () {
+      showToast('Could not read file', true);
+    };
+    reader.readAsText(file);
+    els.fileInput.value = ''; // allow re-loading the same file
+  });
+
+  function loadStateFromProject(data, opts) {
+    opts = opts || {};
+    data = data || {};
+    function readCrop(c) {
+      if (!c || typeof c !== 'object') return defCrop();
+      return {
+        scale: Math.max(1, +c.scale || 1),
+        x: Math.min(1, Math.max(0, c.x == null ? 0.5 : +c.x)),
+        y: Math.min(1, Math.max(0, c.y == null ? 0.5 : +c.y))
+      };
+    }
+    state = {
+      name: typeof data.name === 'string' ? data.name : '',
+      panelColor: data.panelColor === 'white' ? 'white' : 'black',
+      cover: {
+        desktop: data.cover && typeof data.cover.desktop === 'string' ? data.cover.desktop : '',
+        mobile:  data.cover && typeof data.cover.mobile  === 'string' ? data.cover.mobile  : '',
+        cropDesktop: readCrop(data.cover && data.cover.cropDesktop),
+        cropMobile:  readCrop(data.cover && data.cover.cropMobile)
+      },
+      slides: Array.isArray(data.slides) ? data.slides.map(function (s) {
+        return {
+          id: uid(),
+          desktop: (s && typeof s.desktop === 'string') ? s.desktop : '',
+          mobile:  (s && typeof s.mobile  === 'string') ? s.mobile  : '',
+          heading: (s && typeof s.heading === 'string') ? s.heading : '',
+          caption: (s && typeof s.caption === 'string') ? s.caption : '',
+          cropDesktop: readCrop(s && s.cropDesktop),
+          cropMobile:  readCrop(s && s.cropMobile)
+        };
+      }) : []
+    };
+    if (state.slides.length === 0) {
+      state.slides.push({
+        id: uid(), desktop: '', mobile: '', heading: '', caption: '',
+        cropDesktop: defCrop(), cropMobile: defCrop()
+      });
+    }
+    writeStateToForm();
+    renderSlides();
+    schedulePreview();
+    if (!opts.silent) scheduleAutosave();
+  }
+
+  // ====================================================================
+  // Standalone player document + iframe embed snippet
+  // ====================================================================
+  // Wrap the embed fragment in a complete HTML document. This is the file
+  // the user uploads to their server; the iframe below points its src at it.
+  function buildStandaloneDoc(cfg) {
+    var fragment = buildEmbedHTML(cfg, false);
+    var title = (cfg.name && String(cfg.name).trim()) ? cfg.name : 'Slideshow';
+    return '<!DOCTYPE html>\n' +
+      '<html lang="en">\n<head>\n' +
+      '<meta charset="utf-8">\n' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+      '<title>' + escapeHTML(title) + '</title>\n' +
+      '<style>html,body{margin:0;padding:0;background:#fff;}</style>\n' +
+      '</head>\n<body>\n' + fragment + '\n</body>\n</html>\n';
+  }
+
+  // Build the iframe snippet the user pastes into their site. It references
+  // the downloaded player file by name and holds a fixed 16:9 landscape
+  // aspect-ratio box so no parent-page JS is needed to size the iframe. The
+  // class is slug-scoped so multiple slideshows can live on one page without
+  // their CSS colliding.
+  function buildIframeSnippet(cfg) {
+    var slug = slugify(cfg.name) || 'untitled';
+    var file = 'slideshow-' + slug + '.html';
+    var cls  = 'ss-embed-' + slug;
+    var title = (cfg.name && String(cfg.name).trim()) ? cfg.name : 'Slideshow';
+    return '' +
+      '<!-- Put ' + file + ' in the same folder as your images. Set src below to that path relative to THIS page, e.g. assets/images/' + file + ' -->\n' +
+      '<div class="' + cls + '">\n' +
+      '  <iframe src="' + file + '" title="' + escapeAttr(title) + '" loading="lazy" scrolling="no"></iframe>\n' +
+      '</div>\n' +
+      '<style>\n' +
+      '  .' + cls + ' { position: relative; width: 100%; max-width: 980px; margin: 0 auto; aspect-ratio: 16 / 9; }\n' +
+      '  .' + cls + ' iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }\n' +
+      '</style>\n';
+  }
+
+  // ====================================================================
+  // Copy / Download embed
+  // ====================================================================
+  els.btnCopy.addEventListener('click', function () {
+    var html = buildIframeSnippet(state);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(html)
+        .then(function () { showToast('iframe code copied'); })
+        .catch(function () { fallbackCopy(html); });
+    } else {
+      fallbackCopy(html);
+    }
+  });
+  function fallbackCopy(html) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = html; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      showToast('Embed code copied');
+    } catch (e) {
+      showToast('Copy failed — use Download instead', true);
+    }
+  }
+
+  els.btnDownload.addEventListener('click', function () {
+    var html = buildStandaloneDoc(state);
+    var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    triggerDownload(blob, embedFilename());
+    showToast('Downloaded ' + embedFilename());
+  });
+
+  function triggerDownload(blob, filename) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+
+  // ====================================================================
+  // Autosave (localStorage)
+  // ====================================================================
+  var autosaveTimer = null;
+  function scheduleAutosave() {
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(doAutosave, 500);
+  }
+  function doAutosave() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        version: PROJECT_VERSION,
+        savedAt: Date.now(),
+        name: state.name,
+        panelColor: state.panelColor,
+        cover: state.cover,
+        slides: state.slides.map(function (s) {
+          return {
+            desktop: s.desktop,
+            mobile:  s.mobile,
+            heading: s.heading || '',
+            caption: s.caption,
+            cropDesktop: s.cropDesktop || defCrop(),
+            cropMobile:  s.cropMobile  || defCrop()
+          };
+        })
+      }));
+    } catch (e) { /* quota or disabled */ }
+  }
+  function tryRestoreAutosave() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      var data = JSON.parse(raw);
+      loadStateFromProject(data, { silent: true });
+      return true;
+    } catch (e) { return false; }
+  }
+
+  // ====================================================================
+  // buildEmbedHTML — produces the .slideshow-embed fragment
+  // ====================================================================
+  // Default crop = cover-fit centred (the image fills the frame; no panning).
+  function defaultCrop() { return { scale: 1, x: 0.5, y: 0.5 }; }
+  function packCrop(c) {
+    c = c || {};
+    return {
+      scale: Math.max(1, +c.scale || 1),
+      x: Math.min(1, Math.max(0, c.x == null ? 0.5 : +c.x)),
+      y: Math.min(1, Math.max(0, c.y == null ? 0.5 : +c.y))
+    };
+  }
+  function buildEmbedHTML(cfg, isPreview) {
+    var embedConfig = {
+      panelColor: cfg.panelColor === 'white' ? 'white' : 'black',
+      cover: (cfg.cover && cfg.cover.desktop)
+        ? {
+            desktop: normaliseURL(cfg.cover.desktop),
+            mobile:  normaliseURL(cfg.cover.mobile) || null,
+            cropDesktop: packCrop(cfg.cover.cropDesktop),
+            cropMobile:  packCrop(cfg.cover.cropMobile)
+          }
+        : null,
+      slides: (cfg.slides || [])
+        .filter(function (s) { return s && (s.desktop || s.caption || s.heading); })
+        .map(function (s) {
+          return {
+            desktop: normaliseURL(s.desktop),
+            mobile:  normaliseURL(s.mobile) || null,
+            heading: renderInlineMarkup(s.heading),
+            caption: renderInlineMarkup(s.caption),
+            cropDesktop: packCrop(s.cropDesktop),
+            cropMobile:  packCrop(s.cropMobile)
+          };
+        })
+    };
+    return EMBED_TEMPLATE({
+      CONFIG_JSON: JSON.stringify(embedConfig),
+      IS_PREVIEW: !!isPreview
+    });
+  }
+
+  // The embed template is a single template-literal string. Anything inside
+  // ${...} is evaluated at editor-build time; everything else (including the
+  // runtime's own JS) is emitted verbatim to the output fragment.
+  function EMBED_TEMPLATE(v) {
+    return (
+'<div class="slideshow-embed" id="slideshow-embed">\n' +
+'<style>\n' +
+'.slideshow-embed {\n' +
+'  --sm-ink: #111111;\n' +
+'  --sm-paper: #ffffff;\n' +
+'  --sm-font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;\n' +
+'  --ss-fade: 600ms;\n' +
+'  --ss-ease: cubic-bezier(.2,.8,.2,1);\n' +
+'  --ss-btn-size: 44px;\n' +
+'  --ss-btn-inset: 12px;\n' +
+'  font-family: var(--sm-font-sans);\n' +
+'  color: var(--sm-ink);\n' +
+'  max-width: 980px;\n' +
+'  margin: 0 auto;\n' +
+'  box-sizing: border-box;\n' +
+'}\n' +
+'.slideshow-embed *, .slideshow-embed *::before, .slideshow-embed *::after { box-sizing: border-box; }\n' +
+'.slideshow-embed .ss-frame {\n' +
+'  position: relative;\n' +
+'  width: 100%;\n' +
+'  /* Fixed 16:9 landscape. */\n' +
+'  aspect-ratio: 16 / 9;\n' +
+'  background: #000;\n' +
+'  overflow: hidden;\n' +
+'  user-select: none;\n' +
+'  -webkit-user-select: none;\n' +
+'  touch-action: pan-y;\n' +
+'}\n' +
+'@media (max-width: 600px) {\n' +
+'  .slideshow-embed { --ss-btn-size: 40px; --ss-btn-inset: 8px; }\n' +
+'}\n' +
+'.slideshow-embed .ss-stage { position: absolute; inset: 0; overflow: hidden; }\n' +
+'.slideshow-embed .ss-img {\n' +
+'  position: absolute;\n' +
+'  /* Width/height/left/top are set in JS to cover-fill the frame and apply\n' +
+'     the user-configured scale + focal point. */\n' +
+'  opacity: 0;\n' +
+'  transition: opacity var(--ss-fade) var(--ss-ease);\n' +
+'  pointer-events: none;\n' +
+'  max-width: none;\n' +
+'}\n' +
+'.slideshow-embed .ss-img.is-active { opacity: 1; pointer-events: auto; }\n' +
+'.slideshow-embed .ss-overlay {\n' +
+'  position: absolute; inset: 0;\n' +
+'  display: flex; align-items: center; justify-content: center;\n' +
+'  /* Horizontal padding clears the prev/next chevron buttons with 16px breathing room.\n' +
+'     Tied to --ss-btn-inset + --ss-btn-size so it scales automatically with button size. */\n' +
+'  padding-block: 7%;\n' +
+'  padding-inline: calc(var(--ss-btn-inset) + var(--ss-btn-size) + 16px);\n' +
+'  opacity: 0;\n' +
+'  pointer-events: none;\n' +
+'  transition: opacity var(--ss-fade) var(--ss-ease);\n' +
+'}\n' +
+'.slideshow-embed .ss-overlay.is-active { opacity: 1; pointer-events: auto; }\n' +
+'.slideshow-embed .ss-overlay__panel {\n' +
+'  position: absolute; inset: 0;\n' +
+'  background: var(--ss-panel-bg, rgba(0,0,0,0.8));\n' +
+'}\n' +
+'.slideshow-embed .ss-overlay__body {\n' +
+'  position: relative;\n' +
+'  max-width: 60ch;\n' +
+'  max-height: 100%;\n' +
+'  overflow: hidden;\n' +
+'  color: var(--ss-caption-color, #ffffff);\n' +
+'  font-family: var(--sm-font-sans);\n' +
+'  text-align: left;\n' +
+'  letter-spacing: 0;\n' +
+'}\n' +
+'.slideshow-embed .ss-overlay__heading {\n' +
+'  display: block;\n' +
+'  font-family: var(--sm-font-sans);\n' +
+'  color: var(--ss-caption-color, #ffffff);\n' +
+'  font-weight: 700;\n' +
+'  font-size: 17px;\n' +
+'  line-height: 1.3;\n' +
+'  margin: 0 0 10px;\n' +
+'  letter-spacing: 0;\n' +
+'  text-align: left;\n' +
+'}\n' +
+'.slideshow-embed .ss-overlay__caption {\n' +
+'  font-size: 15px;\n' +
+'  line-height: 1.55;\n' +
+'  font-weight: 400;\n' +
+'  white-space: normal;\n' +
+'}\n' +
+'.slideshow-embed .ss-overlay__caption strong { font-weight: 700; }\n' +
+'.slideshow-embed .ss-overlay__caption em { font-style: italic; }\n' +
+'.slideshow-embed .ss-overlay__heading strong { font-weight: 800; }\n' +
+'.slideshow-embed .ss-overlay__heading em { font-style: italic; }\n' +
+'@media (max-width: 600px) {\n' +
+'  .slideshow-embed .ss-overlay { padding-block: 6%; }\n' +
+'  .slideshow-embed .ss-overlay__caption { font-size: 15px; line-height: 1.45; }\n' +
+'}\n' +
+'.slideshow-embed .ss-btn {\n' +
+'  position: absolute;\n' +
+'  top: 50%;\n' +
+'  transform: translateY(-50%);\n' +
+'  width: var(--ss-btn-size);\n' +
+'  height: var(--ss-btn-size);\n' +
+'  border: none;\n' +
+'  background: rgba(0, 0, 0, 0.35);\n' +
+'  color: #ffffff;\n' +
+'  border-radius: 999px;\n' +
+'  display: inline-flex; align-items: center; justify-content: center;\n' +
+'  cursor: pointer;\n' +
+'  padding: 0;\n' +
+'  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;\n' +
+'  z-index: 2;\n' +
+'}\n' +
+'.slideshow-embed .ss-btn:hover, .slideshow-embed .ss-btn:focus-visible {\n' +
+'  background: #ffffff; color: var(--sm-ink); outline: none;\n' +
+'}\n' +
+'.slideshow-embed .ss-btn:focus-visible { box-shadow: 0 0 0 3px rgba(0,0,0,0.45), 0 0 0 5px #ffffff; }\n' +
+'.slideshow-embed .ss-btn:active { transform: translateY(-50%) scale(0.96); }\n' +
+'.slideshow-embed .ss-prev { left: var(--ss-btn-inset); }\n' +
+'.slideshow-embed .ss-next { right: var(--ss-btn-inset); }\n' +
+'.slideshow-embed .sm-chev {\n' +
+'  flex-shrink: 0;\n' +
+'  width: 28px; height: 28px;\n' +
+'  color: currentColor;\n' +
+'  display: inline-flex; align-items: center; justify-content: center;\n' +
+'}\n' +
+'.slideshow-embed .sm-chev svg { width: 24px; height: 24px; display: block; }\n' +
+'.slideshow-embed .sm-chev-left  { transform: rotate(90deg); }\n' +
+'.slideshow-embed .sm-chev-right { transform: rotate(-90deg); }\n' +
+'.slideshow-embed .ss-progress {\n' +
+'  position: absolute;\n' +
+'  left: 16px; right: 16px;\n' +
+'  bottom: 14px;\n' +
+'  height: 3px;\n' +
+'  background: rgba(255,255,255,0.30);\n' +
+'  border-radius: 999px;\n' +
+'  overflow: hidden;\n' +
+'  z-index: 2;\n' +
+'  opacity: 1;\n' +
+'  transition: opacity 240ms ease;\n' +
+'  pointer-events: none;\n' +
+'}\n' +
+'.slideshow-embed .ss-frame.is-captioned .ss-progress { opacity: 0; }\n' +
+'.slideshow-embed .ss-progress__fill {\n' +
+'  display: block;\n' +
+'  width: 0%;\n' +
+'  height: 100%;\n' +
+'  background: #ffffff;\n' +
+'  border-radius: inherit;\n' +
+'  transition: width 400ms cubic-bezier(.2,.8,.2,1);\n' +
+'}\n' +
+'@media (max-width: 600px) {\n' +
+'  .slideshow-embed .ss-progress { left: 12px; right: 12px; bottom: 10px; height: 2px; }\n' +
+'}\n' +
+'@media (prefers-reduced-motion: reduce) {\n' +
+'  .slideshow-embed .ss-img, .slideshow-embed .ss-overlay, .slideshow-embed .ss-btn, .slideshow-embed .ss-progress, .slideshow-embed .ss-progress__fill, .slideshow-embed .ss-frame { transition: none !important; }\n' +
+'}\n' +
+'.slideshow-embed .ss-empty {\n' +
+'  position: absolute; inset: 0;\n' +
+'  display: flex; align-items: center; justify-content: center;\n' +
+'  font-family: var(--sm-font-sans);\n' +
+'  color: #999; font-size: 14px;\n' +
+'  background: #f5f3ef;\n' +
+'  text-align: center; padding: 24px;\n' +
+'}\n' +
+'</style>\n' +
+'<div class="ss-frame" role="region" aria-roledescription="carousel" aria-label="Image slideshow">\n' +
+'  <div class="ss-stage" aria-live="polite"></div>\n' +
+'  <div class="ss-overlays"></div>\n' +
+'  <button type="button" class="ss-btn ss-prev" aria-label="Previous">\n' +
+'    <span class="sm-chev sm-chev-left" aria-hidden="true">\n' +
+'      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>\n' +
+'    </span>\n' +
+'  </button>\n' +
+'  <button type="button" class="ss-btn ss-next" aria-label="Next">\n' +
+'    <span class="sm-chev sm-chev-right" aria-hidden="true">\n' +
+'      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>\n' +
+'    </span>\n' +
+'  </button>\n' +
+'  <div class="ss-progress" role="progressbar" aria-label="Slideshow progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">\n' +
+'    <div class="ss-progress__fill"></div>\n' +
+'  </div>\n' +
+'</div>\n' +
+'<script>(function () {\n' +
+'  var root = document.querySelector("#slideshow-embed");\n' +
+'  if (!root) return;\n' +
+'  var $ = function (sel) { return root.querySelector(sel); };\n' +
+'  var CONFIG = ' + v.CONFIG_JSON + ';\n' +
+'  var IS_PREVIEW = ' + (v.IS_PREVIEW ? 'true' : 'false') + ';\n' +
+'  var frame        = $(".ss-frame");\n' +
+'  var stage        = $(".ss-stage");\n' +
+'  var overlays     = $(".ss-overlays");\n' +
+'  var progressEl   = $(".ss-progress");\n' +
+'  var progressFill = $(".ss-progress__fill");\n' +
+'  // Build the content-slide list (cover + each story).\n' +
+'  // IMPORTANT: copy *every* field that the runtime later reads from `c.*` —\n' +
+'  // heading, caption, cropDesktop, cropMobile. Earlier versions forgot these,\n' +
+'  // which silently produced captioned overlays with no heading and cropping\n' +
+'  // that always fell back to defaults.\n' +
+'  var contentSlides = [];\n' +
+'  if (CONFIG.cover) {\n' +
+'    contentSlides.push({\n' +
+'      kind: "cover",\n' +
+'      desktop: CONFIG.cover.desktop,\n' +
+'      mobile: CONFIG.cover.mobile,\n' +
+'      heading: "",\n' +
+'      caption: "",\n' +
+'      cropDesktop: CONFIG.cover.cropDesktop,\n' +
+'      cropMobile: CONFIG.cover.cropMobile\n' +
+'    });\n' +
+'  }\n' +
+'  (CONFIG.slides || []).forEach(function (s) {\n' +
+'    contentSlides.push({\n' +
+'      kind: "story",\n' +
+'      desktop: s.desktop,\n' +
+'      mobile: s.mobile,\n' +
+'      heading: s.heading || "",\n' +
+'      caption: s.caption || "",\n' +
+'      cropDesktop: s.cropDesktop,\n' +
+'      cropMobile: s.cropMobile\n' +
+'    });\n' +
+'  });\n' +
+'  // Bail gracefully if nothing has been configured\n' +
+'  if (contentSlides.length === 0) {\n' +
+'    var empty = document.createElement("div");\n' +
+'    empty.className = "ss-empty";\n' +
+'    empty.textContent = "No slides yet — add a cover or story slide in the editor.";\n' +
+'    frame.appendChild(empty);\n' +
+'    return;\n' +
+'  }\n' +
+'  // Panel colour\n' +
+'  if (CONFIG.panelColor === "white") {\n' +
+'    frame.style.setProperty("--ss-panel-bg", "rgba(255,255,255,0.8)");\n' +
+'    frame.style.setProperty("--ss-caption-color", "#111111");\n' +
+'  } else {\n' +
+'    frame.style.setProperty("--ss-panel-bg", "rgba(0,0,0,0.8)");\n' +
+'    frame.style.setProperty("--ss-caption-color", "#ffffff");\n' +
+'  }\n' +
+'  // Landscape-only: no mobile/portrait viewport. This stub keeps the rest\n' +
+'  // of the runtime unchanged while always reporting the desktop viewport.\n' +
+'  var mq = { matches: false, addEventListener: function () {} };\n' +
+'  function urlFor(c) { return c.desktop; }\n' +
+'  // Build images (one per content slide) and overlays (only for slides with captions).\n' +
+'  // A progress bar replaces the dots: one continuous indicator for any slide count.\n' +
+'  var imgs = [];\n' +
+'  var overlayEls = []; // null when slide has no caption\n' +
+'\n' +
+'  // ------- Crop math -------\n' +
+'  // Default crop = cover-fit centred (scale 1, focal x=0.5, y=0.5).\n' +
+'  function safeCrop(c) {\n' +
+'    c = c || {};\n' +
+'    return {\n' +
+'      scale: Math.max(1, +c.scale || 1),\n' +
+'      x: Math.min(1, Math.max(0, +c.x || (c.x === 0 ? 0 : 0.5))),\n' +
+'      y: Math.min(1, Math.max(0, +c.y || (c.y === 0 ? 0 : 0.5)))\n' +
+'    };\n' +
+'  }\n' +
+'  function applyCrop(imgEl, fw, fh, iw, ih, crop) {\n' +
+'    if (!iw || !ih || !fw || !fh) return;\n' +
+'    var coverScale = Math.max(fw / iw, fh / ih);\n' +
+'    var cw = iw * coverScale * crop.scale;\n' +
+'    var ch = ih * coverScale * crop.scale;\n' +
+'    imgEl.style.width  = cw + "px";\n' +
+'    imgEl.style.height = ch + "px";\n' +
+'    imgEl.style.left   = (-(cw - fw) * crop.x) + "px";\n' +
+'    imgEl.style.top    = (-(ch - fh) * crop.y) + "px";\n' +
+'  }\n' +
+'  contentSlides.forEach(function (c, i) {\n' +
+'    var img = document.createElement("img");\n' +
+'    img.className = "ss-img" + (i === 0 ? " is-active" : "");\n' +
+'    img.src = urlFor(c);\n' +
+'    img.alt = "";\n' +
+'    img.setAttribute("data-idx", String(i));\n' +
+'    img.setAttribute("draggable", "false");\n' +
+'    if (i !== 0) img.loading = "lazy";\n' +
+'    img.decoding = "async";\n' +
+'    img.addEventListener("load", function () { applyImgCrop(i); });\n' +
+'    stage.appendChild(img);\n' +
+'    imgs.push(img);\n' +
+'    if (c.heading || c.caption) {\n' +
+'      var ov = document.createElement("div");\n' +
+'      ov.className = "ss-overlay";\n' +
+'      ov.setAttribute("data-idx", String(i));\n' +
+'      var panel = document.createElement("div");\n' +
+'      panel.className = "ss-overlay__panel";\n' +
+'      ov.appendChild(panel);\n' +
+'      var body = document.createElement("div");\n' +
+'      body.className = "ss-overlay__body";\n' +
+'      if (c.heading) {\n' +
+'        var h = document.createElement("div");\n' +
+'        h.className = "ss-overlay__heading";\n' +
+'        h.innerHTML = c.heading; // pre-escaped at build time\n' +
+'        body.appendChild(h);\n' +
+'      }\n' +
+'      if (c.caption) {\n' +
+'        var cap = document.createElement("div");\n' +
+'        cap.className = "ss-overlay__caption";\n' +
+'        cap.innerHTML = c.caption; // pre-escaped at build time\n' +
+'        body.appendChild(cap);\n' +
+'      }\n' +
+'      ov.appendChild(body);\n' +
+'      overlays.appendChild(ov);\n' +
+'      overlayEls.push(ov);\n' +
+'    } else {\n' +
+'      overlayEls.push(null);\n' +
+'    }\n' +
+'  });\n' +
+'  // Visual states: for each content slide, 1 state if no caption, else 2 (clean, captioned)\n' +
+'  var STATES = [];\n' +
+'  contentSlides.forEach(function (c, i) {\n' +
+'    STATES.push({ idx: i, captioned: false });\n' +
+'    if (c.caption || c.heading) STATES.push({ idx: i, captioned: true });\n' +
+'  });\n' +
+'  var currentState = 0;\n' +
+'  var currentContent = 0;\n' +
+'  function applyImgCrop(i) {\n' +
+'    var img = imgs[i]; if (!img || !img.naturalWidth) return;\n' +
+'    var c = contentSlides[i];\n' +
+'    var crop = mq.matches ? safeCrop(c.cropMobile) : safeCrop(c.cropDesktop);\n' +
+'    applyCrop(img, frame.offsetWidth, frame.offsetHeight, img.naturalWidth, img.naturalHeight, crop);\n' +
+'  }\n' +
+'  function applyAllCrops() { for (var i = 0; i < imgs.length; i++) applyImgCrop(i); }\n' +
+'  function updateProgress() {\n' +
+'    var total = contentSlides.length || 1;\n' +
+'     var pct = ((currentContent + 1) / total) * 100;\n' +
+'    if (progressFill) progressFill.style.width = pct + "%";\n' +
+'    if (progressEl) progressEl.setAttribute("aria-valuenow", String(Math.round(pct)));\n' +
+'  }\n' +
+'  function goState(next) {\n' +
+'    var n = STATES.length;\n' +
+'    next = ((next % n) + n) % n;\n' +
+'    if (next === currentState) return;\n' +
+'    var prev = STATES[currentState];\n' +
+'    var ns   = STATES[next];\n' +
+'    // Image: swap active when the underlying content slide changes\n' +
+'    if (ns.idx !== prev.idx) {\n' +
+'      imgs[prev.idx].classList.remove("is-active");\n' +
+'      imgs[ns.idx].classList.add("is-active");\n' +
+'      currentContent = ns.idx;\n' +
+'      updateProgress();\n' +
+'    }\n' +
+'    // Overlay: toggle visibility based on next state\n' +
+'    overlayEls.forEach(function (el, i) {\n' +
+'      if (!el) return;\n' +
+'      el.classList.toggle("is-active", ns.captioned && i === ns.idx);\n' +
+'    });\n' +
+'    frame.classList.toggle("is-captioned", !!ns.captioned);\n' +
+'    currentState = next;\n' +
+'  }\n' +
+'  // Initialise progress on first paint\n' +
+'  updateProgress();\n' +
+'  $(".ss-prev").addEventListener("click", function () { goState(currentState - 1); });\n' +
+'  $(".ss-next").addEventListener("click", function () { goState(currentState + 1); });\n' +
+'  // Keyboard\n' +
+'  frame.setAttribute("tabindex", "0");\n' +
+'  frame.addEventListener("keydown", function (e) {\n' +
+'    if (e.key === "ArrowLeft")  { goState(currentState - 1); e.preventDefault(); }\n' +
+'    if (e.key === "ArrowRight") { goState(currentState + 1); e.preventDefault(); }\n' +
+'  });\n' +
+'  // Touch / swipe\n' +
+'  var tStartX = 0, tStartY = 0, tracking = false;\n' +
+'  frame.addEventListener("touchstart", function (e) {\n' +
+'    var t = e.changedTouches[0]; tStartX = t.clientX; tStartY = t.clientY; tracking = true;\n' +
+'  }, { passive: true });\n' +
+'  frame.addEventListener("touchend", function (e) {\n' +
+'    if (!tracking) return; tracking = false;\n' +
+'    var t = e.changedTouches[0];\n' +
+'    var dx = t.clientX - tStartX; var dy = t.clientY - tStartY;\n' +
+'    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {\n' +
+'      goState(dx < 0 ? currentState + 1 : currentState - 1);\n' +
+'    }\n' +
+'  }, { passive: true });\n' +
+'  // Viewport flip: swap srcs when crossing the breakpoint, then re-apply\n' +
+'  // crops (because frame ratio and per-viewport crop state both differ).\n' +
+'  mq.addEventListener("change", function () {\n' +
+'    contentSlides.forEach(function (c, i) {\n' +
+'      var want = urlFor(c);\n' +
+'      if (imgs[i].getAttribute("src") !== want) {\n' +
+'        imgs[i].src = want; // load event will re-apply crop\n' +
+'      } else {\n' +
+'        applyImgCrop(i);   // same URL, just re-apply for the new viewport\n' +
+'      }\n' +
+'    });\n' +
+'  });\n' +
+'\n' +
+'  // Frame size can change when the host page resizes the embed container.\n' +
+'  // Re-apply on resize so the cover math stays correct.\n' +
+'  window.addEventListener("resize", function () { applyAllCrops(); });\n' +
+'\n' +
+'  // ResizeObserver catches frame-size changes that window.resize misses:\n' +
+'  // CMS-side container layout (sidebars collapsing, ads loading), late\n' +
+'  // visibility toggles (lazy-revealed below-the-fold embeds), and crucially\n' +
+'  // the initial 0->N transition when the embed mounts before its parent\n' +
+'  // has been laid out. Without this, the crop math early-returns at 0x0\n' +
+'  // and images render at natural size showing only the top-left corner.\n' +
+'  if (typeof ResizeObserver !== "undefined") {\n' +
+'    var ro = new ResizeObserver(function () { applyAllCrops(); });\n' +
+'    ro.observe(frame);\n' +
+'  } else {\n' +
+'    // Older-browser fallback: poll a few times in the first second after mount.\n' +
+'    [50, 200, 500, 1000].forEach(function (ms) { setTimeout(applyAllCrops, ms); });\n' +
+'  }\n' +
+'\n' +
+'  // =============================================================\n' +
+'  // Preview-mode interactions: drag-to-pan + wheel-to-zoom on the\n' +
+'  // active image, and postMessage handshake with the parent editor.\n' +
+'  // (Only active when IS_PREVIEW is true, i.e. running inside the\n' +
+'  // editor\'s iframe — production embeds are untouched.)\n' +
+'  // =============================================================\n' +
+'  if (IS_PREVIEW) {\n' +
+'    function postToParent(msg) {\n' +
+'      try { window.parent.postMessage(msg, "*"); } catch (e) {}\n' +
+'    }\n' +
+'    function currentCrop() {\n' +
+'      var c = contentSlides[currentContent];\n' +
+'      var key = mq.matches ? "cropMobile" : "cropDesktop";\n' +
+'      if (!c[key]) c[key] = { scale: 1, x: 0.5, y: 0.5 };\n' +
+'      return c[key];\n' +
+'    }\n' +
+'    function reportSlide() {\n' +
+'      var crop = currentCrop();\n' +
+'      postToParent({\n' +
+'        type: "sm-ss-slideChanged",\n' +
+'        contentIdx: currentContent,\n' +
+'        viewport: mq.matches ? "mobile" : "desktop",\n' +
+'        scale: crop.scale, x: crop.x, y: crop.y\n' +
+'      });\n' +
+'    }\n' +
+'    function reportCrop() {\n' +
+'      var crop = currentCrop();\n' +
+'      postToParent({\n' +
+'        type: "sm-ss-cropChanged",\n' +
+'        contentIdx: currentContent,\n' +
+'        viewport: mq.matches ? "mobile" : "desktop",\n' +
+'        scale: crop.scale, x: crop.x, y: crop.y\n' +
+'      });\n' +
+'    }\n' +
+'    // Drag on the frame pans the active image.\n' +
+'    var pDrag = null;\n' +
+'    function pDown(e) {\n' +
+'      var img = imgs[currentContent];\n' +
+'      if (!img || !img.naturalWidth) return;\n' +
+'      var pt = e.touches ? e.touches[0] : e;\n' +
+'      var crop = currentCrop();\n' +
+'      var fw = frame.offsetWidth, fh = frame.offsetHeight;\n' +
+'      var coverScale = Math.max(fw / img.naturalWidth, fh / img.naturalHeight);\n' +
+'      var cw = img.naturalWidth * coverScale * crop.scale;\n' +
+'      var ch = img.naturalHeight * coverScale * crop.scale;\n' +
+'      pDrag = {\n' +
+'        sMX: pt.clientX, sMY: pt.clientY,\n' +
+'        sX: crop.x, sY: crop.y,\n' +
+'        excW: Math.max(0, cw - fw),\n' +
+'        excH: Math.max(0, ch - fh)\n' +
+'      };\n' +
+'      if (e.preventDefault) e.preventDefault();\n' +
+'    }\n' +
+'    function pMove(e) {\n' +
+'      if (!pDrag) return;\n' +
+'      var pt = e.touches ? e.touches[0] : e;\n' +
+'      var dx = pt.clientX - pDrag.sMX;\n' +
+'      var dy = pt.clientY - pDrag.sMY;\n' +
+'      var crop = currentCrop();\n' +
+'      crop.x = pDrag.excW > 0\n' +
+'        ? Math.min(1, Math.max(0, pDrag.sX - dx / pDrag.excW))\n' +
+'        : 0.5;\n' +
+'      crop.y = pDrag.excH > 0\n' +
+'        ? Math.min(1, Math.max(0, pDrag.sY - dy / pDrag.excH))\n' +
+'        : 0.5;\n' +
+'      applyImgCrop(currentContent);\n' +
+'      reportCrop();\n' +
+'      if (e.cancelable) e.preventDefault();\n' +
+'    }\n' +
+'    function pUp() { pDrag = null; }\n' +
+'    frame.addEventListener("mousedown", pDown);\n' +
+'    window.addEventListener("mousemove", pMove);\n' +
+'    window.addEventListener("mouseup", pUp);\n' +
+'    frame.addEventListener("touchstart", pDown, { passive: false });\n' +
+'    window.addEventListener("touchmove", pMove, { passive: false });\n' +
+'    window.addEventListener("touchend", pUp);\n' +
+'\n' +
+'    // Wheel-zoom the active image.\n' +
+'    frame.addEventListener("wheel", function (e) {\n' +
+'      var img = imgs[currentContent];\n' +
+'      if (!img || !img.naturalWidth) return;\n' +
+'      e.preventDefault();\n' +
+'      var crop = currentCrop();\n' +
+'      crop.scale = Math.min(4, Math.max(1, crop.scale * (1 - e.deltaY * 0.001)));\n' +
+'      applyImgCrop(currentContent);\n' +
+'      reportCrop();\n' +
+'    }, { passive: false });\n' +
+'\n' +
+'    // Listen for slider / reset commands from parent.\n' +
+'    window.addEventListener("message", function (e) {\n' +
+'      var d = e.data;\n' +
+'      if (!d || typeof d !== "object") return;\n' +
+'      if (d.type === "sm-ss-setScale") {\n' +
+'        var crop = currentCrop();\n' +
+'        crop.scale = Math.min(4, Math.max(1, +d.value || 1));\n' +
+'        // Re-clamp x/y in case zooming out reduced excess room.\n' +
+'        var img = imgs[currentContent];\n' +
+'        if (img && img.naturalWidth) {\n' +
+'          var fw = frame.offsetWidth, fh = frame.offsetHeight;\n' +
+'          var coverScale = Math.max(fw / img.naturalWidth, fh / img.naturalHeight);\n' +
+'          var cw = img.naturalWidth * coverScale * crop.scale;\n' +
+'          var ch = img.naturalHeight * coverScale * crop.scale;\n' +
+'          if (cw <= fw) crop.x = 0.5;\n' +
+'          if (ch <= fh) crop.y = 0.5;\n' +
+'        }\n' +
+'        applyImgCrop(currentContent);\n' +
+'        reportCrop();\n' +
+'      } else if (d.type === "sm-ss-resetCrop") {\n' +
+'        var c = contentSlides[currentContent];\n' +
+'        var key = mq.matches ? "cropMobile" : "cropDesktop";\n' +
+'        c[key] = { scale: 1, x: 0.5, y: 0.5 };\n' +
+'        applyImgCrop(currentContent);\n' +
+'        reportCrop();\n' +
+'      }\n' +
+'    });\n' +
+'\n' +
+'    // Report slide changes after the *existing* handlers have run.\n' +
+'    // setTimeout(0) defers until the call stack unwinds so the originals\n' +
+'    // have already updated currentContent.\n' +
+'    var lastReportedContent = -1;\n' +
+'    function maybeReportSlide() {\n' +
+'      if (currentContent !== lastReportedContent) {\n' +
+'        lastReportedContent = currentContent;\n' +
+'        reportSlide();\n' +
+'      }\n' +
+'    }\n' +
+'    $(".ss-prev").addEventListener("click", function () { setTimeout(maybeReportSlide, 0); });\n' +
+'    $(".ss-next").addEventListener("click", function () { setTimeout(maybeReportSlide, 0); });\n' +
+'    frame.addEventListener("keydown", function (e) {\n' +
+'      if (e.key === "ArrowLeft" || e.key === "ArrowRight") setTimeout(maybeReportSlide, 0);\n' +
+'    });\n' +
+'    frame.addEventListener("touchend", function () { setTimeout(maybeReportSlide, 0); });\n' +
+'\n' +
+'    // Announce viewport changes so parent slider can update too.\n' +
+'    mq.addEventListener("change", reportSlide);\n' +
+'\n' +
+'    // Report the initial state once images are likely ready.\n' +
+'    setTimeout(reportSlide, 100);\n' +
+'  }\n' +
+'})();<\/script>\n' +
+'</div>'
+    );
+  }
+
+  // ====================================================================
+  // Sticky header height — measured live so wrap-to-two-rows on narrow
+  // viewports keeps the preview pane's sticky `top` flush below the header.
+  // ====================================================================
+  function syncHeaderHeight() {
+    var header = $('.app-header');
+    if (!header) return;
+    document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+  }
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight);
+
+  // ====================================================================
+  // Init
+  // ====================================================================
+  if (!tryRestoreAutosave()) {
+    writeStateToForm();
+    renderSlides();
+  }
+  schedulePreview();
+  // One more sync after the page settles (custom fonts can shift heights).
+  setTimeout(syncHeaderHeight, 300);
+})();
+</script>
+</body>
+</html>

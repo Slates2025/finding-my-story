@@ -1,264 +1,386 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Paul Slater | Finding My Story</title>
-
-    <link rel="stylesheet" href="assets/style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
+   Paul Slater | Finding My Story
+  </title>
+<link href="assets/style.css" rel="stylesheet"/>
+<script src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" type="module">
+</script>
+<script type="importmap">
+   {
+      "imports": {
+        "three": "https://unpkg.com/three@0.179.1/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.179.1/examples/jsm/"
+      }
+    }
+  </script>
 </head>
-
 <body>
-
 <div class="page">
-
-    <nav class="top-nav">
-        <a href="#cv">CV</a>
-        <a href="#contact">Contact</a>
-    </nav>
-
-    <main>
-
-        <header class="hero">
-
-            <h1>Paul Slater</h1>
-
-            <h2>
-    I think by making
-</h2>
-
+<nav class="top-nav">
+<a class="active" href="index.html">
+     Home
+    </a>
+<a href="cv.html">
+     CV
+    </a>
+<a href="contact.html">
+     Contact
+    </a>
+</nav>
+<header class="hero">
+<div class="hero-branding">
+<img alt="Paul Slater" class="hero-avatar" src="assets/images/mugshot.jpg"/>
+<div class="hero-text">
+<h1>
+       Paul Slater
+      </h1>
+<h2>
+       I think by making
+      </h2>
+</div>
+</div>
 <div class="thought-line">
-
-    <span id="thoughts"></span>
-
-    <span class="cursor"></span>
-
+<span id="thoughts">
+</span>
+<span class="cursor">
+</span>
 </div>
-
-            <p class="standfirst">
-                A storyteller helping people understand
-                complex ideas through design,
-                technology and curiosity.
-            </p>
-
-        </header>
-
-
-        <section class="chapters">
-
-            <details>
-
-                <summary>
-
-                    <span class="icon">
-                        +
-                    </span>
-
-                    <span class="title">
-                        I think by making
-                    </span>
-
-                </summary>
-
-                <div class="content">
-
-                    <p>
-                        Every important project in my career has started as a sketch,
-                        a prototype or an experiment. I rarely wait for perfect ideas.
-                        I make something, learn from it and improve it.
-                    </p>
-
-                </div>
-
-            </details>
-
-
-            <details>
-
-                <summary>
-
-                    <span class="icon">
-                        +
-                    </span>
-
-                    <span class="title">
-                        I quietly improve systems
-                    </span>
-
-                </summary>
-
-                <div class="content">
-
-                    <p>
-                        Whether redesigning workflows, creating newsroom tools or
-                        improving visual storytelling, I'm happiest when helping
-                        other people do their jobs better.
-                    </p>
-
-                </div>
-
-            </details>
-
-
-            <details>
-
-                <summary>
-
-                    <span class="icon">
-                        +
-                    </span>
-
-                    <span class="title">
-                        Curiosity has shaped my career
-                    </span>
-
-                </summary>
-
-                <div class="content">
-
-                    <p>
-                        Every major opportunity began with a question:
-                        "Could this be better?"
-                    </p>
-
-                </div>
-
-            </details>
-
-
-            <details>
-
-                <summary>
-
-                    <span class="icon">
-                        +
-                    </span>
-
-                    <span class="title">
-                        Storytelling comes first
-                    </span>
-
-                </summary>
-
-                <div class="content">
-
-                    <p>
-                        Technology is simply another storytelling tool.
-                        Whether I'm designing for print, web or motion,
-                        the story always comes first.
-                    </p>
-
-                </div>
-
-            </details>
-
-
-            <details>
-
-                <summary>
-
-                    <span class="icon">
-                        +
-                    </span>
-
-                    <span class="title">
-                        Better workflows create better journalism
-                    </span>
-
-                </summary>
-
-                <div class="content">
-
-                    <p>
-                        Some of my favourite work has been invisible.
-                        Building tools that save journalists time while
-                        raising the quality of what readers see.
-                    </p>
-
-                </div>
-
-            </details>
-
-
-            <details>
-
-                <summary>
-
-                    <span class="icon">
-                        +
-                    </span>
-
-                    <span class="title">
-                        I never stop learning
-                    </span>
-
-                </summary>
-
-                <div class="content">
-
-                    <p>
-                        My career has taken me from newspapers to digital products,
-                        from illustration to coding, and I still feel like
-                        I'm only getting started.
-                    </p>
-
-                </div>
-
-            </details>
-
-
-            <details>
-
-                <summary>
-
-                    <span class="icon">
-                        +
-                    </span>
-
-                    <span class="title">
-                        Some stories are worth telling in full
-                    </span>
-
-                </summary>
-
-                <div class="content">
-
-                    <p>
-                        The projects matter.
-                        The people matter more.
-                        These are the stories that explain how I became the designer
-                        and colleague I am today.
-                    </p>
-
-                </div>
-
-            </details>
-
-        </section>
-
-
-        <footer>
-
-            <section id="cv">
-
-                <h3>Curriculum Vitae</h3>
-
-            </section>
-
-            <section id="contact">
-
-                <h3>Contact</h3>
-
-            </section>
-
-        </footer>
-
-    </main>
-
+<p class="standfirst">
+     A storyteller helping people understand complex ideas through design, technology and curiosity.
+    </p>
+</header>
+<section class="chapters">
+<!-- Duplicate this block for each of your seven chapters -->
+<section class="accordion">
+<div class="accordion-grid">
+<button aria-label="Toggle chapter" class="accordion-toggle story-trigger">
+<svg aria-hidden="true" class="accordion-icon" viewbox="0 0 126.29 121.53" xmlns="http://www.w3.org/2000/svg">
+<path d="M101.17,40.82h-14.21c-1.71,0-3.1-1.39-3.1-3.1v-14.21c0-11.21-9.09-20.3-20.3-20.3s-20.3,9.09-20.3,20.3v14.21c0,1.71-1.39,3.1-3.1,3.1h-14.21c-11.21,0-20.3,9.09-20.3,20.3s9.09,20.3,20.3,20.3h14.21c1.71,0,3.1,1.39,3.1,3.1v14.21c0,11.21,9.09,20.3,20.3,20.3s20.3-9.09,20.3-20.3v-14.21c0-1.71,1.39-3.1,3.1-3.1h14.21c11.21,0,20.3-9.09,20.3-20.3s-9.09-20.3-20.3-20.3Z" fill="currentColor">
+</path>
+</svg>
+</button>
+<div class="accordion-main">
+<h2 class="accordion-title story-trigger" style="cursor:pointer;">
+        I think by making
+       </h2>
+<div class="accordion-content">
+<div class="accordion-rule">
 </div>
+<p class="body-copy">
+         Every project has to start somewhere, whether it’s a sketch on paper, a rough prototype, a quick animation or simply a conversation. I’ve learned that ideas become clearer once they exist in front of you. People ask better questions, spot opportunities sooner and often take the conversation somewhere unexpected.
+         <br/>
+<br/>
+         Whether I’m designing an interactive, writing code, creating motion graphics or painting on canvas, making is how I think. Curiosity starts the process, but creating something tangible is what turns an idea into a better one.
+        </p>
+</div>
+<div class="story-panel">
+<div class="story-content">
+<p class="story-label">
+          FOR EXAMPLE...
+         </p>
+<h3>
+          Building a City to Understand It
+         </h3>
+</div>
+<div class="story-wide"><div class="story-stage">
+<div class="story-scene" id="auckland-scene">
+</div>
+</div></div>
+<div class="story-content">
+<p>
+          I didn't set out to build a 3D model of Auckland because anyone asked me to. It started with a simple question. Could a city become a more engaging way to tell stories?
+         </p>
+<p>
+          Rather than relying on static maps or screenshots, I wanted to create something people could explore. So I began modelling parts of Auckland in Blender, learning as I went, testing ideas, making mistakes and gradually building a tool that could support everything from news stories to interactive explainers.
+         </p>
+</div>
+<div class="story-wide">
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="accordion">
+<div class="accordion-grid">
+<button aria-label="Toggle chapter" class="accordion-toggle story-trigger">
+<svg aria-hidden="true" class="accordion-icon" viewbox="0 0 126.29 121.53" xmlns="http://www.w3.org/2000/svg">
+<path d="M101.17,40.82h-14.21c-1.71,0-3.1-1.39-3.1-3.1v-14.21c0-11.21-9.09-20.3-20.3-20.3s-20.3,9.09-20.3,20.3v14.21c0,1.71-1.39,3.1-3.1,3.1h-14.21c-11.21,0-20.3,9.09-20.3,20.3s9.09,20.3,20.3,20.3h14.21c1.71,0,3.1,1.39,3.1,3.1v14.21c0,11.21,9.09,20.3,20.3,20.3s20.3-9.09,20.3-20.3v-14.21c0-1.71,1.39-3.1,3.1-3.1h14.21c11.21,0,20.3-9.09,20.3-20.3s-9.09-20.3-20.3-20.3Z" fill="currentColor">
+</path>
+</svg>
+</button>
+<div class="accordion-main">
+<h2 class="accordion-title story-trigger" style="cursor:pointer;">
+        Finding Better Ways
+       </h2>
+<div class="accordion-content">
+<div class="accordion-rule">
+</div>
+<p class="body-copy">
+         Some of the work I’m most proud of is almost invisible. It’s the workflow that saves time, the reusable tool that removes repetition or the small improvement that helps people do their best work.
+ <br/>
+<br/>
+I’ve always enjoyed spotting unnecessary complexity and finding practical ways to simplify it. The best solutions rarely draw attention to themselves. They simply help people do their best work.
+        </p>
+</div>
+<div class="story-panel">
+<div class="story-content">
+<p class="story-label">
+          FOR EXAMPLE...
+         </p>
+<h3>
+          Example Heading 2
+         </h3>
+<p>
+          Replace this example text for Section 2.
+         </p>
+<p>
+          Replace this example text for Section 2.
+         </p>
+</div>
+<div class="story-wide">
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="accordion">
+<div class="accordion-grid">
+<button aria-label="Toggle chapter" class="accordion-toggle story-trigger">
+<svg aria-hidden="true" class="accordion-icon" viewbox="0 0 126.29 121.53" xmlns="http://www.w3.org/2000/svg">
+<path d="M101.17,40.82h-14.21c-1.71,0-3.1-1.39-3.1-3.1v-14.21c0-11.21-9.09-20.3-20.3-20.3s-20.3,9.09-20.3,20.3v14.21c0,1.71-1.39,3.1-3.1,3.1h-14.21c-11.21,0-20.3,9.09-20.3,20.3s9.09,20.3,20.3,20.3h14.21c1.71,0,3.1,1.39,3.1,3.1v14.21c0,11.21,9.09,20.3,20.3,20.3s20.3-9.09,20.3-20.3v-14.21c0-1.71,1.39-3.1,3.1-3.1h14.21c11.21,0,20.3-9.09,20.3-20.3s-9.09-20.3-20.3-20.3Z" fill="currentColor">
+</path>
+</svg>
+</button>
+<div class="accordion-main">
+<h2 class="accordion-title story-trigger" style="cursor:pointer;">
+        Curiosity has shaped my career
+       </h2>
+<div class="accordion-content">
+<div class="accordion-rule">
+</div>
+<p class="body-copy">
+         I’ve never followed a carefully planned career path. Curiosity has shaped my career, taking me to work in three countries while leading me towards new ways to tell stories, solve problems and connect with audiences.
+<br/>
+<br/>
+What began with illustration and graphic design gradually expanded into newspapers, motion graphics, data visualisation, interaction design and code. Each new skill became another tool, not a replacement for the last.
+<br/>
+<br/>
+I’m still just as curious today. New technology doesn’t feel like a threat, it feels like another opportunity to learn.
+        </p>
+</div>
+<div class="story-panel">
+<div class="story-content">
+<p class="story-label">
+          FOR EXAMPLE...
+         </p>
+<h3>
+          Connecting the Dots
+         </h3>
 
-<script src="assets/script.js"></script>
-
+<p>
+          Looking back, my career isn't a straight line. It's a series of moments where curiosity pulled me in a new direction. Illustration led to editorial design, editorial design opened the door to digital storytelling, and from there came motion graphics, data visualisation, coding and 3D.
+         </p>
+<p>
+          The carousel below captures a few of those moments. They're not necessarily the biggest projects or the most important milestones, but together they tell the story of someone who has always enjoyed learning new ways to communicate ideas.
+ </p>
+</div>
+<div class="story-wide"><div class="story-slideshow">
+<iframe loading="lazy" scrolling="no" src="assets/images/slideshow-print-slideshow.html" title="Career Journey Slideshow">
+</iframe>
+</div></div>
+<div class="story-content"><p>
+          Each new skill has expanded my creative toolkit rather than replacing what came before. The more I learn, the more connections I see between disciplines, and the more possibilities I discover for telling stories in engaging ways.
+         </p></div>
+<div class="story-wide">
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="accordion">
+<div class="accordion-grid">
+<button aria-label="Toggle chapter" class="accordion-toggle story-trigger">
+<svg aria-hidden="true" class="accordion-icon" viewbox="0 0 126.29 121.53" xmlns="http://www.w3.org/2000/svg">
+<path d="M101.17,40.82h-14.21c-1.71,0-3.1-1.39-3.1-3.1v-14.21c0-11.21-9.09-20.3-20.3-20.3s-20.3,9.09-20.3,20.3v14.21c0,1.71-1.39,3.1-3.1,3.1h-14.21c-11.21,0-20.3,9.09-20.3,20.3s9.09,20.3,20.3,20.3h14.21c1.71,0,3.1,1.39,3.1,3.1v14.21c0,11.21,9.09,20.3,20.3,20.3s20.3-9.09,20.3-20.3v-14.21c0-1.71,1.39-3.1,3.1-3.1h14.21c11.21,0,20.3-9.09,20.3-20.3s-9.09-20.3-20.3-20.3Z" fill="currentColor">
+</path>
+</svg>
+</button>
+<div class="accordion-main">
+<h2 class="accordion-title story-trigger" style="cursor:pointer;">
+        Design with purpose
+       </h2>
+<div class="accordion-content">
+<div class="accordion-rule">
+</div>
+<p class="body-copy">
+         For me, great design should do more than look good. It should surprise people, spark curiosity and make them want to explore a little further. When design captures someone’s attention, stories become easier to understand, ideas become more memorable and audiences connect more deeply with the people behind them.
+<br/>
+<br/>
+Whether I’m creating an interactive graphic, designing a digital experience or illustrating a complex idea, the goal is always the same: to help stories connect with people. Sometimes that means creating something bold and unexpected. Sometimes it means quietly removing distractions so the story can take centre stage. Either way, every design decision should have a purpose.
+        </p>
+</div>
+<div class="story-panel">
+<div class="story-content">
+<p class="story-label">
+          FOR EXAMPLE...
+         </p>
+<h3>
+          Example Heading 4
+         </h3>
+<p>
+          Replace this example text for Section 4.
+         </p>
+<p>
+          Replace this example text for Section 4.
+         </p>
+</div>
+<div class="story-wide">
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="accordion">
+<div class="accordion-grid">
+<button aria-label="Toggle chapter" class="accordion-toggle story-trigger">
+<svg aria-hidden="true" class="accordion-icon" viewbox="0 0 126.29 121.53" xmlns="http://www.w3.org/2000/svg">
+<path d="M101.17,40.82h-14.21c-1.71,0-3.1-1.39-3.1-3.1v-14.21c0-11.21-9.09-20.3-20.3-20.3s-20.3,9.09-20.3,20.3v14.21c0,1.71-1.39,3.1-3.1,3.1h-14.21c-11.21,0-20.3,9.09-20.3,20.3s9.09,20.3,20.3,20.3h14.21c1.71,0,3.1,1.39,3.1,3.1v14.21c0,11.21,9.09,20.3,20.3,20.3s20.3-9.09,20.3-20.3v-14.21c0-1.71,1.39-3.1,3.1-3.1h14.21c11.21,0,20.3-9.09,20.3-20.3s-9.09-20.3-20.3-20.3Z" fill="currentColor">
+</path>
+</svg>
+</button>
+<div class="accordion-main">
+<h2 class="accordion-title story-trigger" style="cursor:pointer;">
+       Turning Ideas into Experiences
+       </h2>
+<div class="accordion-content">
+<div class="accordion-rule">
+</div>
+<p class="body-copy">
+         The projects I’m most proud of don’t begin with technology. They begin with a question: how can this story be more engaging, more understandable or more memorable?
+<br/>
+<br/>
+For many years, print was my canvas. Today it might be an interactive graphic, data visualisation, motion, illustration or code. The medium has changed, but the goal remains the same: to create experiences that invite people to explore, understand and connect with the story.
+        </p>
+</div>
+<div class="story-panel">
+<div class="story-content">
+<p class="story-label">
+          FOR EXAMPLE...
+         </p>
+<h3>
+          Example Heading 5
+         </h3>
+<p>
+          Replace this example text for Section 5.
+         </p>
+<p>
+          Replace this example text for Section 5.
+         </p>
+</div>
+<div class="story-wide">
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="accordion">
+<div class="accordion-grid">
+<button aria-label="Toggle chapter" class="accordion-toggle story-trigger">
+<svg aria-hidden="true" class="accordion-icon" viewbox="0 0 126.29 121.53" xmlns="http://www.w3.org/2000/svg">
+<path d="M101.17,40.82h-14.21c-1.71,0-3.1-1.39-3.1-3.1v-14.21c0-11.21-9.09-20.3-20.3-20.3s-20.3,9.09-20.3,20.3v14.21c0,1.71-1.39,3.1-3.1,3.1h-14.21c-11.21,0-20.3,9.09-20.3,20.3s9.09,20.3,20.3,20.3h14.21c1.71,0,3.1,1.39,3.1,3.1v14.21c0,11.21,9.09,20.3,20.3,20.3s20.3-9.09,20.3-20.3v-14.21c0-1.71,1.39-3.1,3.1-3.1h14.21c11.21,0,20.3-9.09,20.3-20.3s-9.09-20.3-20.3-20.3Z" fill="currentColor">
+</path>
+</svg>
+</button>
+<div class="accordion-main">
+<h2 class="accordion-title story-trigger" style="cursor:pointer;">
+        I never stop learning
+       </h2>
+<div class="accordion-content">
+<div class="accordion-rule">
+</div>
+<p class="body-copy">
+         I’ve never believed that learning stops once you’ve built a career. Every new skill brings a fresh perspective, challenges old habits and opens the door to new ideas.
+<br/>
+<br/>
+I enjoy the feeling of being a beginner again. Whether I’m learning JavaScript, experimenting with Blender, exploring AI or picking up a paintbrush, every new challenge teaches me something. Some of my most valuable lessons have come from the people I’ve worked alongside. It’s a reminder that good ideas can come from anywhere.
+        </p>
+</div>
+<div class="story-panel">
+<div class="story-content">
+<p class="story-label">
+          FOR EXAMPLE...
+         </p>
+<h3>
+          Example Heading 6
+         </h3>
+<p>
+          Replace this example text for Section 6.
+         </p>
+<p>
+          Replace this example text for Section 6.
+         </p>
+</div>
+<div class="story-wide">
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="accordion">
+<div class="accordion-grid">
+<button aria-label="Toggle chapter" class="accordion-toggle story-trigger">
+<svg aria-hidden="true" class="accordion-icon" viewbox="0 0 126.29 121.53" xmlns="http://www.w3.org/2000/svg">
+<path d="M101.17,40.82h-14.21c-1.71,0-3.1-1.39-3.1-3.1v-14.21c0-11.21-9.09-20.3-20.3-20.3s-20.3,9.09-20.3,20.3v14.21c0,1.71-1.39,3.1-3.1,3.1h-14.21c-11.21,0-20.3,9.09-20.3,20.3s9.09,20.3,20.3,20.3h14.21c1.71,0,3.1,1.39,3.1,3.1v14.21c0,11.21,9.09,20.3,20.3,20.3s20.3-9.09,20.3-20.3v-14.21c0-1.71,1.39-3.1,3.1-3.1h14.21c11.21,0,20.3-9.09,20.3-20.3s-9.09-20.3-20.3-20.3Z" fill="currentColor">
+</path>
+</svg>
+</button>
+<div class="accordion-main">
+<h2 class="accordion-title story-trigger" style="cursor:pointer;">
+        Beyond Deadlines
+       </h2>
+<div class="accordion-content">
+<div class="accordion-rule">
+</div>
+<p class="body-copy">
+         Not every story needs to move at the pace of a deadline. Painting gives me the time and space to slow down, reflect and explore ideas in a different way.
+<br/>
+<br/>
+Whether I’m working with oils, designing an interactive experience or building a digital tool, I’m still trying to create work that makes someone pause, think or feel something. The tools may change, but the motivation never does.
+        </p>
+</div>
+<div class="story-panel">
+<div class="story-content">
+<p class="story-label">
+          FOR EXAMPLE...
+         </p>
+<h3>
+          What Resonates With Me
+         </h3>
+<img alt="A selection of paintings including It's a Wonderful Life, a bulldog portrait and David Bowie" class="story-image" src="assets/images/Paintings.jpg"/>
+<p>
+<p>
+          The subjects I choose are rarely random. Sometimes it's a scene from a favourite film that has stayed with me for years. Sometimes it's a much-loved family pet whose personality deserves to be remembered. Other times it's someone like David Bowie, whose music and creativity have inspired me throughout my life.
+         </p>
+<p>
+          Each painting is an opportunity to slow down and really observe. Capturing expression, atmosphere and character requires patience, but it's a process I genuinely enjoy. Alongside personal projects, I also take on the occasional pet portrait commission, giving me another way to combine creativity with something that brings people real joy.
+         </p>
+</p></div>
+<div class="story-wide">
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</div>
+<script src="assets/script.js">
+</script>
+<script src="assets/three.js" type="module">
+</script>
 </body>
 </html>

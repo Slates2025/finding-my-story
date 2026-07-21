@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slide test</title>
+<style>html,body{margin:0;padding:0;background:#fff;}</style>
+</head>
+<body>
+<div class="slideshow-embed" id="slideshow-embed">
+<style>
+.slideshow-embed {
+  --sm-ink: #111111;
+  --sm-paper: #ffffff;
+  --sm-font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --ss-fade: 600ms;
+  --ss-ease: cubic-bezier(.2,.8,.2,1);
+  --ss-btn-size: 44px;
+  --ss-btn-inset: 12px;
+  font-family: var(--sm-font-sans);
+  color: var(--sm-ink);
+  max-width: 980px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.slideshow-embed *, .slideshow-embed *::before, .slideshow-embed *::after { box-sizing: border-box; }
+.slideshow-embed .ss-frame {
+  position: relative;
+  width: 100%;
+  /* Fixed 16:9 desktop landscape. Mobile flips to 9:16 below. */
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+}
+@media (max-width: 600px) {
+  .slideshow-embed .ss-frame { aspect-ratio: 9 / 16; }
+  .slideshow-embed { --ss-btn-size: 40px; --ss-btn-inset: 8px; }
+}
+.slideshow-embed .ss-stage { position: absolute; inset: 0; overflow: hidden; }
+.slideshow-embed .ss-img {
+  position: absolute;
+  /* Width/height/left/top are set in JS to cover-fill the frame and apply
+     the user-configured scale + focal point. */
+  opacity: 0;
+  transition: opacity var(--ss-fade) var(--ss-ease);
+  pointer-events: none;
+  max-width: none;
+}
+.slideshow-embed .ss-img.is-active { opacity: 1; pointer-events: auto; }
+.slideshow-embed .ss-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  /* Horizontal padding clears the prev/next chevron buttons with 16px breathing room.
+     Tied to --ss-btn-inset + --ss-btn-size so it scales automatically with button size. */
+  padding-block: 7%;
+  padding-inline: calc(var(--ss-btn-inset) + var(--ss-btn-size) + 16px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ss-fade) var(--ss-ease);
+}
+.slideshow-embed .ss-overlay.is-active { opacity: 1; pointer-events: auto; }
+.slideshow-embed .ss-overlay__panel {
+  position: absolute; inset: 0;
+  background: var(--ss-panel-bg, rgba(0,0,0,0.8));
+}
+.slideshow-embed .ss-overlay__body {
+  position: relative;
+  max-width: 60ch;
+  max-height: 100%;
+  overflow: hidden;
+  color: var(--ss-caption-color, #ffffff);
+  font-family: var(--sm-font-sans);
+  text-align: left;
+  letter-spacing: 0;
+}
+.slideshow-embed .ss-overlay__heading {
+  display: block;
+  font-family: var(--sm-font-sans);
+  color: var(--ss-caption-color, #ffffff);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.3;
+  margin: 0 0 10px;
+  letter-spacing: 0;
+  text-align: left;
+}
+.slideshow-embed .ss-overlay__caption {
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 400;
+  white-space: normal;
+}
+.slideshow-embed .ss-overlay__caption strong { font-weight: 700; }
+.slideshow-embed .ss-overlay__caption em { font-style: italic; }
+.slideshow-embed .ss-overlay__heading strong { font-weight: 800; }
+.slideshow-embed .ss-overlay__heading em { font-style: italic; }
+@media (max-width: 600px) {
+  .slideshow-embed .ss-overlay { padding-block: 6%; }
+  .slideshow-embed .ss-overlay__caption { font-size: 15px; line-height: 1.45; }
+}
+.slideshow-embed .ss-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--ss-btn-size);
+  height: var(--ss-btn-size);
+  border: none;
+  background: rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+  border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+  z-index: 2;
+}
+.slideshow-embed .ss-btn:hover, .slideshow-embed .ss-btn:focus-visible {
+  background: #ffffff; color: var(--sm-ink); outline: none;
+}
+.slideshow-embed .ss-btn:focus-visible { box-shadow: 0 0 0 3px rgba(0,0,0,0.45), 0 0 0 5px #ffffff; }
+.slideshow-embed .ss-btn:active { transform: translateY(-50%) scale(0.96); }
+.slideshow-embed .ss-prev { left: var(--ss-btn-inset); }
+.slideshow-embed .ss-next { right: var(--ss-btn-inset); }
+.slideshow-embed .sm-chev {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  color: currentColor;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.slideshow-embed .sm-chev svg { width: 24px; height: 24px; display: block; }
+.slideshow-embed .sm-chev-left  { transform: rotate(90deg); }
+.slideshow-embed .sm-chev-right { transform: rotate(-90deg); }
+.slideshow-embed .ss-progress {
+  position: absolute;
+  left: 16px; right: 16px;
+  bottom: 14px;
+  height: 3px;
+  background: rgba(255,255,255,0.30);
+  border-radius: 999px;
+  overflow: hidden;
+  z-index: 2;
+  opacity: 1;
+  transition: opacity 240ms ease;
+  pointer-events: none;
+}
+.slideshow-embed .ss-frame.is-captioned .ss-progress { opacity: 0; }
+.slideshow-embed .ss-progress__fill {
+  display: block;
+  width: 0%;
+  height: 100%;
+  background: #ffffff;
+  border-radius: inherit;
+  transition: width 400ms cubic-bezier(.2,.8,.2,1);
+}
+@media (max-width: 600px) {
+  .slideshow-embed .ss-progress { left: 12px; right: 12px; bottom: 10px; height: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .slideshow-embed .ss-img, .slideshow-embed .ss-overlay, .slideshow-embed .ss-btn, .slideshow-embed .ss-progress, .slideshow-embed .ss-progress__fill, .slideshow-embed .ss-frame { transition: none !important; }
+}
+.slideshow-embed .ss-empty {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--sm-font-sans);
+  color: #999; font-size: 14px;
+  background: #f5f3ef;
+  text-align: center; padding: 24px;
+}
+</style>
+<div class="ss-frame" role="region" aria-roledescription="carousel" aria-label="Image slideshow">
+  <div class="ss-stage" aria-live="polite"></div>
+  <div class="ss-overlays"></div>
+  <button type="button" class="ss-btn ss-prev" aria-label="Previous">
+    <span class="sm-chev sm-chev-left" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </span>
+  </button>
+  <button type="button" class="ss-btn ss-next" aria-label="Next">
+    <span class="sm-chev sm-chev-right" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </span>
+  </button>
+  <div class="ss-progress" role="progressbar" aria-label="Slideshow progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+    <div class="ss-progress__fill"></div>
+  </div>
+</div>
+<script>(function () {
+  var root = document.querySelector("#slideshow-embed");
+  if (!root) return;
+  var $ = function (sel) { return root.querySelector(sel); };
+  var CONFIG = {"panelColor":"black","cover":null,"slides":[{"desktop":"Paintings.jpg","mobile":null,"heading":"","caption":"","cropDesktop":{"scale":1,"x":0.5,"y":0.5},"cropMobile":{"scale":1,"x":0.5,"y":0.5}},{"desktop":"mugshot.jpg","mobile":null,"heading":"","caption":"","cropDesktop":{"scale":1,"x":0.5,"y":0.5},"cropMobile":{"scale":1,"x":0.5033783783783784,"y":0.5}}]};
+  var IS_PREVIEW = false;
+  var frame        = $(".ss-frame");
+  var stage        = $(".ss-stage");
+  var overlays     = $(".ss-overlays");
+  var progressEl   = $(".ss-progress");
+  var progressFill = $(".ss-progress__fill");
+  // Build the content-slide list (cover + each story).
+  // IMPORTANT: copy *every* field that the runtime later reads from `c.*` —
+  // heading, caption, cropDesktop, cropMobile. Earlier versions forgot these,
+  // which silently produced captioned overlays with no heading and cropping
+  // that always fell back to defaults.
+  var contentSlides = [];
+  if (CONFIG.cover) {
+    contentSlides.push({
+      kind: "cover",
+      desktop: CONFIG.cover.desktop,
+      mobile: CONFIG.cover.mobile,
+      heading: "",
+      caption: "",
+      cropDesktop: CONFIG.cover.cropDesktop,
+      cropMobile: CONFIG.cover.cropMobile
+    });
+  }
+  (CONFIG.slides || []).forEach(function (s) {
+    contentSlides.push({
+      kind: "story",
+      desktop: s.desktop,
+      mobile: s.mobile,
+      heading: s.heading || "",
+      caption: s.caption || "",
+      cropDesktop: s.cropDesktop,
+      cropMobile: s.cropMobile
+    });
+  });
+  // Bail gracefully if nothing has been configured
+  if (contentSlides.length === 0) {
+    var empty = document.createElement("div");
+    empty.className = "ss-empty";
+    empty.textContent = "No slides yet — add a cover or story slide in the editor.";
+    frame.appendChild(empty);
+    return;
+  }
+  // Panel colour
+  if (CONFIG.panelColor === "white") {
+    frame.style.setProperty("--ss-panel-bg", "rgba(255,255,255,0.8)");
+    frame.style.setProperty("--ss-caption-color", "#111111");
+  } else {
+    frame.style.setProperty("--ss-panel-bg", "rgba(0,0,0,0.8)");
+    frame.style.setProperty("--ss-caption-color", "#ffffff");
+  }
+  // Viewport handling
+  var MOBILE_BREAKPOINT = 600;
+  var mq = window.matchMedia("(max-width: " + MOBILE_BREAKPOINT + "px)");
+  function urlFor(c) { return (mq.matches && c.mobile) ? c.mobile : c.desktop; }
+  // Build images (one per content slide) and overlays (only for slides with captions).
+  // A progress bar replaces the dots: one continuous indicator for any slide count.
+  var imgs = [];
+  var overlayEls = []; // null when slide has no caption
+
+  // ------- Crop math -------
+  // Default crop = cover-fit centred (scale 1, focal x=0.5, y=0.5).
+  function safeCrop(c) {
+    c = c || {};
+    return {
+      scale: Math.max(1, +c.scale || 1),
+      x: Math.min(1, Math.max(0, +c.x || (c.x === 0 ? 0 : 0.5))),
+      y: Math.min(1, Math.max(0, +c.y || (c.y === 0 ? 0 : 0.5)))
+    };
+  }
+  function applyCrop(imgEl, fw, fh, iw, ih, crop) {
+    if (!iw || !ih || !fw || !fh) return;
+    var coverScale = Math.max(fw / iw, fh / ih);
+    var cw = iw * coverScale * crop.scale;
+    var ch = ih * coverScale * crop.scale;
+    imgEl.style.width  = cw + "px";
+    imgEl.style.height = ch + "px";
+    imgEl.style.left   = (-(cw - fw) * crop.x) + "px";
+    imgEl.style.top    = (-(ch - fh) * crop.y) + "px";
+  }
+  contentSlides.forEach(function (c, i) {
+    var img = document.createElement("img");
+    img.className = "ss-img" + (i === 0 ? " is-active" : "");
+    img.src = urlFor(c);
+    img.alt = "";
+    img.setAttribute("data-idx", String(i));
+    img.setAttribute("draggable", "false");
+    if (i !== 0) img.loading = "lazy";
+    img.decoding = "async";
+    img.addEventListener("load", function () { applyImgCrop(i); });
+    stage.appendChild(img);
+    imgs.push(img);
+    if (c.heading || c.caption) {
+      var ov = document.createElement("div");
+      ov.className = "ss-overlay";
+      ov.setAttribute("data-idx", String(i));
+      var panel = document.createElement("div");
+      panel.className = "ss-overlay__panel";
+      ov.appendChild(panel);
+      var body = document.createElement("div");
+      body.className = "ss-overlay__body";
+      if (c.heading) {
+        var h = document.createElement("div");
+        h.className = "ss-overlay__heading";
+        h.innerHTML = c.heading; // pre-escaped at build time
+        body.appendChild(h);
+      }
+      if (c.caption) {
+        var cap = document.createElement("div");
+        cap.className = "ss-overlay__caption";
+        cap.innerHTML = c.caption; // pre-escaped at build time
+        body.appendChild(cap);
+      }
+      ov.appendChild(body);
+      overlays.appendChild(ov);
+      overlayEls.push(ov);
+    } else {
+      overlayEls.push(null);
+    }
+  });
+  // Visual states: for each content slide, 1 state if no caption, else 2 (clean, captioned)
+  var STATES = [];
+  contentSlides.forEach(function (c, i) {
+    STATES.push({ idx: i, captioned: false });
+    if (c.caption || c.heading) STATES.push({ idx: i, captioned: true });
+  });
+  var currentState = 0;
+  var currentContent = 0;
+  function applyImgCrop(i) {
+    var img = imgs[i]; if (!img || !img.naturalWidth) return;
+    var c = contentSlides[i];
+    var crop = mq.matches ? safeCrop(c.cropMobile) : safeCrop(c.cropDesktop);
+    applyCrop(img, frame.offsetWidth, frame.offsetHeight, img.naturalWidth, img.naturalHeight, crop);
+  }
+  function applyAllCrops() { for (var i = 0; i < imgs.length; i++) applyImgCrop(i); }
+  function updateProgress() {
+    var total = contentSlides.length || 1;
+     var pct = ((currentContent + 1) / total) * 100;
+    if (progressFill) progressFill.style.width = pct + "%";
+    if (progressEl) progressEl.setAttribute("aria-valuenow", String(Math.round(pct)));
+  }
+  function goState(next) {
+    var n = STATES.length;
+    next = ((next % n) + n) % n;
+    if (next === currentState) return;
+    var prev = STATES[currentState];
+    var ns   = STATES[next];
+    // Image: swap active when the underlying content slide changes
+    if (ns.idx !== prev.idx) {
+      imgs[prev.idx].classList.remove("is-active");
+      imgs[ns.idx].classList.add("is-active");
+      currentContent = ns.idx;
+      updateProgress();
+    }
+    // Overlay: toggle visibility based on next state
+    overlayEls.forEach(function (el, i) {
+      if (!el) return;
+      el.classList.toggle("is-active", ns.captioned && i === ns.idx);
+    });
+    frame.classList.toggle("is-captioned", !!ns.captioned);
+    currentState = next;
+  }
+  // Initialise progress on first paint
+  updateProgress();
+  $(".ss-prev").addEventListener("click", function () { goState(currentState - 1); });
+  $(".ss-next").addEventListener("click", function () { goState(currentState + 1); });
+  // Keyboard
+  frame.setAttribute("tabindex", "0");
+  frame.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft")  { goState(currentState - 1); e.preventDefault(); }
+    if (e.key === "ArrowRight") { goState(currentState + 1); e.preventDefault(); }
+  });
+  // Touch / swipe
+  var tStartX = 0, tStartY = 0, tracking = false;
+  frame.addEventListener("touchstart", function (e) {
+    var t = e.changedTouches[0]; tStartX = t.clientX; tStartY = t.clientY; tracking = true;
+  }, { passive: true });
+  frame.addEventListener("touchend", function (e) {
+    if (!tracking) return; tracking = false;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - tStartX; var dy = t.clientY - tStartY;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      goState(dx < 0 ? currentState + 1 : currentState - 1);
+    }
+  }, { passive: true });
+  // Viewport flip: swap srcs when crossing the breakpoint, then re-apply
+  // crops (because frame ratio and per-viewport crop state both differ).
+  mq.addEventListener("change", function () {
+    contentSlides.forEach(function (c, i) {
+      var want = urlFor(c);
+      if (imgs[i].getAttribute("src") !== want) {
+        imgs[i].src = want; // load event will re-apply crop
+      } else {
+        applyImgCrop(i);   // same URL, just re-apply for the new viewport
+      }
+    });
+  });
+
+  // Frame size can change when the host page resizes the embed container.
+  // Re-apply on resize so the cover math stays correct.
+  window.addEventListener("resize", function () { applyAllCrops(); });
+
+  // ResizeObserver catches frame-size changes that window.resize misses:
+  // CMS-side container layout (sidebars collapsing, ads loading), late
+  // visibility toggles (lazy-revealed below-the-fold embeds), and crucially
+  // the initial 0->N transition when the embed mounts before its parent
+  // has been laid out. Without this, the crop math early-returns at 0x0
+  // and images render at natural size showing only the top-left corner.
+  if (typeof ResizeObserver !== "undefined") {
+    var ro = new ResizeObserver(function () { applyAllCrops(); });
+    ro.observe(frame);
+  } else {
+    // Older-browser fallback: poll a few times in the first second after mount.
+    [50, 200, 500, 1000].forEach(function (ms) { setTimeout(applyAllCrops, ms); });
+  }
+
+  // =============================================================
+  // Preview-mode interactions: drag-to-pan + wheel-to-zoom on the
+  // active image, and postMessage handshake with the parent editor.
+  // (Only active when IS_PREVIEW is true, i.e. running inside the
+  // editor's iframe — production embeds are untouched.)
+  // =============================================================
+  if (IS_PREVIEW) {
+    function postToParent(msg) {
+      try { window.parent.postMessage(msg, "*"); } catch (e) {}
+    }
+    function currentCrop() {
+      var c = contentSlides[currentContent];
+      var key = mq.matches ? "cropMobile" : "cropDesktop";
+      if (!c[key]) c[key] = { scale: 1, x: 0.5, y: 0.5 };
+      return c[key];
+    }
+    function reportSlide() {
+      var crop = currentCrop();
+      postToParent({
+        type: "sm-ss-slideChanged",
+        contentIdx: currentContent,
+        viewport: mq.matches ? "mobile" : "desktop",
+        scale: crop.scale, x: crop.x, y: crop.y
+      });
+    }
+    function reportCrop() {
+      var crop = currentCrop();
+      postToParent({
+        type: "sm-ss-cropChanged",
+        contentIdx: currentContent,
+        viewport: mq.matches ? "mobile" : "desktop",
+        scale: crop.scale, x: crop.x, y: crop.y
+      });
+    }
+    // Drag on the frame pans the active image.
+    var pDrag = null;
+    function pDown(e) {
+      var img = imgs[currentContent];
+      if (!img || !img.naturalWidth) return;
+      var pt = e.touches ? e.touches[0] : e;
+      var crop = currentCrop();
+      var fw = frame.offsetWidth, fh = frame.offsetHeight;
+      var coverScale = Math.max(fw / img.naturalWidth, fh / img.naturalHeight);
+      var cw = img.naturalWidth * coverScale * crop.scale;
+      var ch = img.naturalHeight * coverScale * crop.scale;
+      pDrag = {
+        sMX: pt.clientX, sMY: pt.clientY,
+        sX: crop.x, sY: crop.y,
+        excW: Math.max(0, cw - fw),
+        excH: Math.max(0, ch - fh)
+      };
+      if (e.preventDefault) e.preventDefault();
+    }
+    function pMove(e) {
+      if (!pDrag) return;
+      var pt = e.touches ? e.touches[0] : e;
+      var dx = pt.clientX - pDrag.sMX;
+      var dy = pt.clientY - pDrag.sMY;
+      var crop = currentCrop();
+      crop.x = pDrag.excW > 0
+        ? Math.min(1, Math.max(0, pDrag.sX - dx / pDrag.excW))
+        : 0.5;
+      crop.y = pDrag.excH > 0
+        ? Math.min(1, Math.max(0, pDrag.sY - dy / pDrag.excH))
+        : 0.5;
+      applyImgCrop(currentContent);
+      reportCrop();
+      if (e.cancelable) e.preventDefault();
+    }
+    function pUp() { pDrag = null; }
+    frame.addEventListener("mousedown", pDown);
+    window.addEventListener("mousemove", pMove);
+    window.addEventListener("mouseup", pUp);
+    frame.addEventListener("touchstart", pDown, { passive: false });
+    window.addEventListener("touchmove", pMove, { passive: false });
+    window.addEventListener("touchend", pUp);
+
+    // Wheel-zoom the active image.
+    frame.addEventListener("wheel", function (e) {
+      var img = imgs[currentContent];
+      if (!img || !img.naturalWidth) return;
+      e.preventDefault();
+      var crop = currentCrop();
+      crop.scale = Math.min(4, Math.max(1, crop.scale * (1 - e.deltaY * 0.001)));
+      applyImgCrop(currentContent);
+      reportCrop();
+    }, { passive: false });
+
+    // Listen for slider / reset commands from parent.
+    window.addEventListener("message", function (e) {
+      var d = e.data;
+      if (!d || typeof d !== "object") return;
+      if (d.type === "sm-ss-setScale") {
+        var crop = currentCrop();
+        crop.scale = Math.min(4, Math.max(1, +d.value || 1));
+        // Re-clamp x/y in case zooming out reduced excess room.
+        var img = imgs[currentContent];
+        if (img && img.naturalWidth) {
+          var fw = frame.offsetWidth, fh = frame.offsetHeight;
+          var coverScale = Math.max(fw / img.naturalWidth, fh / img.naturalHeight);
+          var cw = img.naturalWidth * coverScale * crop.scale;
+          var ch = img.naturalHeight * coverScale * crop.scale;
+          if (cw <= fw) crop.x = 0.5;
+          if (ch <= fh) crop.y = 0.5;
+        }
+        applyImgCrop(currentContent);
+        reportCrop();
+      } else if (d.type === "sm-ss-resetCrop") {
+        var c = contentSlides[currentContent];
+        var key = mq.matches ? "cropMobile" : "cropDesktop";
+        c[key] = { scale: 1, x: 0.5, y: 0.5 };
+        applyImgCrop(currentContent);
+        reportCrop();
+      }
+    });
+
+    // Report slide changes after the *existing* handlers have run.
+    // setTimeout(0) defers until the call stack unwinds so the originals
+    // have already updated currentContent.
+    var lastReportedContent = -1;
+    function maybeReportSlide() {
+      if (currentContent !== lastReportedContent) {
+        lastReportedContent = currentContent;
+        reportSlide();
+      }
+    }
+    $(".ss-prev").addEventListener("click", function () { setTimeout(maybeReportSlide, 0); });
+    $(".ss-next").addEventListener("click", function () { setTimeout(maybeReportSlide, 0); });
+    frame.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") setTimeout(maybeReportSlide, 0);
+    });
+    frame.addEventListener("touchend", function () { setTimeout(maybeReportSlide, 0); });
+
+    // Announce viewport changes so parent slider can update too.
+    mq.addEventListener("change", reportSlide);
+
+    // Report the initial state once images are likely ready.
+    setTimeout(reportSlide, 100);
+  }
+})();</script>
+</div>
+</body>
+</html>

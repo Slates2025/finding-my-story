@@ -1,78 +1,172 @@
-const thoughts = [
+/*================================================
 
-    "Stories",
-    "Systems",
+FINDING MY STORY
+Homepage interactions
+Version 2.0
+
+================================================*/
+
+
+/*------------------------------------------------
+  HERO THOUGHT LINE
+------------------------------------------------*/
+
+const words = [
     "Curiosity",
-    "Making",
-    "Learning",
-    "Explaining",
-    "Journalism"
-
+    "Ideas",
+    "Prototypes",
+    "Design",
+    "Systems",
+    "Stories"
 ];
 
-const output = document.getElementById("thoughts");
+const thoughtElement = document.getElementById("thoughts");
 
-let word = 0;
+if (thoughtElement) {
 
-let character = 0;
+    let wordIndex = 0;
+    let charIndex = 0;
+    let output = "";
 
-let currentText = "";
+    function typeNextCharacter() {
 
-function typeNextCharacter(){
+        // Finished all words
+        if (wordIndex >= words.length) {
 
-    if(word >= thoughts.length) return;
+            setTimeout(fadeOutThoughts, 2500);
+            return;
 
-    const currentWord = thoughts[word];
+        }
 
-    if(character < currentWord.length){
+        const currentWord = words[wordIndex];
 
-        currentText += currentWord.charAt(character);
+        // Type one character
+        output += currentWord.charAt(charIndex);
 
-        output.textContent = currentText;
+        thoughtElement.innerHTML = output;
 
-        character++;
+        charIndex++;
 
-        setTimeout(typeNextCharacter,45);
+        // Continue current word
+        if (charIndex < currentWord.length) {
 
-    }
+            const speed = 35 + Math.random() * 30;
 
-    else{
+            setTimeout(typeNextCharacter, speed);
 
-        word++;
+        }
 
-        character = 0;
+        // Word finished
+        else {
 
-        if(word < thoughts.length){
+            wordIndex++;
+            charIndex = 0;
 
-            currentText += " • ";
+            // Add separator before next word
+            if (wordIndex < words.length) {
 
-            setTimeout(typeNextCharacter,700);
+                output += '<span class="thought-dot"></span>';
+
+            }
+
+            setTimeout(typeNextCharacter, 260);
 
         }
 
     }
 
+    function fadeOutThoughts() {
+
+        thoughtElement.style.transition = "opacity 600ms ease";
+        thoughtElement.style.opacity = "0";
+
+        setTimeout(() => {
+
+            output = "";
+            wordIndex = 0;
+            charIndex = 0;
+
+            thoughtElement.innerHTML = "";
+            thoughtElement.style.opacity = "1";
+
+            typeNextCharacter();
+
+        }, 700);
+
+    }
+
+    typeNextCharacter();
+
 }
 
-setTimeout(typeNextCharacter,800);
 
-const chapters = document.querySelectorAll("details");
+/*------------------------------------------------
+  CHAPTER ACCORDION
+------------------------------------------------*/
 
-chapters.forEach(chapter=>{
+const accordions = document.querySelectorAll(".accordion");
 
-    chapter.addEventListener("toggle",()=>{
+accordions.forEach((accordion) => {
 
-        if(!chapter.open) return;
+const button = accordion.querySelector(".accordion-toggle");
+const title = accordion.querySelector(".accordion-title");    
+const content = accordion.querySelector(".accordion-content");
+title.addEventListener("click", () => {
+    button.click();
+});
 
-        chapters.forEach(other=>{
+    button.addEventListener("click", () => {
 
-            if(other!==chapter){
+        const isOpen = accordion.classList.contains("open");
 
-                other.removeAttribute("open");
+        // Close all chapters
 
-            }
+        accordions.forEach((item) => {
 
-        });
+    item.classList.remove("open");
+
+    const panel = item.querySelector(".accordion-content");
+    panel.style.maxHeight = null;
+
+    const story = item.querySelector(".story-panel");
+
+    if (story) {
+        story.classList.remove("open");
+    }
+
+});
+
+        // Open selected chapter
+
+        if (!isOpen) {
+
+            accordion.classList.add("open");
+
+            content.style.maxHeight = content.scrollHeight + "px";
+            const story = accordion.querySelector(".story-panel");
+
+if (story) {
+    story.classList.add("open");
+}
+
+        }
+
+    });
+
+});
+
+
+/*------------------------------------------------
+  WINDOW RESIZE
+------------------------------------------------*/
+
+window.addEventListener("resize", () => {
+
+    document.querySelectorAll(".accordion.open").forEach((accordion) => {
+
+        const content = accordion.querySelector(".accordion-content");
+
+        content.style.maxHeight = content.scrollHeight + "px";
 
     });
 

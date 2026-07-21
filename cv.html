@@ -29,7 +29,17 @@
     <div class="hero-text">
 
         <h1>Paul Slater</h1>
-    <h2>CV</h2>
+        <h2>CV</h2>
+
+    </div><!-- .hero-text -->
+
+    </div><!-- .hero-branding -->
+
+    <div class="animated-line">
+        <span id="jobTitles"></span>
+        <span class="cursor"></span>
+    </div>
+
 </header>
 
 <section class="cv-intro">
@@ -228,40 +238,10 @@ A prestigious, high-quality gloss magazine ranging from 100 to 140 pages in size
 
 </div>
 
-<script>
-const accordions = document.querySelectorAll(".accordion");
-
-accordions.forEach((accordion) => {
-
-    const button = accordion.querySelector(".accordion-toggle");
-    const content = accordion.querySelector(".accordion-content");
-
-    button.addEventListener("click", () => {
-
-        const isOpen = accordion.classList.contains("open");
-
-        accordions.forEach((item) => {
-
-            item.classList.remove("open");
-
-            const panel = item.querySelector(".accordion-content");
-
-            panel.style.maxHeight = null;
-
-        });
-
-        if (!isOpen) {
-
-            accordion.classList.add("open");
-
-            content.style.maxHeight = content.scrollHeight + "px";
-
-        }
-
-    });
-
-});
-</script>
+<!-- Shared site script: handles the accordion and the header typewriter.
+     It types #thoughts on the homepage and #jobTitles here — no page-specific
+     script needed. -->
+<script src="assets/script.js"></script>
 
 </body>
 </html>

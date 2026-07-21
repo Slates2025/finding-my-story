@@ -154,13 +154,8 @@ body{
 
 }
 
-.thought-line{
-
-    display:flex;
-
-    align-items:center;
-
-    flex-wrap:nowrap;
+.thought-line,
+.animated-line{
 
     margin-top:1.4rem;
 
@@ -170,9 +165,9 @@ body{
 
     font-size:1rem;
 
-    white-space:nowrap;
-
-    overflow:hidden;
+    /* Wrap within the column instead of clipping; the extra line-height
+       gives wrapped rows and their dots room to breathe. */
+    line-height:1.9;
 
 }
 
@@ -185,7 +180,10 @@ body{
     width:7px;
     height:7px;
 
-    margin:0 .55rem;
+    /* Spacing sits only on the right of the dot; the gap before it comes from
+       the previous chunk's right margin, so a wrapped line starts flush with
+       the dot rather than an indenting space. */
+    margin:0 .55rem 0 0;
 
     border-radius:50%;
 
@@ -206,9 +204,24 @@ body{
 
 }
 
-#thoughts{
+#thoughts,
+#jobTitles{
 
     display:inline;
+
+}
+
+/* One word + its leading dot; never breaks internally, so the line
+   only ever wraps before a dot. */
+.tl-word{
+
+    display:inline-block;
+
+    white-space:nowrap;
+
+    /* Provides the gap before the following dot; because it's a right margin it
+       stays on the line above when the next chunk wraps. */
+    margin-right:.55rem;
 
 }
 

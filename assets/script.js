@@ -8,6 +8,7 @@ Version 2.0
 
 
 /*------------------------------------------------
+/*------------------------------------------------
   HERO THOUGHT LINE
 ------------------------------------------------*/
 
@@ -20,54 +21,107 @@ const words = [
     "Stories"
 ];
 
-const thoughtElement = document.getElementById("thoughts");
+const jobTitles = [
+    "Creative Director",
+    "Digital Design Specialist",
+    "Interactive Storyteller",
+    "Motion Designer",
+    "Data Visualisation",
+    "Illustrator",
+    "UX Thinker"
+];
 
-if (thoughtElement) {
+const thoughtElement = document.getElementById("thoughts");
+const jobTitleElement = document.getElementById("jobTitles");
+
+function startTyping(element, items) {
+
+    if (!element) return;
+
+    const container = element.parentElement;
+
+    // Reserve vertical space for the fully-typed line so the page never jumps
+    // as the text wraps and resets. Measured off-screen (so the live line is
+    // never disturbed) and refreshed whenever the column width changes.
+    function reserveSpace() {
+
+        const probe = document.createElement("div");
+        probe.className = container.className;
+        probe.style.cssText =
+            "position:absolute; left:0; top:0; visibility:hidden; " +
+            "pointer-events:none; min-height:0;";
+        probe.style.width = container.clientWidth + "px";
+
+        items.forEach((word, i) => {
+            const chunk = document.createElement("span");
+            chunk.className = "tl-word";
+            if (i > 0) {
+                const dot = document.createElement("span");
+                dot.className = "thought-dot";
+                chunk.appendChild(dot);
+            }
+            chunk.appendChild(document.createTextNode(word));
+            probe.appendChild(chunk);
+        });
+
+        container.parentElement.appendChild(probe);
+        container.style.minHeight = probe.offsetHeight + "px";
+        container.parentElement.removeChild(probe);
+    }
+
+    reserveSpace();
+
+    let resizeTimer;
+    window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(reserveSpace, 150);
+    });
 
     let wordIndex = 0;
     let charIndex = 0;
-    let output = "";
 
     function typeNextCharacter() {
 
-        // Finished all words
-        if (wordIndex >= words.length) {
-
-            setTimeout(fadeOutThoughts, 2500);
+        if (wordIndex >= items.length) {
+            setTimeout(fadeOut, 2500);
             return;
-
         }
 
-        const currentWord = words[wordIndex];
+        const currentWord = items[wordIndex];
 
-        // Type one character
-        output += currentWord.charAt(charIndex);
+        // Each word gets its own inline-block "chunk" holding the separating
+        // dot (for every word after the first) plus the word text. The chunk
+        // never breaks internally, so the line can only wrap *before* a dot —
+        // a dot always travels to the next line with its word, never stranded.
+        if (charIndex === 0) {
 
-        thoughtElement.innerHTML = output;
+            const chunk = document.createElement("span");
+            chunk.className = "tl-word";
+
+            if (wordIndex > 0) {
+                const dot = document.createElement("span");
+                dot.className = "thought-dot";
+                chunk.appendChild(dot);
+            }
+
+            chunk.appendChild(document.createTextNode(""));
+            element.appendChild(chunk);
+        }
 
         charIndex++;
 
-        // Continue current word
+        // Reveal one more character in the current chunk's text node.
+        element.lastChild.lastChild.textContent = currentWord.slice(0, charIndex);
+
         if (charIndex < currentWord.length) {
 
             const speed = 35 + Math.random() * 30;
-
             setTimeout(typeNextCharacter, speed);
 
-        }
-
-        // Word finished
-        else {
+        } else {
 
             wordIndex++;
             charIndex = 0;
-
-            // Add separator before next word
-            if (wordIndex < words.length) {
-
-                output += '<span class="thought-dot"></span>';
-
-            }
 
             setTimeout(typeNextCharacter, 260);
 
@@ -75,19 +129,18 @@ if (thoughtElement) {
 
     }
 
-    function fadeOutThoughts() {
+    function fadeOut() {
 
-        thoughtElement.style.transition = "opacity 600ms ease";
-        thoughtElement.style.opacity = "0";
+        element.style.transition = "opacity 600ms ease";
+        element.style.opacity = "0";
 
         setTimeout(() => {
 
-            output = "";
             wordIndex = 0;
             charIndex = 0;
 
-            thoughtElement.innerHTML = "";
-            thoughtElement.style.opacity = "1";
+            element.innerHTML = "";
+            element.style.opacity = "1";
 
             typeNextCharacter();
 
@@ -98,6 +151,9 @@ if (thoughtElement) {
     typeNextCharacter();
 
 }
+
+startTyping(thoughtElement, words);
+startTyping(jobTitleElement, jobTitles);
 
 
 /*------------------------------------------------

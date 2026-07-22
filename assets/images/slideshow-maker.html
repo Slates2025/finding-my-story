@@ -1046,7 +1046,7 @@
       '<meta charset="utf-8">\n' +
       '<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
       '<title>' + escapeHTML(title) + '</title>\n' +
-      '<style>html,body{margin:0;padding:0;background:#fff;}</style>\n' +
+      '<style>html,body{margin:0;padding:0;background:transparent;}</style>\n' +
       '</head>\n<body>\n' + fragment + '\n</body>\n</html>\n';
   }
 
@@ -1221,7 +1221,7 @@
 '  width: 100%;\n' +
 '  /* Fixed 16:9 landscape. */\n' +
 '  aspect-ratio: 16 / 9;\n' +
-'  background: #000;\n' +
+'  background: transparent;\n' +
 '  overflow: hidden;\n' +
 '  user-select: none;\n' +
 '  -webkit-user-select: none;\n' +
@@ -1230,7 +1230,7 @@
 '@media (max-width: 600px) {\n' +
 '  .slideshow-embed { --ss-btn-size: 40px; --ss-btn-inset: 8px; }\n' +
 '}\n' +
-'.slideshow-embed .ss-stage { position: absolute; inset: 0; overflow: hidden; }\n' +
+'.slideshow-embed .ss-stage { position: absolute; inset: 0; }\n' +
 '.slideshow-embed .ss-img {\n' +
 '  position: absolute;\n' +
 '  /* Width/height/left/top are set in JS to cover-fill the frame and apply\n' +
@@ -1454,13 +1454,17 @@
 '  }\n' +
 '  function applyCrop(imgEl, fw, fh, iw, ih, crop) {\n' +
 '    if (!iw || !ih || !fw || !fh) return;\n' +
-'    var coverScale = Math.max(fw / iw, fh / ih);\n' +
+'    // Overscan by 2px so the frame clip cuts inside opaque image pixels and no\n' +
+'    // sub-pixel gap can show at an edge (even mid-crossfade).\n' +
+'    var bleed = 2;\n' +
+'    var ow = fw + bleed * 2, oh = fh + bleed * 2;\n' +
+'    var coverScale = Math.max(ow / iw, oh / ih);\n' +
 '    var cw = iw * coverScale * crop.scale;\n' +
 '    var ch = ih * coverScale * crop.scale;\n' +
 '    imgEl.style.width  = cw + "px";\n' +
 '    imgEl.style.height = ch + "px";\n' +
-'    imgEl.style.left   = (-(cw - fw) * crop.x) + "px";\n' +
-'    imgEl.style.top    = (-(ch - fh) * crop.y) + "px";\n' +
+'    imgEl.style.left   = (-bleed - (cw - ow) * crop.x) + "px";\n' +
+'    imgEl.style.top    = (-bleed - (ch - oh) * crop.y) + "px";\n' +
 '  }\n' +
 '  contentSlides.forEach(function (c, i) {\n' +
 '    var img = document.createElement("img");\n' +
@@ -1510,6 +1514,7 @@
 '  });\n' +
 '  var currentState = 0;\n' +
 '  var currentContent = 0;\n' +
+'  var SS_FADE_MS = 600;\n' +
 '  function applyImgCrop(i) {\n' +
 '    var img = imgs[i]; if (!img || !img.naturalWidth) return;\n' +
 '    var c = contentSlides[i];\n' +
@@ -1531,8 +1536,20 @@
 '    var ns   = STATES[next];\n' +
 '    // Image: swap active when the underlying content slide changes\n' +
 '    if (ns.idx !== prev.idx) {\n' +
-'      imgs[prev.idx].classList.remove("is-active");\n' +
-'      imgs[ns.idx].classList.add("is-active");\n' +
+'      var outgoing = imgs[prev.idx];\n' +
+'      var incoming = imgs[ns.idx];\n' +
+'      applyImgCrop(ns.idx);\n' +
+'      // Layered crossfade: incoming fades in on top while the outgoing stays\n' +
+'      // fully opaque beneath, dropped only once the incoming has arrived — so\n' +
+'      // the frame is never exposed mid-transition (no dark/pale flicker).\n' +
+'      outgoing.style.zIndex = "0";\n' +
+'      incoming.style.zIndex = "1";\n' +
+'      incoming.classList.add("is-active");\n' +
+'      (function (out, outIdx) {\n' +
+'        setTimeout(function () {\n' +
+'          if (currentContent !== outIdx) out.classList.remove("is-active");\n' +
+'        }, SS_FADE_MS + 60);\n' +
+'      })(outgoing, prev.idx);\n' +
 '      currentContent = ns.idx;\n' +
 '      updateProgress();\n' +
 '    }\n' +
@@ -1597,6 +1614,11 @@
 '    // Older-browser fallback: poll a few times in the first second after mount.\n' +
 '    [50, 200, 500, 1000].forEach(function (ms) { setTimeout(applyAllCrops, ms); });\n' +
 '  }\n' +
+'\n' +
+'  // Guarantee a correct fit once the frame has been laid out, covering the\n' +
+'  // case where an image loaded from cache before the frame had a size.\n' +
+'  requestAnimationFrame(applyAllCrops);\n' +
+'  setTimeout(applyAllCrops, 250);\n' +
 '\n' +
 '  // =============================================================\n' +
 '  // Preview-mode interactions: drag-to-pan + wheel-to-zoom on the\n' +

@@ -22,13 +22,12 @@ const words = [
 ];
 
 const jobTitles = [
-    "Creative Director",
     "Digital Design Specialist",
-    "Interactive Storyteller",
-    "Motion Designer",
-    "Data Visualisation",
-    "Illustrator",
-    "UX Thinker"
+    "Creative Director",
+    "Art Director",
+    "Senior Designer",
+    "Graphic Artist",
+    "Illustrator"
 ];
 
 const thoughtElement = document.getElementById("thoughts");

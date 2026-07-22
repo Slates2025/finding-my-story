@@ -738,14 +738,17 @@ Version 1.0
 
     overflow:hidden;
     border-radius:4px;
-    background:#000;
+    /* No dark backdrop behind the embed, so nothing can show as an edge line. */
+    background:transparent;
 }
 
 .story-slideshow iframe{
     position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
+    /* Overfill by 1px so the container's background can't peek as a hairline
+       at the iframe edge; .story-slideshow's overflow:hidden clips the excess. */
+    inset:-1px;
+    width:calc(100% + 2px);
+    height:calc(100% + 2px);
     border:0;
     display:block;
 }

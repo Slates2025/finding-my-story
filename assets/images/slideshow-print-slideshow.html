@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PRINT SLIDESHOW</title>
-<style>html,body{margin:0;padding:0;background:#fff;}</style>
+<style>html,body{margin:0;padding:0;background:transparent;}</style>
 </head>
 <body>
 <div class="slideshow-embed" id="slideshow-embed">
@@ -29,7 +29,9 @@
   width: 100%;
   /* Fixed 16:9 landscape. */
   aspect-ratio: 16 / 9;
-  background: #000;
+  /* No backdrop: the image cover-fills the frame, so a dark backdrop would only
+     ever show as a hairline at a sub-pixel edge or a flash mid-transition. */
+  background: transparent;
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
@@ -38,11 +40,19 @@
 @media (max-width: 600px) {
   .slideshow-embed { --ss-btn-size: 40px; --ss-btn-inset: 8px; }
 }
-.slideshow-embed .ss-stage { position: absolute; inset: 0; overflow: hidden; }
+.slideshow-embed .ss-stage { position: absolute; inset: 0; }
 .slideshow-embed .ss-img {
   position: absolute;
-  /* Width/height/left/top are set in JS to cover-fill the frame and apply
-     the user-configured scale + focal point. */
+  /* Fill the frame with a 2px overfill on every side and let the browser
+     cover-fit the image. object-fit:cover always covers regardless of when the
+     frame is measured, so an image can never collapse to a few pixels. The 2px
+     overfill keeps the frame's clip cutting well inside opaque image pixels, so
+     no pale sub-pixel gap shows at an edge — even mid-crossfade. Focal point =
+     object-position and zoom = transform:scale, both set in JS. */
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  object-fit: cover;
   opacity: 0;
   transition: opacity var(--ss-fade) var(--ss-ease);
   pointer-events: none;
@@ -261,14 +271,17 @@
     };
   }
   function applyCrop(imgEl, fw, fh, iw, ih, crop) {
-    if (!iw || !ih || !fw || !fh) return;
-    var coverScale = Math.max(fw / iw, fh / ih);
-    var cw = iw * coverScale * crop.scale;
-    var ch = ih * coverScale * crop.scale;
-    imgEl.style.width  = cw + "px";
-    imgEl.style.height = ch + "px";
-    imgEl.style.left   = (-(cw - fw) * crop.x) + "px";
-    imgEl.style.top    = (-(ch - fh) * crop.y) + "px";
+    // CSS handles the cover-fit (see .ss-img: object-fit:cover, sized to the
+    // frame + 1px overfill). We only set the focal point and optional zoom, so
+    // no pixel size depends on the frame being measured — the image can never
+    // collapse to a few pixels and expose the frame at the edges. Clearing any
+    // previously-set inline size also repairs an image left in the old state.
+    imgEl.style.width = "";
+    imgEl.style.height = "";
+    imgEl.style.left = "";
+    imgEl.style.top = "";
+    imgEl.style.objectPosition = (crop.x * 100) + "% " + (crop.y * 100) + "%";
+    imgEl.style.transform = crop.scale > 1 ? "scale(" + crop.scale + ")" : "";
   }
   contentSlides.forEach(function (c, i) {
     var img = document.createElement("img");
@@ -318,8 +331,9 @@
   });
   var currentState = 0;
   var currentContent = 0;
+  var SS_FADE_MS = 600;  // matches --ss-fade
   function applyImgCrop(i) {
-    var img = imgs[i]; if (!img || !img.naturalWidth) return;
+    var img = imgs[i]; if (!img) return;
     var c = contentSlides[i];
     var crop = mq.matches ? safeCrop(c.cropMobile) : safeCrop(c.cropDesktop);
     applyCrop(img, frame.offsetWidth, frame.offsetHeight, img.naturalWidth, img.naturalHeight, crop);
@@ -339,8 +353,25 @@
     var ns   = STATES[next];
     // Image: swap active when the underlying content slide changes
     if (ns.idx !== prev.idx) {
-      imgs[prev.idx].classList.remove("is-active");
-      imgs[ns.idx].classList.add("is-active");
+      var outgoing = imgs[prev.idx];
+      var incoming = imgs[ns.idx];
+      applyImgCrop(ns.idx);
+      // Layered crossfade: raise the incoming image above the rest and fade it
+      // in while the outgoing stays fully opaque beneath. Drop the outgoing only
+      // after the incoming has fully arrived, so a fully opaque image is visible
+      // at every instant and the frame is never exposed mid-transition — this is
+      // what removes the dark flicker. Skip the drop if we've navigated back to
+      // that slide in the meantime.
+      // Two z-levels only (outgoing below, incoming on top) so images always
+      // stay beneath the nav buttons (z-index 2) and never block clicks.
+      outgoing.style.zIndex = "0";
+      incoming.style.zIndex = "1";
+      incoming.classList.add("is-active");
+      (function (out, outIdx) {
+        setTimeout(function () {
+          if (currentContent !== outIdx) out.classList.remove("is-active");
+        }, SS_FADE_MS + 60);
+      })(outgoing, prev.idx);
       currentContent = ns.idx;
       updateProgress();
     }
@@ -405,6 +436,13 @@
     // Older-browser fallback: poll a few times in the first second after mount.
     [50, 200, 500, 1000].forEach(function (ms) { setTimeout(applyAllCrops, ms); });
   }
+
+  // Guarantee a correct fit once the frame has actually been laid out. Without
+  // this, an image that finished loading from cache before the frame had a
+  // measurable size stays cropped to a few pixels, letting the frame show
+  // around it as thin edges.
+  requestAnimationFrame(applyAllCrops);
+  setTimeout(applyAllCrops, 250);
 
   // =============================================================
   // Preview-mode interactions: drag-to-pan + wheel-to-zoom on the

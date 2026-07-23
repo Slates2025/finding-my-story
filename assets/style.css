@@ -634,6 +634,10 @@ Version 1.0
 
 .contact-item h3{
 
+    display:flex;
+    align-items:center;
+    gap:.55rem;
+
     margin:0 0 .5rem;
 
     font-size:1.2rem;
@@ -647,6 +651,35 @@ Version 1.0
     margin:0;
 
     color:var(--steel);
+
+}
+
+/* Heading icon — a circular steel badge (echoing the round avatar) with a white
+   glyph. Steel is the same grey the accordion plus signs use. */
+.contact-icon{
+
+    width:32px;
+    height:32px;
+    padding:7px;
+    flex-shrink:0;
+
+    background:var(--steel);
+    color:#fff;
+    border-radius:50%;
+
+}
+
+.contact-item a{
+
+    color:var(--ink);
+    text-decoration:none;
+    overflow-wrap:anywhere;
+
+}
+
+.contact-item a:hover{
+
+    text-decoration:underline;
 
 }
 .story-panel{
@@ -741,6 +774,46 @@ Version 1.0
         margin:16px 0 20px;
     }
 }
+
+/* Project showcase: full-width teaser image + a call-to-action button. */
+.project-media{
+    display:block;
+    margin:4px 0 22px;
+}
+
+.project-media img{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:4px;
+}
+
+.project-button{
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+
+    margin-top:1.25rem;
+    padding:.7rem 1.3rem;
+
+    background:var(--steel);
+    color:var(--paper);
+    border-radius:999px;
+
+    font-size:.95rem;
+    text-decoration:none;
+
+    transition:background var(--transition);
+}
+
+.project-button:hover{
+    background:var(--ink);
+}
+
+.project-button svg{
+    flex-shrink:0;
+}
+
 .story-wide{
     width:100dvw;
     margin-left:50%;

@@ -766,6 +766,27 @@ Version 1.0
     display:block;
 }
 
+/* Motion-graphic video: same full-bleed footprint as the slideshow. Click to
+   play; the file only downloads on play (preload="none"). */
+.story-video{
+    position:relative;
+    width:min(1200px, calc(100dvw - 48px));
+    aspect-ratio:16 / 9;
+    margin:24px auto 32px;
+    overflow:hidden;
+    border-radius:4px;
+    background:#000;
+}
+
+.story-video-el{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+}
+
 /* 3D scene: same full-bleed footprint as the slideshow */
 .story-stage{
     position:relative;
@@ -846,7 +867,8 @@ Version 1.0
     }
 
     .story-slideshow,
-    .story-stage{
+    .story-stage,
+    .story-video{
         width:100%;
         margin:20px 0 28px;
         border-radius:0;

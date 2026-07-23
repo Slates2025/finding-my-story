@@ -3,3 +3,6 @@
 
 # Large source video export — the web-optimised turning-ideas.mp4 is committed instead
 assets/images/Comp 1_2.mp4
+
+# Unused source/experiment model — the mockup embeds its own model inline
+assets/images/Horseshoe_design-experiments.glb

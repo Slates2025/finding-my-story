@@ -728,17 +728,19 @@ Version 1.0
     transform:translateX(-50%);
 }
 
-.story-quiz{
+.story-prototype{
     margin:24px 0 28px;
 }
 
-.story-quiz-frame{
-    width:100%;
-    /* Initial height; the iframe reports its real height and this is updated
-       to fit via postMessage. */
-    height:640px;
-    border:0;
+.story-prototype-frame{
+    /* Sized to the phone device; capped and centred so it's never full-width
+       (leaves margin either side to scroll past on mobile) and needs no grey
+       backdrop — the transparent device floats on the page. */
     display:block;
+    width:min(510px, 94%);
+    height:855px;
+    margin:0 auto;
+    border:0;
 }
 
 .story-slideshow{

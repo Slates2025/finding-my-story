@@ -728,6 +728,19 @@ Version 1.0
     transform:translateX(-50%);
 }
 
+.story-quiz{
+    margin:24px 0 28px;
+}
+
+.story-quiz-frame{
+    width:100%;
+    /* Initial height; the iframe reports its real height and this is updated
+       to fit via postMessage. */
+    height:640px;
+    border:0;
+    display:block;
+}
+
 .story-slideshow{
     position:relative;
 
@@ -770,6 +783,58 @@ Version 1.0
     width:100%;
     height:100%;
     border:0;
+}
+
+/* "Drag to explore" hint over the 3D scene */
+.scene-hint{
+    position:absolute;
+    left:50%;
+    bottom:18px;
+    transform:translateX(-50%);
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    padding:8px 14px;
+
+    background:rgba(0,0,0,.55);
+    color:#fff;
+    border-radius:999px;
+
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:.85rem;
+    white-space:nowrap;
+
+    pointer-events:none;
+    opacity:0;
+    animation:sceneHintIn .5s ease .8s forwards;
+    transition:opacity .5s ease;
+
+    z-index:2;
+}
+
+.scene-hint.hide{
+    opacity:0;
+    animation:none;
+}
+
+.scene-hint svg{
+    display:block;
+    animation:sceneHintNudge 1.8s ease-in-out infinite;
+}
+
+@keyframes sceneHintIn{
+    to{ opacity:1; }
+}
+
+@keyframes sceneHintNudge{
+    0%,100%{ transform:translateX(-3px); }
+    50%{ transform:translateX(3px); }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .scene-hint svg{ animation:none; }
 }
 
 @media (max-width:700px){

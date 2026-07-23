@@ -787,6 +787,21 @@ Version 1.0
     object-fit:cover;
 }
 
+/* Self-contained interactive (e.g. the Shahed drone graphic): sits in the text
+   column, height auto-sized to the widget's content via postMessage. */
+.story-widget{
+    width:100%;
+    margin:24px 0 28px;
+}
+
+.story-widget-frame{
+    width:100%;
+    /* Fallback height before the widget reports its own; it then auto-sizes. */
+    height:440px;
+    border:0;
+    display:block;
+}
+
 /* 3D scene: same full-bleed footprint as the slideshow */
 .story-stage{
     position:relative;

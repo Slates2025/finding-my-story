@@ -313,6 +313,18 @@ For many years, print was my canvas. Today it might be an interactive graphic, d
 <p>
           While I once relied on specialist storytelling platforms to create rich digital experiences, I now prefer to build those experiences myself. Designing every interaction from the ground up provides complete creative freedom and ensures the storytelling serves the content, rather than the limitations of the technology.
          </p>
+<div class="story-widget">
+<iframe id="drone-widget" class="story-widget-frame" src="assets/images/drone-widget.html" title="Iran's Shahed-136 drone — interactive graphic" loading="lazy" scrolling="no"></iframe>
+</div>
+<script>
+// The drone widget broadcasts its own height; resize the iframe to fit.
+window.addEventListener("message", function (e) {
+  if (e.data && e.data.type === "drone-widget-height" && typeof e.data.height === "number" && e.data.height > 0) {
+    var f = document.getElementById("drone-widget");
+    if (f) f.style.height = e.data.height + "px";
+  }
+});
+</script>
 </div>
 <div class="story-wide">
 </div>

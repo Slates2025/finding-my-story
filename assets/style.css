@@ -33,6 +33,13 @@
 html {
     scroll-behavior: smooth;
     scrollbar-gutter: stable;
+    overflow-x: hidden;
+}
+
+/* Belt-and-braces: never allow the full-bleed sections to create
+   a sliver of horizontal scroll (the left/right "wobble"). */
+body {
+    overflow-x: hidden;
 }
 
 body{

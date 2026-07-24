@@ -507,21 +507,9 @@ Version 1.0
     }
 
     /* Scale the header down so it keeps the desktop proportions
-       instead of wrapping awkwardly beside the avatar. */
-    .hero-branding{
-
-        gap:14px;
-        align-items:center;
-
-    }
-
-    .hero-avatar{
-
-        width:66px;
-        height:66px;
-
-    }
-
+       instead of wrapping awkwardly beside the avatar.
+       (The .hero-branding / .hero-avatar mobile overrides live in the
+       final @media block, so they beat the later base definitions.) */
     .hero h1{
 
         font-size:2rem;
@@ -1091,6 +1079,19 @@ Version 1.0
         width:100%;
         margin:20px 0 28px;
         border-radius:0;
+    }
+
+    /* Header (mobile): centre the avatar against the name/tagline and
+       scale it down. Placed here — after the base .hero-branding /
+       .hero-avatar rules — so these definitions win on small screens. */
+    .hero-branding{
+        align-items:center;
+        gap:14px;
+    }
+
+    .hero-avatar{
+        width:66px;
+        height:66px;
     }
 
 }

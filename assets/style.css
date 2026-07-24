@@ -737,7 +737,7 @@ Version 1.0
 }
 
 .hero-avatar{
-    width:95;
+    width:95px;
     height:95px;
     border-radius:50%;
     object-fit:cover;

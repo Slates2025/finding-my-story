@@ -180,6 +180,11 @@ title.addEventListener("click", () => {
 
     item.classList.remove("open");
 
+    const itemButton = item.querySelector(".accordion-toggle");
+    if (itemButton) {
+        itemButton.setAttribute("aria-expanded", "false");
+    }
+
     const panel = item.querySelector(".accordion-content");
     panel.style.maxHeight = null;
 
@@ -196,6 +201,7 @@ title.addEventListener("click", () => {
         if (!isOpen) {
 
             accordion.classList.add("open");
+            button.setAttribute("aria-expanded", "true");
 
             content.style.maxHeight = content.scrollHeight + "px";
             const story = accordion.querySelector(".story-panel");

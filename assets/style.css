@@ -506,6 +506,29 @@ Version 1.0
 
     }
 
+    /* Tighten the vertical run between the intro and the first chapter —
+       on small screens the typewriter's reserved height plus the hero
+       margin made this gap oversized. */
+    .hero{
+
+        margin-bottom:1.25rem;
+
+    }
+
+    .thought-line,
+    .animated-line{
+
+        line-height:1.55;
+        margin-top:1rem;
+
+    }
+
+    .chapters .accordion:first-child{
+
+        padding-top:.5rem;
+
+    }
+
     /* Scale the header down so it keeps the desktop proportions
        instead of wrapping awkwardly beside the avatar.
        (The .hero-branding / .hero-avatar mobile overrides live in the
@@ -544,6 +567,7 @@ Version 1.0
     .standfirst{
 
         font-size:1rem;
+        margin-top:1.1rem;
 
     }
 

@@ -543,7 +543,7 @@ Version 1.0
     .hero h2{
 
         font-size:1.4rem;
-        margin:.2rem 0 1.5rem;
+        margin:.2rem 0 0;
 
     }
 
@@ -1105,17 +1105,42 @@ Version 1.0
         border-radius:0;
     }
 
-    /* Header (mobile): centre the avatar against the name/tagline and
-       scale it down. Placed here — after the base .hero-branding /
-       .hero-avatar rules — so these definitions win on small screens. */
+    /* ---- Mobile masthead ----
+       Nav + avatar + name + tagline sit together in a full-bleed dark
+       band with off-white text and an off-white avatar stroke, to simplify
+       the typographic hierarchy at the top on small screens. Placed in this
+       final @media block so it beats the later base .hero-branding /
+       .hero-avatar / .top-nav definitions. */
+    .top-nav{
+        background:var(--ink);
+        gap:1.5rem;
+        margin:-1.5rem -1.5rem 0;      /* pull up + out to the screen edges */
+        padding:1.1rem 1.5rem;
+    }
+    .top-nav a{
+        color:rgba(252,252,250,.7);
+    }
+    .top-nav .active{
+        color:var(--paper);
+    }
+
     .hero-branding{
         align-items:center;
         gap:14px;
+        background:var(--ink);
+        margin:0 -1.5rem 1.5rem;       /* continue the band, full-bleed */
+        padding:.25rem 1.5rem 1.5rem;
+    }
+
+    .hero h1,
+    .hero h2{
+        color:var(--paper);
     }
 
     .hero-avatar{
         width:66px;
         height:66px;
+        border-color:var(--paper);
     }
 
 }

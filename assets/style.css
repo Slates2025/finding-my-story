@@ -835,6 +835,74 @@ Version 1.0
     border:0;
 }
 
+/* ----------------------------------------------------------
+   SHORTHAND SHOWCASE — capped live preview that expands to a
+   full-screen reading overlay (keeps the huge story out of the
+   page flow and avoids any mobile scroll-trap).
+---------------------------------------------------------- */
+.story-showcase{
+    position:relative;
+    margin:24px 0 28px;
+    height:70vh;
+    max-height:620px;
+    overflow:hidden;
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:#111;
+}
+.story-showcase-frame{
+    display:block;
+    width:100%;
+    height:100%;
+    border:0;
+    pointer-events:none;          /* non-interactive preview */
+}
+.story-showcase-fade{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:180px;
+    background:linear-gradient(to bottom, rgba(252,252,250,0), var(--paper));
+    pointer-events:none;
+}
+.story-showcase-open{
+    position:absolute;
+    left:50%; bottom:22px;
+    transform:translateX(-50%);
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding:.7rem 1.3rem;
+    background:var(--steel); color:var(--paper);
+    border:0; border-radius:999px;
+    font-size:.95rem; font-family:inherit; cursor:pointer;
+    transition:background var(--transition);
+}
+.story-showcase-open:hover{ background:var(--ink); }
+.story-showcase-open svg{ flex-shrink:0; }
+.story-showcase-close{ display:none; }
+
+/* Full-screen reading mode */
+.story-showcase.is-fullscreen{
+    position:fixed; inset:0;
+    width:100vw; height:100dvh;
+    max-height:none;
+    margin:0; border:0; border-radius:0;
+    z-index:9999;
+    overflow:hidden;              /* the iframe scrolls its own content */
+    background:var(--paper);
+}
+.story-showcase.is-fullscreen .story-showcase-frame{
+    pointer-events:auto;          /* allow native scroll + interaction */
+}
+.story-showcase.is-fullscreen .story-showcase-fade,
+.story-showcase.is-fullscreen .story-showcase-open{ display:none; }
+.story-showcase.is-fullscreen .story-showcase-close{
+    display:inline-flex; align-items:center; justify-content:center;
+    position:fixed; top:16px; right:16px;
+    width:44px; height:44px;
+    border:0; border-radius:50%;
+    background:var(--ink); color:var(--paper);
+    cursor:pointer; z-index:10000;
+}
+
 .story-slideshow{
     position:relative;
 

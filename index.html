@@ -142,13 +142,22 @@ I’ve always enjoyed spotting unnecessary complexity and finding practical ways
 <iframe class="story-prototype-frame" src="assets/images/vote2026-mockup.html" title="Vote 2026 — interactive election-results prototype" scrolling="no" loading="lazy"></iframe>
 </div>
 -->
+<div class="story-showcase" id="shorthandShowcase">
+<iframe class="story-showcase-frame" src="assets/images/shorthand-showcase.html" title="Deep Trouble — immersive Shorthand feature" loading="lazy"></iframe>
+<div class="story-showcase-fade" aria-hidden="true"></div>
+<button type="button" class="story-showcase-open" onclick="openShorthand()">Read the full story<svg viewbox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></button>
+<button type="button" class="story-showcase-close" onclick="closeShorthand()" aria-label="Close full story"><svg viewbox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18"></path></svg></button>
+</div>
 
 <p>
-I've become increasingly interested in designing tools and experiences that solve real newsroom problems. Rather than simply creating graphics, I enjoy creating interactive products that make information easier to explore, understand and engage with.  </p>
+I've become increasingly interested in designing tools and experiences that solve real newsroom problems. Rather than simply creating graphics, I enjoy creating interactive products that make information easier to explore, understand and engage with.
+</p>
 <p>
-One example is this early prototype for the NZ Herald's Election Night results experience. Designed as a proof of concept, it explores how live election data could be presented in a more intuitive, engaging and mobile-friendly way. While still very much a work in progress, it demonstrates the way I approach complex editorial challenges—starting with ideas, building prototypes, testing interactions and refining the experience through iteration.  </p>
+An important part of that journey was embracing platforms such as <em>Shorthand</em> during the early growth of digital storytelling. Over several years I designed and produced hundreds of immersive long-form stories, combining layout, motion, photography, video and animation to create engaging editorial experiences. While working within the constraints of a publishing platform, I was constantly exploring new ways to present complex stories in a way that felt intuitive, accessible and compelling.
+</p>
 <p>
-Alongside projects such as the Chart Generator and Image Compositor, it reflects a shift in my work from creating individual graphics to designing reusable systems and digital experiences. The prototype will continue to evolve as new ideas are explored and functionality is added, but it already represents the direction I believe digital storytelling should be heading: interactive, accessible and designed around the needs of the audience.         </p>
+Alongside projects such as the Chart Generator and Image Compositor, this work reflects a shift in my career from creating individual graphics to designing reusable systems and digital experiences. It also reinforced a philosophy that continues to shape my work today: the technology is simply the tool. The goal is always to create clearer, more engaging ways for audiences to discover, understand and interact with a story.
+</p>
 <img alt="The Chart Generator turning spreadsheet data into a branded, publication-ready graphic" class="story-image" src="assets/images/Chart-Gen.png"/>
 
 </div>
@@ -414,6 +423,40 @@ Whether I’m working with oils, designing an interactive experience or building
 <script src="assets/script.js">
 </script>
 <script src="assets/three.js" type="module">
+</script>
+<script>
+// Shorthand showcase: expand the capped preview into a full-screen reading
+// overlay, and back. The embed is same-origin here, so we can toggle its
+// internal scroll directly. Background page scroll is locked while open.
+function openShorthand() {
+  var el = document.getElementById("shorthandShowcase");
+  if (!el) return;
+  el.classList.add("is-fullscreen");
+  document.body.style.overflow = "hidden";
+  var f = el.querySelector(".story-showcase-frame");
+  try {
+    var d = f.contentDocument || f.contentWindow.document;
+    d.documentElement.style.overflow = "auto";
+    d.body.style.overflow = "auto";
+    f.contentWindow.scrollTo(0, 0);
+  } catch (e) {}
+}
+function closeShorthand() {
+  var el = document.getElementById("shorthandShowcase");
+  if (!el || !el.classList.contains("is-fullscreen")) return;
+  el.classList.remove("is-fullscreen");
+  document.body.style.overflow = "";
+  var f = el.querySelector(".story-showcase-frame");
+  try {
+    var d = f.contentDocument || f.contentWindow.document;
+    f.contentWindow.scrollTo(0, 0);
+    d.documentElement.style.overflow = "hidden";
+    d.body.style.overflow = "hidden";
+  } catch (e) {}
+}
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") closeShorthand();
+});
 </script>
 </body>
 </html>

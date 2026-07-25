@@ -232,3 +232,45 @@ window.addEventListener("resize", () => {
     });
 
 });
+
+
+/*------------------------------------------------
+  HERO STRAPLINE — FIT TO WIDTH (mobile)
+  Scales the tagline down so it always sits on one
+  line and is never clipped, whatever the screen width.
+------------------------------------------------*/
+
+function fitHeroStrap() {
+
+    const strap = document.querySelector(".hero-strap");
+    if (!strap) return;
+
+    // Only the mobile black strip is width-constrained; on desktop the
+    // tagline wraps naturally, so clear any inline size we set.
+    if (!window.matchMedia("(max-width:700px)").matches) {
+        strap.style.fontSize = "";
+        return;
+    }
+
+    // Start at the largest allowed size, then shrink until the single line
+    // fits inside the strip.
+    let size = 14;
+    strap.style.fontSize = size + "px";
+
+    let guard = 0;
+    while (strap.scrollWidth > strap.clientWidth && size > 8 && guard < 80) {
+        size -= 0.5;
+        strap.style.fontSize = size + "px";
+        guard++;
+    }
+
+}
+
+fitHeroStrap();
+window.addEventListener("load", fitHeroStrap);
+
+let strapResizeTimer;
+window.addEventListener("resize", () => {
+    clearTimeout(strapResizeTimer);
+    strapResizeTimer = setTimeout(fitHeroStrap, 120);
+});

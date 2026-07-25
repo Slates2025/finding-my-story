@@ -909,7 +909,6 @@ Version 1.0
     max-height:620px;
     overflow:hidden;
     border-radius:6px;
-    border:1px solid var(--line);
     background:#111;
 }
 .story-showcase-frame{

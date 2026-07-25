@@ -917,6 +917,11 @@ Version 1.0
     border-radius:6px;
     background:#111;
 }
+.story-showcase picture{
+    display:block;
+    width:100%;
+    height:100%;
+}
 .story-showcase-cover{
     display:block;
     width:100%;
@@ -1130,6 +1135,11 @@ Version 1.0
         width:100%;
         margin:20px 0 28px;
         border-radius:0;
+    }
+
+    /* Mobile uses a deeper, portrait crop of the cover. */
+    .story-showcase{
+        aspect-ratio:1386 / 1766;
     }
 
     /* ---- Mobile masthead ----

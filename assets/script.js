@@ -178,23 +178,22 @@ title.addEventListener("click", () => {
 
         accordions.forEach((item) => {
 
-    item.classList.remove("open");
+            item.classList.remove("open");
 
-    const itemButton = item.querySelector(".accordion-toggle");
-    if (itemButton) {
-        itemButton.setAttribute("aria-expanded", "false");
-    }
+            const itemButton = item.querySelector(".accordion-toggle");
+            if (itemButton) {
+                itemButton.setAttribute("aria-expanded", "false");
+            }
 
-    const panel = item.querySelector(".accordion-content");
-    panel.style.maxHeight = null;
+            const panel = item.querySelector(".accordion-content");
+            panel.style.maxHeight = null;
 
-    const story = item.querySelector(".story-panel");
+            const story = item.querySelector(".story-panel");
+            if (story) {
+                story.classList.remove("open");
+            }
 
-    if (story) {
-        story.classList.remove("open");
-    }
-
-});
+        });
 
         // Open selected chapter
 
@@ -206,9 +205,18 @@ title.addEventListener("click", () => {
             content.style.maxHeight = content.scrollHeight + "px";
             const story = accordion.querySelector(".story-panel");
 
-if (story) {
-    story.classList.add("open");
-}
+            if (story) {
+                story.classList.add("open");
+            }
+
+            // Once the chapter has finished expanding (so the page is tall
+            // enough to allow it), snap its header to the top of the screen.
+            // An instant scroll is used deliberately: a smooth scroll gets
+            // interrupted by the expand animation and the 3D render loop and
+            // ends up short of the top.
+            setTimeout(() => {
+                accordion.scrollIntoView({ behavior: "instant", block: "start" });
+            }, 640);
 
         }
 

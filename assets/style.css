@@ -1118,7 +1118,7 @@ Version 1.0
         align-items:center;
         gap:14px;
         background:var(--ink);
-        margin:0 -1.5rem 1rem;         /* full-bleed dark hero block */
+        margin:0 -1.5rem 0;            /* full-bleed dark hero block (black strip sits flush below) */
         padding:1.25rem 1.5rem 1.5rem;
     }
 
@@ -1131,6 +1131,28 @@ Version 1.0
         width:66px;
         height:66px;
         border-color:var(--paper);
+    }
+
+    /* Standfirst becomes a solid-black strapline strip along the bottom of
+       the masthead. Flex order places it between the grey block and the
+       animated line; the font scales with the viewport to stay one line. */
+    .hero-strap{
+        order:1;
+        background:#000;
+        color:var(--paper);
+        max-width:none;
+        margin:0 -1.5rem 1rem;         /* flush under the grey block, full-bleed */
+        padding:.7rem 1.5rem;
+        font-size:clamp(9px, 2.7vw, 13px);
+        font-weight:600;
+        line-height:1.35;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .thought-line{
+        order:2;
     }
 
 }

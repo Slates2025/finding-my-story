@@ -266,6 +266,14 @@ body{
 
 }
 
+/* The "Turning complex ideas…" tagline — a consistent brand line in every
+   page's header, sitting above the animated line. Heavier weight than a
+   normal standfirst so it reads as a tagline. (On mobile it becomes the
+   black strapline strip — see the mobile @media block below.) */
+.hero-strap{
+    font-weight:600;
+}
+
 .chapters{
 
 }
@@ -511,7 +519,7 @@ Version 1.0
        margin made this gap oversized. */
     .hero{
 
-        margin-bottom:.85rem;
+        margin-bottom:1.1rem;
 
     }
 
@@ -525,7 +533,7 @@ Version 1.0
 
     .chapters .accordion:first-child{
 
-        padding-top:.3rem;
+        padding-top:.5rem;
 
     }
 
@@ -1119,7 +1127,7 @@ Version 1.0
         gap:14px;
         background:var(--ink);
         margin:0 -1.5rem 0;            /* full-bleed dark hero block (black strip sits flush below) */
-        padding:1.25rem 1.5rem 1.5rem;
+        padding:.8rem 1.5rem;
     }
 
     .hero h1,
@@ -1137,22 +1145,17 @@ Version 1.0
        the masthead. Flex order places it between the grey block and the
        animated line; the font scales with the viewport to stay one line. */
     .hero-strap{
-        order:1;
         background:#000;
         color:var(--paper);
         max-width:none;
         margin:0 -1.5rem 1rem;         /* flush under the grey block, full-bleed */
         padding:.7rem 1.5rem;
-        font-size:clamp(9px, 2.7vw, 13px);
+        font-size:clamp(11px, 3.3vw, 14px);
         font-weight:600;
         line-height:1.35;
         white-space:nowrap;
         overflow:hidden;
         text-overflow:ellipsis;
-    }
-
-    .thought-line{
-        order:2;
     }
 
 }

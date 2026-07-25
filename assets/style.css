@@ -511,7 +511,7 @@ Version 1.0
        margin made this gap oversized. */
     .hero{
 
-        margin-bottom:1.25rem;
+        margin-bottom:.85rem;
 
     }
 
@@ -519,13 +519,13 @@ Version 1.0
     .animated-line{
 
         line-height:1.55;
-        margin-top:1rem;
+        margin-top:.6rem;
 
     }
 
     .chapters .accordion:first-child{
 
-        padding-top:.5rem;
+        padding-top:.3rem;
 
     }
 
@@ -1106,30 +1106,20 @@ Version 1.0
     }
 
     /* ---- Mobile masthead ----
-       Nav + avatar + name + tagline sit together in a full-bleed dark
-       band with off-white text and an off-white avatar stroke, to simplify
-       the typographic hierarchy at the top on small screens. Placed in this
-       final @media block so it beats the later base .hero-branding /
-       .hero-avatar / .top-nav definitions. */
+       The nav sits on the off-white strip at the top; below it, the avatar,
+       name and tagline sit in a full-bleed dark hero block with off-white
+       text and an off-white avatar stroke. Placed in this final @media block
+       so it beats the later base .hero-branding / .hero-avatar definitions. */
     .top-nav{
-        background:var(--ink);
-        gap:1.5rem;
-        margin:-1.5rem -1.5rem 0;      /* pull up + out to the screen edges */
-        padding:1.1rem 1.5rem;
-    }
-    .top-nav a{
-        color:rgba(252,252,250,.7);
-    }
-    .top-nav .active{
-        color:var(--paper);
+        margin-bottom:.85rem;
     }
 
     .hero-branding{
         align-items:center;
         gap:14px;
         background:var(--ink);
-        margin:0 -1.5rem 1.5rem;       /* continue the band, full-bleed */
-        padding:.25rem 1.5rem 1.5rem;
+        margin:0 -1.5rem 1rem;         /* full-bleed dark hero block */
+        padding:1.25rem 1.5rem 1.5rem;
     }
 
     .hero h1,

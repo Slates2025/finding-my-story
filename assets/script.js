@@ -174,9 +174,18 @@ title.addEventListener("click", () => {
 
         const isOpen = accordion.classList.contains("open");
 
-        // Close all chapters
+        // Close all chapters. Transitions are switched off so the whole
+        // reposition happens in a single frame — no mid-animation shifting and
+        // no delayed jump. The layout is final immediately, so we can scroll
+        // the opened chapter's header straight to the top.
 
         accordions.forEach((item) => {
+
+            const panel = item.querySelector(".accordion-content");
+            const story = item.querySelector(".story-panel");
+
+            panel.style.transition = "none";
+            if (story) story.style.transition = "none";
 
             item.classList.remove("open");
 
@@ -185,13 +194,8 @@ title.addEventListener("click", () => {
                 itemButton.setAttribute("aria-expanded", "false");
             }
 
-            const panel = item.querySelector(".accordion-content");
             panel.style.maxHeight = null;
-
-            const story = item.querySelector(".story-panel");
-            if (story) {
-                story.classList.remove("open");
-            }
+            if (story) story.classList.remove("open");
 
         });
 
@@ -209,14 +213,9 @@ title.addEventListener("click", () => {
                 story.classList.add("open");
             }
 
-            // Once the chapter has finished expanding (so the page is tall
-            // enough to allow it), snap its header to the top of the screen.
-            // An instant scroll is used deliberately: a smooth scroll gets
-            // interrupted by the expand animation and the 3D render loop and
-            // ends up short of the top.
-            setTimeout(() => {
-                accordion.scrollIntoView({ behavior: "instant", block: "start" });
-            }, 640);
+            // Layout is final (no transitions), so put the chapter's header at
+            // the top of the screen instantly, in the same frame.
+            accordion.scrollIntoView({ behavior: "instant", block: "start" });
 
         }
 

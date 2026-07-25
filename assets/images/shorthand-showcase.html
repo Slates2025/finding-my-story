@@ -6,9 +6,9 @@
 <title>Deep Trouble — immersive feature</title>
 <style>
   html,body{ margin:0; padding:0; background:#111; }
-  /* Start locked (preview shows the cover, no scroll). The parent page
-     switches overflow to auto when the reader opens the full-screen view. */
-  html,body{ overflow:hidden; }
+  /* This file is only shown inside the full-screen reader now, so it scrolls
+     freely. Momentum scrolling helps iOS. */
+  html{ -webkit-overflow-scrolling:touch; }
 </style>
 </head>
 <body>

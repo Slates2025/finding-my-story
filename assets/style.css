@@ -31,7 +31,6 @@
 }
 
 html {
-    scroll-behavior: smooth;
     scrollbar-gutter: stable;
     overflow-x: hidden;
 }
@@ -794,6 +793,16 @@ Version 1.0
     height: 500px;
     background: #111;
     border: 1px solid #333;
+}
+
+/* Fallback still shown behind the 3D canvas — visible if WebGL can't render the
+   live model (e.g. Firefox on Android). The canvas covers it when the model
+   renders, and it doubles as a loading placeholder. */
+#auckland-scene{
+    background-image:url('images/model-placeholder.jpg');
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
 }
 .hero-branding{
     display:flex;

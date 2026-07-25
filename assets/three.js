@@ -30,9 +30,20 @@ scene.add(directionalLight);
 // Camera
 // -----------------------------------------------------------------------------
 
+// The scene loads inside a collapsed accordion (zero height). Initialising the
+// renderer or camera with a 0 dimension can leave a permanently black canvas on
+// some mobile browsers (notably Firefox on Android), so fall back to a 16:9 box.
+// The ResizeObserver swaps in the true size once the chapter is opened.
+function sceneSize() {
+    const w = container.clientWidth || 800;
+    const h = container.clientHeight || Math.round(w * 9 / 16);
+    return { w, h };
+}
+const _init = sceneSize();
+
 const camera = new THREE.PerspectiveCamera(
     45,
-    container.clientWidth / container.clientHeight,
+    _init.w / _init.h,
     0.1,
     1000
 );
@@ -48,10 +59,7 @@ const renderer = new THREE.WebGLRenderer({
     antialias: true
 });
 
-renderer.setSize(
-    container.clientWidth,
-    container.clientHeight
-);
+renderer.setSize(_init.w, _init.h);
 
 // Cap pixel ratio at 2 — beyond that costs performance for no visible gain.
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));

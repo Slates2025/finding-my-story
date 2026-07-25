@@ -149,10 +149,8 @@ I’ve always enjoyed spotting unnecessary complexity and finding practical ways
 <source media="(max-width:700px)" srcset="assets/images/deep-trouble-cover-mobile.jpg"/>
 <img class="story-showcase-cover" src="assets/images/deep-trouble-cover.jpg" alt="Deep Trouble — an immersive feature on how climate change has reached the world's end"/>
 </picture>
-<iframe class="story-showcase-frame" title="Deep Trouble — immersive Shorthand feature" data-src="assets/images/shorthand-showcase.html"></iframe>
 <div class="story-showcase-fade" aria-hidden="true"></div>
-<button type="button" class="story-showcase-open" onclick="openShorthand()">Read the full story<svg viewbox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg></button>
-<button type="button" class="story-showcase-close" onclick="closeShorthand()" aria-label="Close full story"><svg viewbox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18"></path></svg></button>
+<a class="story-showcase-open" href="assets/images/shorthand-showcase.html" target="_blank" rel="noopener noreferrer">Read the full story<svg viewbox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg></a>
 </div>
 </div>
 <div class="story-content">
@@ -431,31 +429,6 @@ Whether I’m working with oils, designing an interactive experience or building
 <script src="assets/script.js">
 </script>
 <script src="assets/three.js" type="module">
-</script>
-<script>
-// Deep Trouble showcase: the on-page preview is a static cover image; the
-// heavy Shorthand embed only loads the first time the reader opens the
-// full-screen view. Background page scroll is locked while it's open.
-function openShorthand() {
-  var el = document.getElementById("shorthandShowcase");
-  if (!el) return;
-  var f = el.querySelector(".story-showcase-frame");
-  if (f && !f.src) {
-    f.src = f.getAttribute("data-src");   // lazy-load on first open
-  }
-  el.classList.add("is-fullscreen");
-  document.body.style.overflow = "hidden";
-  try { f.contentWindow.scrollTo(0, 0); } catch (e) {}
-}
-function closeShorthand() {
-  var el = document.getElementById("shorthandShowcase");
-  if (!el || !el.classList.contains("is-fullscreen")) return;
-  el.classList.remove("is-fullscreen");
-  document.body.style.overflow = "";
-}
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") closeShorthand();
-});
 </script>
 </body>
 </html>

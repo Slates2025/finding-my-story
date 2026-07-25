@@ -911,7 +911,7 @@ Version 1.0
 .story-showcase{
     position:relative;
     width:min(1200px, calc(100dvw - 48px));
-    aspect-ratio:16 / 9;
+    aspect-ratio:780 / 400;   /* matches the cropped cover banner */
     margin:24px auto 32px;
     overflow:hidden;
     border-radius:6px;
@@ -946,6 +946,7 @@ Version 1.0
     background:var(--steel); color:var(--paper);
     border:0; border-radius:999px;
     font-size:.95rem; font-family:inherit; cursor:pointer;
+    white-space:nowrap;
     transition:background var(--transition);
 }
 .story-showcase-open:hover{ background:var(--ink); }

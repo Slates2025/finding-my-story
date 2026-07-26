@@ -32,13 +32,15 @@
 
 html {
     scrollbar-gutter: stable;
-    overflow-x: hidden;
+    /* clip (not hidden) prevents the horizontal "wobble" without turning the
+       page into a scroll container — which would stop the sticky nav working. */
+    overflow-x: clip;
 }
 
 /* Belt-and-braces: never allow the full-bleed sections to create
    a sliver of horizontal scroll (the left/right "wobble"). */
 body {
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 body{
@@ -77,7 +79,32 @@ body{
 
     gap:2rem;
 
-    margin-bottom:3.2rem;
+    /* Pinned to the top so it's always reachable while scrolling. */
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    padding:0.9rem 0;
+
+    margin-bottom:2.3rem;
+
+}
+
+/* Full-viewport-width background bar behind the nav, so full-bleed media
+   (3D scene, slideshow, video) can't peek past the sides as it scrolls
+   underneath. Centred on the nav, which is itself centred in the viewport. */
+.top-nav::before{
+
+    content:"";
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:50%;
+    width:100vw;
+    transform:translateX(-50%);
+
+    background:var(--paper);
+    z-index:-1;
 
 }
 
@@ -301,8 +328,9 @@ Version 1.0
 
     padding:1.5rem 0 1.8rem 0;
 
-    /* small gap above the header when a chapter is scrolled to the top */
-    scroll-margin-top:16px;
+    /* Clears the pinned nav so an opened chapter's header lands just below it
+       rather than hidden underneath. */
+    scroll-margin-top:4.5rem;
 
 }
 .accordion:last-child{

@@ -890,6 +890,14 @@ Version 1.0
     border-radius:4px;
 }
 
+/* Whenua teaser shown at the full "hero" width, matching the other chapters'
+   media (3D scene, slideshow, video). */
+.story-wide .project-media{
+    display:block;
+    width:min(1200px, calc(100dvw - 48px));
+    margin:24px auto 32px;
+}
+
 .project-button{
     display:inline-flex;
     align-items:center;
@@ -1172,11 +1180,13 @@ Version 1.0
     .story-slideshow,
     .story-stage,
     .story-video,
-    .story-showcase{
+    .story-showcase,
+    .story-wide .project-media{
         width:100%;
         margin:20px 0 28px;
         border-radius:0;
     }
+    .story-wide .project-media img{ border-radius:0; }
 
     /* Mobile uses a deeper, portrait crop of the cover. */
     .story-showcase{

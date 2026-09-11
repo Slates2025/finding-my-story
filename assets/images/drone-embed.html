@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="en-NZ">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iran's Shahed-136 drone</title>
+<style>
+  html,body{margin:0;padding:0;overflow:hidden;background:#ffffff;}
+</style>
+</head>
+<body>
+
+<div class="nzh-datavis" id="nzh-datavis">
+<style>
+@import url('https://rsms.me/inter/inter.css');
+
+.nzh-datavis{
+  /* Herald brand tokens */
+  --nzh-red:#C1121F;
+  --nzh-ink:#111111;
+  --nzh-paper:#ffffff;
+  --nzh-sub-ink:#444444;
+  --nzh-source-ink:#222222;
+  --nzh-rule:#E3DED6;
+  --nzh-mute:#F4F2EE;
+  --nzh-dim:#8B8A88;
+  --nzh-font-sans:"Inter","Inter Variable",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+
+  --nzh-muted-ink:#5C6373;
+
+  /* Data panel runs on the paper, no box. Tokens so it themes with everything
+     else rather than being a locked surface. */
+  --dr-panel-ink:var(--nzh-ink);
+  --dr-panel-label:var(--nzh-muted-ink);
+  --dr-panel-accent:var(--nzh-red);
+  --dr-panel-rule:var(--nzh-rule);
+
+  font-family:var(--nzh-font-sans);
+  font-feature-settings:"cv11","ss01";
+  font-size:16px;
+  line-height:1.4;
+  color:var(--nzh-ink);
+  background:var(--nzh-paper);
+  max-width:700px;
+  margin:0 auto;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.nzh-datavis *,
+.nzh-datavis *::before,
+.nzh-datavis *::after{box-sizing:border-box;}
+.nzh-datavis h2,
+.nzh-datavis p,
+.nzh-datavis table,
+.nzh-datavis figure{margin:0;padding:0;}
+.nzh-datavis [hidden]{display:none !important;}
+
+/* ---------- headline (house pattern: sits on the paper, no masthead strip) -- */
+.nzh-datavis .nzh-hd{padding:12px 14px 0;}
+/* em, not rem: the fragment pins its own 16px base so a host page cannot
+   inflate it. Sizes match the builders (.7 / 1.25 / .88 rem at a 16px root). */
+.nzh-datavis .nzh-kicker{
+  margin:0 0 4px;
+  color:var(--nzh-red);
+  font-weight:800;
+  font-size:0.7em;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+.nzh-datavis .nzh-ttl{
+  margin:0;
+  color:var(--nzh-ink);
+  font-weight:700;
+  font-size:1.25em;
+  line-height:1.15;
+}
+.nzh-datavis .nzh-sub{
+  margin:5px 0 0;
+  color:var(--nzh-sub-ink);
+  font-weight:400;
+  font-size:0.88em;
+  line-height:1.35;
+}
+
+/* ---------- video stage ---------------------------------------------------- */
+.nzh-datavis .dr-stage{
+  position:relative;
+  margin:12px 14px 0;
+  background:#000;
+  border-radius:6px;
+  overflow:hidden;
+  aspect-ratio:3 / 2;           /* replaced at runtime with the real ratio */
+}
+.nzh-datavis .dr-vid{
+  position:absolute;inset:0;
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000;
+  visibility:hidden;
+}
+.nzh-datavis .dr-vid.is-live{visibility:visible;}
+.nzh-datavis .dr-play{
+  position:absolute;
+  inset:0;
+  margin:auto;
+  width:66px;height:66px;
+  border:none;border-radius:50%;
+  background:var(--nzh-red);
+  color:#fff;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  padding:0;
+  box-shadow:0 3px 14px rgba(0,0,0,0.35);
+  transition:transform 160ms ease, background-color 160ms ease;
+}
+.nzh-datavis .dr-play:hover{background:#d8202d;transform:scale(1.04);}
+.nzh-datavis .dr-play:active{transform:scale(0.97);}
+.nzh-datavis .dr-play svg{width:24px;height:24px;display:block;margin-left:3px;}
+.nzh-datavis .dr-note{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:8px 10px;
+  font-size:12px;color:#fff;
+  background:rgba(0,0,0,0.55);
+  text-align:center;
+}
+
+/* ---------- control bar ---------------------------------------------------- */
+.nzh-datavis .dr-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px 14px 0;
+}
+.nzh-datavis .dr-dots{display:flex;gap:7px;align-items:center;}
+.nzh-datavis .dr-dot{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--nzh-rule);
+  transition:background-color 200ms ease;
+}
+.nzh-datavis .dr-dot.is-on{background:var(--nzh-red);}
+.nzh-datavis .dr-btns{display:flex;gap:8px;}
+.nzh-datavis .dr-btn{
+  font-family:var(--nzh-font-sans);
+  font-weight:700;font-size:13px;
+  letter-spacing:0.02em;
+  padding:9px 18px;
+  border-radius:4px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+  min-height:38px;
+}
+.nzh-datavis .dr-btn:focus-visible{outline:2px solid var(--nzh-red);outline-offset:2px;}
+.nzh-datavis .dr-primary{background:var(--nzh-red);color:#fff;}
+.nzh-datavis .dr-primary:hover{background:#d8202d;}
+.nzh-datavis .dr-ghost{background:transparent;color:var(--nzh-ink);border-color:var(--nzh-rule);}
+.nzh-datavis .dr-ghost:hover{border-color:var(--nzh-ink);}
+.nzh-datavis .dr-btn[disabled]{opacity:0.35;cursor:default;}
+.nzh-datavis .dr-btn[disabled]:hover{background:transparent;border-color:var(--nzh-rule);}
+
+/* ---------- data panel: runs on the paper, no fill and no border ------------ */
+.nzh-datavis .dr-panels{
+  margin:10px 14px 0;
+  padding:12px 0 2px;
+  min-height:var(--dr-panel-h, auto);
+  overflow:hidden;
+  /* Always present, never opened or closed. The block is reserved to the
+     tallest panel, so the graphic is one fixed height for a given width and a
+     host page has nothing to chase. */
+}
+.nzh-datavis .dr-intro{
+  margin:0;
+  color:var(--nzh-muted-ink);
+  font-size:0.82em;
+  line-height:1.45;
+}
+.nzh-datavis .dr-panel{animation:dr-fade 200ms ease both;}
+@keyframes dr-fade{
+  from{opacity:0;transform:translateY(4px);}
+  to{opacity:1;transform:none;}
+}
+.nzh-datavis .dr-panel-head{
+  margin:0 0 10px;
+  color:var(--dr-panel-accent);
+  font-weight:800;font-size:12px;
+  text-transform:uppercase;letter-spacing:0.08em;
+}
+.nzh-datavis .dr-table{width:100%;border-collapse:collapse;}
+.nzh-datavis .dr-table tr{border-bottom:1px solid var(--dr-panel-rule);}
+.nzh-datavis .dr-table tr:last-child{border-bottom:none;}
+.nzh-datavis .dr-table td{
+  padding:7px 0;font-size:14px;line-height:1.45;vertical-align:top;
+}
+.nzh-datavis .dr-table .dr-k{
+  color:var(--dr-panel-label);font-weight:500;
+  white-space:nowrap;padding-right:18px;width:1%;
+}
+.nzh-datavis .dr-table .dr-v{color:var(--dr-panel-ink);font-weight:400;}
+.nzh-datavis .dr-table tr:first-child td{padding-top:0;}
+
+/* ---------- footer: 2px ink rule, source left, H bottom-right ---------------
+   Values taken from HERALD_MAP_BUILDER.html so this matches the other Herald
+   graphics. The H inherits colour via currentColor on .nzh-logo.            */
+.nzh-datavis .nzh-foot{
+  margin:12px 14px 12px;
+  padding-top:9px;
+  border-top:2px solid var(--nzh-ink);
+  display:flex;flex-wrap:nowrap;align-items:flex-end;
+  justify-content:space-between;gap:10px;
+}
+.nzh-datavis .nzh-src{
+  margin:0;
+  flex:1 1 auto;min-width:0;
+  font-size:0.6875em;line-height:1.35;
+  font-style:italic;
+  color:var(--nzh-source-ink);
+}
+.nzh-datavis .nzh-logo{flex-shrink:0;margin-left:10px;color:var(--nzh-ink);line-height:0;}
+.nzh-datavis .nzh-logo svg{width:26px;height:33px;display:block;}
+
+@media (max-width:420px){
+  .nzh-datavis .nzh-ttl{font-size:18px;}
+  .nzh-datavis .dr-btn{padding:9px 14px;}
+  .nzh-datavis .dr-table .dr-k{
+    white-space:normal;width:34%;padding-right:12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .nzh-datavis *{transition:none !important;animation:none !important;}
+}
+
+/* Dark mode is deliberately held off for this embed (see style doc: election
+   embeds sit on a white host panel). Tokens kept so it can be switched on by
+   changing the selector below to @media (prefers-color-scheme: dark).        */
+.nzh-datavis.dr-enable-dark{
+  --nzh-paper:#121212;
+  --nzh-ink:#ececec;
+  --nzh-sub-ink:#ffffff;
+  --nzh-source-ink:#cfcfcf;
+  --nzh-rule:#2a2a2a;
+  --nzh-mute:#1c1c1c;
+  --nzh-dim:#888888;
+  --nzh-red:#FF5566;
+  --nzh-muted-ink:#b6b6b6;
+}
+</style>
+
+  <div class="nzh-hd">
+    <p class="nzh-kicker">Loitering munition</p>
+    <h2 class="nzh-ttl">Iran's Shahed-136 drone</h2>
+    <p class="nzh-sub">How it is built, what it carries and how far it can fly.</p>
+  </div>
+
+  <div class="dr-stage" id="dr-stage">
+    <video id="dr-vid" class="dr-vid"
+           src="DRONE5.mp4"
+           muted playsinline webkit-playsinline preload="metadata"
+           aria-label="Animation of an Iranian Shahed-136 drone in flight"></video>
+    <button type="button" class="dr-play" id="dr-play" aria-label="Start the animation">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg>
+    </button>
+    <video id="dr-vid2" class="dr-vid"
+           src="DRONE5.mp4"
+           muted playsinline webkit-playsinline preload="metadata"
+           aria-hidden="true"></video>
+    <p class="dr-note" id="dr-note" hidden></p>
+  </div>
+
+  <div class="dr-bar">
+    <div class="dr-dots" id="dr-dots" aria-hidden="true">
+      <span class="dr-dot"></span><span class="dr-dot"></span><span class="dr-dot"></span>
+    </div>
+    <div class="dr-btns">
+      <button type="button" class="dr-btn dr-ghost" id="dr-back">Back</button>
+      <button type="button" class="dr-btn dr-primary" id="dr-next">Start</button>
+    </div>
+  </div>
+
+  <div class="dr-panels" id="dr-panels" aria-live="polite">
+    <p class="dr-intro" id="dr-intro">Three stages. Press Start to begin.</p>
+    <div class="dr-panel" id="dr-p0" hidden>
+      <p class="dr-panel-head">01 Classification</p>
+      <table class="dr-table">
+        <tr><td class="dr-k">Type</td><td class="dr-v">Loitering munition unmanned aerial vehicle (UAV)</td></tr>
+        <tr><td class="dr-k">Introduced</td><td class="dr-v">2021</td></tr>
+        <tr><td class="dr-k">Origin</td><td class="dr-v">Iran</td></tr>
+        <tr><td class="dr-k">Manufacturer</td><td class="dr-v">Iran Aircraft Manufacturing Company (HESA)</td></tr>
+      </table>
+    </div>
+    <div class="dr-panel" id="dr-p1" hidden>
+      <p class="dr-panel-head">02 Specifications</p>
+      <table class="dr-table">
+        <tr><td class="dr-k">Length</td><td class="dr-v">3.5m</td></tr>
+        <tr><td class="dr-k">Wingspan</td><td class="dr-v">2.5m</td></tr>
+        <tr><td class="dr-k">Max takeoff weight</td><td class="dr-v">200kg</td></tr>
+        <tr><td class="dr-k">Max speed</td><td class="dr-v">185km/h</td></tr>
+        <tr><td class="dr-k">Max range</td><td class="dr-v">2000km</td></tr>
+        <tr><td class="dr-k">Cost (est)</td><td class="dr-v">USD $20,000 – $80,000</td></tr>
+      </table>
+    </div>
+    <div class="dr-panel" id="dr-p2" hidden>
+      <p class="dr-panel-head">03 Systems and warhead</p>
+      <table class="dr-table">
+        <tr><td class="dr-k">Autonomy</td><td class="dr-v">Autonomous flight via onboard AI or pre-programming</td></tr>
+        <tr><td class="dr-k">Launch</td><td class="dr-v">Rocket-assisted take-off from truck-mounted racks, in salvo or swarm launches</td></tr>
+        <tr><td class="dr-k">Warhead</td><td class="dr-v">One warhead of approximately 30kg to 50kg, generally a high-explosive fragmentation charge</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="nzh-foot">
+    <p class="nzh-src">NZ Herald graphic / Paul Slater</p>
+    <div class="nzh-logo" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80.99 101.41" role="img" aria-label="NZ Herald"><g fill="currentColor"><path d="M34.21.79c-5.01,7.05-8.42,10.01-13.86,10.01-4.06,0-9.77-2.61-13.63-2.61-3.07,0-4.32.7-6.24,2.27l-.48-.8C2.98,4.2,8.02.34,12.52.34s11.61,2.84,13.15,2.84c2.86,0,5.46-1.14,7.96-3.18l.58.79h0Z"/><path d="M33.41,10.34c-1.82,2.26-3.53,5.66-3.53,10.32v36c0,10.12-6.82,16.81-15.23,21.7l-1.56-.47c3.06-3.27,4.98-7.6,4.98-12.95v-4.77c-1.69-.66-2.95-1.14-5.21-1.14-5.01,0-7.51,2.27-8.41,4.2l-.9-.9c.45-7.16,3.85-13.42,9.63-13.42,1.71,0,3.88.69,4.89.92v-7.04c-1.69-.79-2.99-1.12-4.98-1.12-3.54,0-6.36.58-8.64,4.2l-.79-.9c.1-7.39,3.63-13.29,9.76-13.29,1.85,0,3.9.66,4.65.89v-4.77c0-7.61,5.21-14.07,14.3-17.83l1.05.35h0Z"/><path d="M50.43,81.09V4.65c-2.63.1-4.77,1.83-4.77,6.25v46.45c0,9.25-6.99,15.5-13.17,18.94,6.79.12,13.58,2.33,17.94,4.79h0ZM80.99,35.9c-1.38,1.01-2.26,3.16-2.26,6v38.62c0,9.92-8.97,18.07-19.21,20.89l-1.25-.68c4.78-4.19,8.63-9.43,8.63-17.59v-42.01l-8.63-6.04-6.23,4.66v42.35l.22.13,4.22-4.09,1.35,1.24-12.71,12.28c-3.99-3.19-10.22-4.89-17.6-4.89-8.18,0-13.4,1.35-18.07,4.99l-.67-1.36c3.47-6.48,11.98-12.52,20.09-13.83,2.14-2.37,4.9-6.44,4.9-13.31V23.28c0-6.81,1.47-11.44,9.42-17.26C47.69,2.7,52.47.23,56.58.23c6.81,0,11.21,1.74,15.66,5.45l3.63-3.28,1.27,1.11-12.4,11.82c-2.37-4.11-6.91-9.77-12.71-10.55v32.91c11.26-8.01,14.3-10.9,14.3-10.9.91.57,11.35,6.94,14.65,8.87v.23h0Z"/></g></svg>
+    </div>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+  var root = document.querySelector("#nzh-datavis");
+  if(!root) return;
+  var $ = function(s){ return root.querySelector(s); };
+
+  /* ------------------------------------------------------------------ config
+     One entry per stop, in order.
+       panelAt  seconds where the data appears and the hold begins
+       holdEnd  seconds where the hold loops back to panelAt.
+                null means no hold: playback pauses on the frame instead.
+
+     24s render with looping holds.                                           */
+  var STEPS = [
+    { panelAt: 2,  holdEnd: 6  },
+    { panelAt: 9,  holdEnd: 13 },
+    { panelAt: 18, holdEnd: 22 }
+  ];
+
+  /* To go back to pausing on the frame instead of looping, set every holdEnd
+     to null. Reduced-motion readers get that behaviour automatically.        */
+
+  var stage  = $("#dr-stage");
+  var playBtn= $("#dr-play");
+  var backBtn= $("#dr-back");
+  var nextBtn= $("#dr-next");
+  var note   = $("#dr-note");
+  var wrap   = $("#dr-panels");
+  var intro  = $("#dr-intro");
+  var dots   = Array.prototype.slice.call(root.querySelectorAll(".dr-dot"));
+  var panels = [$("#dr-p0"), $("#dr-p1"), $("#dr-p2")];
+
+  /* Two players over one stage. The visible one plays; the hidden one sits
+     pre-seeked to the loop start. At the loop point they trade places, so the
+     seek is never performed by the element anyone is looking at. */
+  var els = [$("#dr-vid"), $("#dr-vid2")];
+  var cur = 0;
+  function V(){ return els[cur]; }
+  function spare(){ return els[1 - cur]; }
+  function show(i){
+    els[i].classList.add("is-live");
+    els[1 - i].classList.remove("is-live");
+  }
+
+  var LAST = STEPS.length - 1;
+  var EPS  = 0.02;
+
+  var idx     = -1;
+  var goal    = null;
+  var playing = false;
+  var holding = false;
+  var token   = 0;
+
+  var stillMQ = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+  function wantsStill(){ return !!(stillMQ && stillMQ.matches); }
+
+  function duration(){
+    var d = V().duration;
+    return (isFinite(d) && d > 0) ? d : null;
+  }
+  function clamp(t){
+    var d = duration();
+    if(d !== null) t = Math.min(t, d - 0.05);
+    return Math.max(0, t);
+  }
+  function panelTime(i){ return clamp(STEPS[i].panelAt); }
+  function holdEnd(i){
+    var h = STEPS[i].holdEnd;
+    if(h === null || h === undefined) return null;
+    var t = clamp(h);
+    return (t > panelTime(i) + 0.1) ? t : null;
+  }
+  function hasHold(i){ return i >= 0 && holdEnd(i) !== null && !wantsStill(); }
+
+  /* Seeking needs the host to answer HTTP Range requests. Without them the
+     browser reports seekable as [0,0] and every assignment snaps to zero. */
+  function canSeek(el, t){
+    var s = el.seekable;
+    if(!s || s.length === 0) return false;
+    for(var i = 0; i < s.length; i++){
+      if(t >= s.start(i) - 0.01 && t <= s.end(i) + 0.01) return true;
+    }
+    return false;
+  }
+  function seekEl(el, t){
+    if(el.readyState >= 1){
+      if(!canSeek(el, t)) return;
+      try{ el.currentTime = t; }catch(e){}
+    }else{
+      el.addEventListener("loadedmetadata", function once(){
+        el.removeEventListener("loadedmetadata", once);
+        if(canSeek(el, t)){ try{ el.currentTime = t; }catch(e){} }
+      });
+    }
+  }
+  function seek(t){ seekEl(V(), t); }
+
+  /* Park the hidden element on the loop start, ready for the next swap. It has
+     the whole hold, four seconds, to get there. */
+  function arm(i){
+    var sp = spare();
+    try{ sp.pause(); }catch(e){}
+    seekEl(sp, panelTime(i));
+  }
+
+  function ready(el, i){
+    /* readyState 3 is HAVE_FUTURE_DATA: enough buffered to play on, not merely
+       to paint one frame. Anything less and the swap would stall in view. */
+    return el.readyState >= 3 && Math.abs(el.currentTime - panelTime(i)) < 0.25;
+  }
+
+  function doSwap(i){
+    var oldEl = V();
+    cur = 1 - cur;
+    show(cur);
+    var p;
+    try{ p = V().play(); }catch(e){ p = null; }
+    if(p && p.catch) p.catch(function(){});
+    try{ oldEl.pause(); }catch(e){}
+    arm(i);                                  // the one just hidden becomes next
+    schedule(token);                         // the watcher follows the new element
+  }
+
+  /* First time through, the spare may not have buffered the loop region yet:
+     it is a separate element with its own buffer, so on a cold cache it has to
+     fetch it. Rather than seeking the visible element and tearing, hold the
+     live frame still and swap the moment the spare is genuinely ready. A brief
+     freeze inside a turbulence hold is close to invisible; a torn frame is not. */
+  var waitTimer = 0;
+  function stopWaiting(){ clearTimeout(waitTimer); waitTimer = 0; }
+
+  function swapToSpare(i){
+    if(ready(spare(), i)){ stopWaiting(); doSwap(i); return; }
+    try{ V().pause(); }catch(e){}
+    arm(i);
+    if(waitTimer) return;
+    var tries = 0;
+    (function poll(){
+      waitTimer = setTimeout(function(){
+        if(!holding){ waitTimer = 0; return; }
+        var sp = spare();
+        if(ready(sp, i)){ waitTimer = 0; doSwap(i); return; }
+        if(++tries > 40){                    // ~4s: give up and seek in place
+          waitTimer = 0;
+          seek(panelTime(i));
+          attempt(token, i, true);
+          arm(i);
+          schedule(token);
+          return;
+        }
+        poll();
+      }, 100);
+    })();
+  }
+
+  function schedule(tok){
+    if(tok !== token || !playing) return;
+    var el = V();
+    var step = function(){ tick(tok); };
+    if(el.requestVideoFrameCallback){ el.requestVideoFrameCallback(step); }
+    else{ requestAnimationFrame(step); }
+  }
+  function tick(tok){
+    if(tok !== token || !playing) return;
+    if(goal !== null){
+      if(V().currentTime >= panelTime(goal) - EPS){
+        arrive(tok);
+        if(playing) schedule(tok);
+        return;
+      }
+    }else if(holding){
+      var end = holdEnd(idx);
+      if(end !== null && V().currentTime >= end - EPS){ swapToSpare(idx); }
+    }
+    schedule(tok);
+  }
+
+  function arrive(tok){
+    if(tok !== token) return;
+    var i = goal;
+    goal = null;
+    if(i !== null) idx = i;
+    if(hasHold(idx)){
+      holding = true;
+      arm(idx);                              // prepare the swap while the hold runs
+    }else{
+      holding = false; playing = false;
+      try{ V().pause(); }catch(e){}
+      if(idx >= 0) seek(panelTime(idx));
+    }
+    render();
+  }
+
+  function attempt(tok, i, retry){
+    var el = V(), p;
+    try{ p = el.play(); }catch(e){ p = null; }
+    if(!p || !p.then) return;
+    p.catch(function(){
+      if(tok !== token) return;
+      if(el.error){ land(i); return; }
+      if(retry){ attempt(tok, i, false); return; }
+      land(i);
+    });
+  }
+
+  /* Every deliberate navigation returns to element 0, so only the hold loop
+     ever runs on the second player. */
+  function reset(){
+    stopWaiting();
+    if(cur !== 0){
+      try{ els[cur].pause(); }catch(e){}
+      cur = 0; show(0);
+    }
+    try{ els[1].pause(); }catch(e){}
+  }
+
+  function playTo(i){
+    token++;
+    var tok = token;
+    reset();
+    goal = i; playing = true; holding = false;
+    setNote("");
+    render();
+    arm(i);                    // buffer the loop point during the run-up to it
+    attempt(tok, i, true);
+    schedule(tok);
+  }
+
+  function land(i){
+    token++;
+    var tok = token;
+    reset();
+    goal = null; idx = i;
+    setNote("");
+    if(i >= 0 && hasHold(i)){
+      playing = true; holding = true;
+      seek(panelTime(i));
+      render();
+      attempt(tok, i, true);
+      arm(i);
+      schedule(tok);
+      return;
+    }
+    playing = false; holding = false;
+    try{ V().pause(); }catch(e){}
+    seek(i < 0 ? 0 : panelTime(i));
+    render();
+  }
+
+  function onNext(){
+    if(goal !== null){ land(goal); return; }
+    if(idx < 0){ playTo(0); return; }
+    if(idx < LAST){
+      var from = holdEnd(idx);
+      reset();
+      if(from !== null) seek(from);
+      playTo(idx + 1);
+      return;
+    }
+    land(-1); playTo(0);
+  }
+  function onBack(){
+    var from = (goal !== null) ? goal : idx;
+    land(Math.max(-1, from - 1));
+  }
+
+  function setNote(msg){
+    if(!msg){ note.hidden = true; note.textContent = ""; return; }
+    note.textContent = msg; note.hidden = false;
+  }
+
+  function render(){
+    var arrived = (goal === null && idx >= 0);
+    dots.forEach(function(d,i){ d.classList.toggle("is-on", i <= idx); });
+    panels.forEach(function(p,i){ p.hidden = !(arrived && i === idx); });
+    intro.hidden = arrived;
+    playBtn.hidden = !(idx < 0 && goal === null);
+    backBtn.disabled = (idx < 0 && goal === null);
+    nextBtn.textContent = (idx < 0 && goal === null) ? "Start"
+                        : (arrived && idx >= LAST) ? "Replay" : "Next";
+  }
+
+  var lastW = -1;
+  function lockPanelHeight(){
+    var w = root.clientWidth;
+    if(w === lastW || w === 0) return;
+    lastW = w;
+    wrap.style.removeProperty("--dr-panel-h");
+    var max = 0;
+    panels.concat([intro]).forEach(function(p){
+      var hid = p.hidden; p.hidden = false;
+      max = Math.max(max, p.offsetHeight);
+      p.hidden = hid;
+    });
+    var cs  = getComputedStyle(wrap);
+    var pad = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+    if(max > 0) wrap.style.setProperty("--dr-panel-h", (max + pad) + "px");
+  }
+
+  els.forEach(function(el, i){
+    el.addEventListener("loadedmetadata", function(){
+      if(i === 0 && el.videoWidth && el.videoHeight){
+        stage.style.aspectRatio = el.videoWidth + " / " + el.videoHeight;
+        lockPanelHeight();
+      }
+    });
+    el.addEventListener("error", function(){
+      if(i !== 0) return;                    // the spare failing is not fatal
+      playing = false; holding = false; goal = null;
+      setNote("The video could not be loaded.");
+      render();
+    });
+  });
+  els[0].addEventListener("waiting", function(){ if(playing) setNote("Loading"); });
+  els[0].addEventListener("playing", function(){ setNote(""); });
+  els.forEach(function(el){
+    el.addEventListener("ended", function(){
+      if(!playing || el !== V()) return;
+      if(holding && idx >= 0){ swapToSpare(idx); return; }
+      arrive(token);
+    });
+  });
+
+  function warm(){
+    try{
+      els[0].preload = "auto";
+      els[1].preload = "auto";
+      seekEl(els[1], panelTime(0));   // start buffering hold 1 before Start is pressed
+    }catch(e){}
+  }
+  stage.addEventListener("pointerenter", warm, {once:true});
+  nextBtn.addEventListener("focus", warm, {once:true});
+
+  playBtn.addEventListener("click", onNext);
+  nextBtn.addEventListener("click", onNext);
+  backBtn.addEventListener("click", onBack);
+  root.addEventListener("keydown", function(e){
+    if(e.key === "ArrowRight"){ onNext(); }
+    else if(e.key === "ArrowLeft"){ if(!backBtn.disabled) onBack(); }
+  });
+
+  if(window.ResizeObserver){
+    new ResizeObserver(function(){ lockPanelHeight(); }).observe(root);
+  }else{
+    window.addEventListener("resize", lockPanelHeight);
+  }
+  if(stillMQ && stillMQ.addEventListener){
+    stillMQ.addEventListener("change", function(){
+      if(wantsStill() && holding){ land(idx); }
+    });
+  }
+
+  show(0);
+  lockPanelHeight();
+  render();
+})();
+</script>
+</div>
+
+<script>
+/* Self-size the iframe. srcdoc is same-origin so window.frameElement works;
+   postMessage is the fallback for a cross-origin hosted embed. Height is only
+   written when it actually changes, and scrollbars are off, so there is no
+   resize loop. */
+(function(){
+  var lastH = 0, raf = 0;
+  function apply(){
+    /* Measure the body, not documentElement.scrollHeight: scrollHeight is
+       floored at the viewport height, so if the iframe starts taller than the
+       content it can only ever grow, never shrink back. */
+    var h = Math.ceil(document.body.getBoundingClientRect().height);
+    if(!h || Math.abs(h - lastH) < 2) return;
+    lastH = h;
+    try{
+      if(window.frameElement){ window.frameElement.style.height = h + "px"; return; }
+    }catch(e){}
+    if(window.parent !== window){
+      window.parent.postMessage({ nzhEmbed: "drone-shahed136", height: h }, "*");
+    }
+  }
+  function bump(){ cancelAnimationFrame(raf); raf = requestAnimationFrame(apply); }
+  if(window.ResizeObserver){ new ResizeObserver(bump).observe(document.body); }
+  window.addEventListener("load", bump);
+  window.addEventListener("resize", bump);
+  bump();
+})();
+</script>
+
+</body>
+</html>

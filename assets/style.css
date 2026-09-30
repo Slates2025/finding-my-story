@@ -300,6 +300,11 @@ body{
     font-weight:600;
 }
 
+/* Intro paragraph on the CV and Contact pages. */
+.standfirst-bold{
+    font-weight:600;
+}
+
 .chapters{
 
 }
@@ -801,6 +806,14 @@ Version 1.0
 .story-content p {
     color: #3f3f3f;
     line-height: 1.8;
+}
+
+/* "For example" body copy: a medium weight so it reads as distinct from the
+   chapter text above it. Plain Helvetica has no medium, so this uses
+   Helvetica Neue Medium where available (falls back to regular). */
+.story-content p:not(.story-label) {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 500;
 }
 .story-wide model-viewer {
     width: 100%;

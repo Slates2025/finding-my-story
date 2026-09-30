@@ -30,8 +30,17 @@ const jobTitles = [
     "Illustrator"
 ];
 
+const contactWords = [
+    "Projects",
+    "Ideas",
+    "Questions",
+    "Collaborations",
+    "Conversations"
+];
+
 const thoughtElement = document.getElementById("thoughts");
 const jobTitleElement = document.getElementById("jobTitles");
+const contactElement = document.getElementById("contactLine");
 
 function startTyping(element, items) {
 
@@ -70,10 +79,20 @@ function startTyping(element, items) {
 
     reserveSpace();
 
+    // Ticker mode (homepage strap): the line never wraps. Once it's wider
+    // than its window, the track glides left so the newest word stays in view.
+    const isTicker = container.classList.contains("ticker-track");
+
+    function slide() {
+        if (!isTicker) return;
+        const overflow = container.scrollWidth - container.parentElement.clientWidth;
+        container.style.transform = "translateX(" + -Math.max(0, overflow) + "px)";
+    }
+
     let resizeTimer;
     window.addEventListener("resize", function () {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(reserveSpace, 150);
+        resizeTimer = setTimeout(function () { reserveSpace(); slide(); }, 150);
     });
 
     let wordIndex = 0;
@@ -81,10 +100,16 @@ function startTyping(element, items) {
 
     function typeNextCharacter() {
 
+        // The masthead cogs turn only while the ticker is typing.
+        const hero = isTicker ? container.closest(".hero") : null;
+
         if (wordIndex >= items.length) {
+            if (hero) hero.classList.remove("is-turning");
             setTimeout(fadeOut, 2500);
             return;
         }
+
+        if (hero) hero.classList.add("is-turning");
 
         const currentWord = items[wordIndex];
 
@@ -111,6 +136,7 @@ function startTyping(element, items) {
 
         // Reveal one more character in the current chunk's text node.
         element.lastChild.lastChild.textContent = currentWord.slice(0, charIndex);
+        slide();
 
         if (charIndex < currentWord.length) {
 
@@ -139,6 +165,13 @@ function startTyping(element, items) {
             charIndex = 0;
 
             element.innerHTML = "";
+            if (isTicker) {
+                // Snap back to the start while invisible.
+                container.style.transition = "none";
+                container.style.transform = "translateX(0)";
+                void container.offsetWidth;
+                container.style.transition = "";
+            }
             element.style.opacity = "1";
 
             typeNextCharacter();
@@ -153,6 +186,7 @@ function startTyping(element, items) {
 
 startTyping(thoughtElement, words);
 startTyping(jobTitleElement, jobTitles);
+startTyping(contactElement, contactWords);
 
 
 /*------------------------------------------------
@@ -249,7 +283,8 @@ window.addEventListener("resize", () => {
 
 function fitHeroStrap() {
 
-    const strap = document.querySelector(".hero-strap");
+    // The homepage ticker strap manages its own width, so skip it.
+    const strap = document.querySelector(".hero-strap:not(.hero-ticker)");
     if (!strap) return;
 
     // Only the mobile black strip is width-constrained; on desktop the

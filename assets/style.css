@@ -1239,3 +1239,167 @@ Version 1.0
     }
 
 }
+
+/* ---- Desktop masthead ----
+   Same look as the mobile masthead: a dark grey band with off-white name,
+   title and avatar stroke, then a black strapline strip flush below it.
+   Both bands run the full width of the window, while their content stays
+   lined up with the 760px text column (box-shadow + clip-path full-bleed). */
+@media (min-width:701px){
+
+    /* Tighter run above and below the nav, so the masthead sits higher. */
+    .page{
+        padding-top:.75rem;
+    }
+
+    .top-nav{
+        padding:.75rem 0;
+        margin-bottom:1rem;
+    }
+
+    .hero-branding{
+        align-items:center;
+        background:var(--ink);
+        box-shadow:0 0 0 100vmax var(--ink);
+        clip-path:inset(0 -100vmax);
+        padding:1.75rem 0;
+    }
+
+    .hero h1,
+    .hero h2{
+        color:var(--paper);
+    }
+
+    .hero-avatar{
+        border-color:var(--paper);
+    }
+
+    .hero-strap{
+        background:#000;
+        color:var(--paper);
+        box-shadow:0 0 0 100vmax #000;
+        clip-path:inset(0 -100vmax);
+        max-width:none;
+        margin:-1px 0 1.6rem;          /* 1px overlap hides a sub-pixel seam between the bands */
+        padding:.9rem 0;
+        line-height:1.4;
+    }
+
+}
+
+/* ---- Homepage ticker strap ----
+   The animated line lives in the black strip. It never wraps: once it's
+   wider than the window, script.js slides the track left so the newest word
+   stays in view. The tagline is kept as hidden text for screen readers. */
+.visually-hidden{
+    position:absolute !important;
+    width:1px;
+    height:1px;
+    margin:-1px;
+    padding:0;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    white-space:nowrap;
+    border:0;
+}
+
+.hero-ticker{
+    margin-bottom:0;
+    text-overflow:clip;
+}
+
+.ticker-window{
+    overflow:hidden;
+}
+
+.hero-ticker .ticker-track{
+    display:block;
+    width:max-content;
+    white-space:nowrap;
+    margin:0;
+    line-height:1.4;
+    color:var(--paper);
+    font-size:inherit;
+    font-weight:600;
+    transition:transform 380ms cubic-bezier(.22,.61,.36,1);
+}
+
+.hero-ticker .thought-dot,
+.hero-ticker .cursor{
+    background:var(--paper);
+}
+
+.hero-ticker .cursor{
+    top:3px;
+}
+
+@media (max-width:700px){
+    .hero-ticker{
+        font-size:14px;
+        margin-bottom:0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .hero-ticker .ticker-track{ transition:none; }
+}
+
+/* ---- Masthead cogs ----
+   A network of meshing cogs behind the avatar and name. They're paused by
+   default and turn only while the ticker is typing (script.js adds
+   .is-turning to the header), so the machine appears to feed out the line.
+   Meshing cogs turn in opposite directions; each one's duration is scaled
+   to its tooth count so the teeth stay in step. */
+.hero-branding{
+    position:relative;
+}
+
+.hero-branding > .hero-avatar,
+.hero-branding > .hero-text{
+    position:relative;
+    z-index:1;
+}
+
+.hero-cogs{
+    position:absolute;
+    top:0;
+    left:50%;
+    height:100%;
+    width:auto;
+    aspect-ratio:1100 / 220;
+    transform:translateX(-50%);
+    overflow:visible;
+    z-index:0;
+    pointer-events:none;
+    fill:#000;
+    opacity:.28;
+}
+
+.hero-cogs .cog{
+    transform-box:fill-box;
+    transform-origin:center;
+    animation:cog-spin linear infinite;
+    animation-play-state:paused;
+}
+
+.hero-cogs .ccw{
+    animation-direction:reverse;
+}
+
+.hero.is-turning .hero-cogs .cog{
+    animation-play-state:running;
+}
+
+@keyframes cog-spin{
+    to{ transform:rotate(360deg); }
+}
+
+@media (max-width:700px){
+    .hero-branding{
+        overflow:hidden;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .hero-cogs .cog{ animation:none; }
+}

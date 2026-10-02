@@ -1494,6 +1494,11 @@ a.work-media:hover img{
     margin:0 auto;
 }
 
+/* Keep the featured 3D model's caption tucked up under it. */
+.work-feature .story-stage{
+    margin-bottom:0;
+}
+
 .work-tag{
     margin:0 0 .35rem;
     font-size:.72rem;

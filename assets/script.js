@@ -208,10 +208,15 @@ title.addEventListener("click", () => {
 
         const isOpen = accordion.classList.contains("open");
 
+        // Where the clicked chapter's header sits on screen right now. After the
+        // open/close we keep it in exactly the same spot, so the page doesn't
+        // jump: the banner stays in view until the reader scrolls it away.
+        const headerTopBefore = accordion.getBoundingClientRect().top;
+
         // Close all chapters. Transitions are switched off so the whole
         // reposition happens in a single frame — no mid-animation shifting and
-        // no delayed jump. The layout is final immediately, so we can scroll
-        // the opened chapter's header straight to the top.
+        // no delayed jump. The layout is final immediately, so the header can
+        // be held in place (below).
 
         accordions.forEach((item) => {
 
@@ -247,10 +252,14 @@ title.addEventListener("click", () => {
                 story.classList.add("open");
             }
 
-            // Layout is final (no transitions), so put the chapter's header at
-            // the top of the screen instantly, in the same frame.
-            accordion.scrollIntoView({ behavior: "instant", block: "start" });
+        }
 
+        // Layout is final (no transitions). If a chapter above this one just
+        // closed, the header would have shifted up; scroll by exactly that
+        // amount so it stays put. Otherwise nothing moves at all.
+        const shift = accordion.getBoundingClientRect().top - headerTopBefore;
+        if (shift !== 0) {
+            window.scrollBy({ top: shift, behavior: "instant" });
         }
 
     });

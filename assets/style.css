@@ -1565,26 +1565,18 @@ a.work-media:hover img{
     }
 }
 
-/* Supporting projects use a 3:2 frame (the wobble-seam clip's own ratio). */
+/* Supporting projects: every card gets the same frame — 16:9, white, with a
+   hairline border — so pieces with white, cream or dark backgrounds read as
+   a tidy set and the rows sit level. Media is fitted whole inside the frame
+   (never cropped); the Viva screenshot is pre-cropped to 16:9 at its rule. */
 .work-grid .work-media{
-    aspect-ratio:3 / 2;
-}
-
-/* Widescreen films (with player controls) keep their full 16:9 frame. */
-.work-grid .work-media-wide{
     aspect-ratio:16 / 9;
-    background:#000;
-}
-.work-media-wide video{
-    object-fit:contain;
-}
-.work-media-wide.work-placeholder{
-    background:#e6e8eb;
-}
-
-/* Print shots on a white background: no black frame behind them. */
-.work-grid .work-media-print{
     background:#fff;
+    border:1px solid var(--line);
+}
+.work-grid .work-media img,
+.work-grid .work-media video{
+    object-fit:contain;
 }
 
 .work-grid{

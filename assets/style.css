@@ -808,6 +808,11 @@ Version 1.0
     line-height: 1.8;
 }
 
+/* A second example within the same "For example" panel. */
+.story-content h3.story-next {
+    margin-top: 3rem;
+}
+
 /* "For example" body copy: a medium weight so it reads as distinct from the
    chapter text above it. Plain Helvetica has no medium, so this uses
    Helvetica Neue Medium where available (falls back to regular). */
@@ -1415,4 +1420,186 @@ Version 1.0
 
 @media (prefers-reduced-motion: reduce){
     .hero-cogs .cog{ animation:none; }
+}
+
+/* ---- Draft chapters ----
+   Hidden on the live site until launch; shown locally or with ?draft
+   (the switch is a small script in index.html's <head>). */
+.draft-chapter{
+    display:none;
+}
+.show-drafts .draft-chapter{
+    display:block;
+}
+
+/* ---- Selected work chapter ----
+   A visual-first chapter: one featured project at full width, then
+   supporting projects two-up (stacked on mobile). */
+.work-showcase{
+    width:min(1200px, calc(100dvw - 48px));
+    margin:28px auto 8px;
+}
+
+.work-item{
+    margin:0 0 40px;
+}
+
+.work-media{
+    display:block;
+    width:100%;
+    aspect-ratio:16 / 9;
+    border-radius:4px;
+    overflow:hidden;
+    background:#e6e8eb;
+}
+
+.work-media img,
+.work-media video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+/* Screenshots taller than the frame: keep the top (headline and first rows)
+   and crop from the bottom. */
+.work-media-top img{
+    object-position:top center;
+}
+
+a.work-media img{
+    transition:transform 600ms cubic-bezier(.22,.61,.36,1);
+}
+a.work-media:hover img{
+    transform:scale(1.02);
+}
+
+/* Stand-in until the real image or clip is dropped in. */
+.work-placeholder{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--steel);
+    font-size:.85rem;
+    letter-spacing:.03em;
+    border:1px dashed #c3c8cf;
+}
+
+.work-caption{
+    max-width:700px;
+    padding-top:14px;
+}
+
+.work-feature .work-caption{
+    margin:0 auto;
+}
+
+.work-tag{
+    margin:0 0 .35rem;
+    font-size:.72rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--steel);
+}
+
+.work-title{
+    margin:0 0 .35rem;
+    font-size:1.3rem;
+    font-weight:500;
+    color:var(--ink);
+}
+
+.work-grid .work-title{
+    font-size:1.1rem;
+}
+
+.work-context{
+    margin:0;
+    font-size:1rem;
+    line-height:1.6;
+    color:#3f3f3f;
+}
+
+.work-link{
+    display:inline-block;
+    margin-top:.6rem;
+    font-size:.95rem;
+    color:var(--steel);
+    text-underline-offset:3px;
+    transition:color var(--transition);
+}
+.work-link:hover{
+    color:var(--ink);
+}
+.work-link::after{
+    content:" \2197";
+}
+
+/* Featured election project: two live graphics stacked, each at its native
+   700px width. Each iframe reports its own height (script.js "Work embeds"). */
+.work-pair{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:32px;
+    justify-items:center;
+}
+
+.work-embed{
+    display:block;
+    width:100%;
+    max-width:700px;            /* the graphics' native width */
+    height:640px;               /* placeholder until the graphic reports in */
+    border:0;
+    background:transparent;
+}
+
+@media (max-width:700px){
+    .work-pair{
+        gap:20px;
+    }
+}
+
+/* Supporting projects use a 3:2 frame (the wobble-seam clip's own ratio). */
+.work-grid .work-media{
+    aspect-ratio:3 / 2;
+}
+
+/* Widescreen films (with player controls) keep their full 16:9 frame. */
+.work-grid .work-media-wide{
+    aspect-ratio:16 / 9;
+    background:#000;
+}
+.work-media-wide video{
+    object-fit:contain;
+}
+.work-media-wide.work-placeholder{
+    background:#e6e8eb;
+}
+
+/* Print shots on a white background: no black frame behind them. */
+.work-grid .work-media-print{
+    background:#fff;
+}
+
+.work-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    column-gap:32px;
+}
+
+@media (max-width:700px){
+    .work-showcase{
+        width:100%;
+        margin:20px 0 0;
+    }
+    .work-grid{
+        grid-template-columns:1fr;
+    }
+    .work-item{
+        margin-bottom:32px;
+    }
+    .work-caption{
+        padding-top:12px;
+    }
 }

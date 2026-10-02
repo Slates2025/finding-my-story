@@ -316,3 +316,91 @@ window.addEventListener("resize", () => {
     clearTimeout(strapResizeTimer);
     strapResizeTimer = setTimeout(fitHeroStrap, 120);
 });
+
+
+/*------------------------------------------------
+  WORK CHAPTER LOOPS
+  Silent looping clips (GIF-style). They only load
+  and play while on screen, and stay on a still
+  frame for readers who prefer reduced motion.
+------------------------------------------------*/
+
+(function () {
+
+    const loops = document.querySelectorAll("video.work-loop");
+    if (!loops.length) return;
+
+    let reduceMotion = false;
+    try { reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+
+    loops.forEach((video) => {
+        video.muted = true;
+        if (reduceMotion) {
+            // Show the first frame only.
+            video.preload = "metadata";
+        }
+    });
+
+    if (reduceMotion) return;
+
+    if (typeof IntersectionObserver === "undefined") {
+        loops.forEach((video) => { const p = video.play(); if (p && p.catch) p.catch(() => {}); });
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+                const p = video.play();
+                if (p && p.catch) p.catch(() => {});
+            } else if (!video.paused) {
+                video.pause();
+            }
+        });
+    }, { threshold: 0.35 });
+
+    loops.forEach((video) => observer.observe(video));
+
+})();
+
+
+/*------------------------------------------------
+  WORK EMBEDS
+  Live graphics in the work chapter. They're heavy,
+  so each iframe only loads the first time its
+  chapter is opened, then sizes itself to the
+  height the graphic reports.
+------------------------------------------------*/
+
+(function () {
+
+    const embeds = document.querySelectorAll("iframe.work-embed[data-src]");
+    if (!embeds.length) return;
+
+    function loadIn(accordion) {
+        accordion.querySelectorAll("iframe.work-embed[data-src]").forEach((frame) => {
+            frame.src = frame.dataset.src;
+            frame.removeAttribute("data-src");
+        });
+    }
+
+    embeds.forEach((frame) => {
+        const accordion = frame.closest(".accordion");
+        const trigger = accordion && accordion.querySelector(".accordion-toggle");
+        if (!trigger) { frame.src = frame.dataset.src; return; }
+        trigger.addEventListener("click", () => loadIn(accordion), { once: true });
+        if (accordion.classList.contains("open")) loadIn(accordion);
+    });
+
+    window.addEventListener("message", (e) => {
+        const d = e.data;
+        if (!d || !d.workEmbed || !d.height) return;
+        document.querySelectorAll("iframe.work-embed").forEach((frame) => {
+            if (frame.contentWindow === e.source) {
+                frame.style.height = d.height + "px";
+            }
+        });
+    });
+
+})();

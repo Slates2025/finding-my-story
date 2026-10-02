@@ -8,6 +8,17 @@
    Paul Slater | Finding My Story
   </title>
 <link href="assets/style.css" rel="stylesheet"/>
+<!-- Draft chapters (class="draft-chapter") are hidden on the live site until
+     they're ready. They show when viewing locally, or live with ?draft on the
+     end of the address (e.g. slatesdesign.com/?draft). -->
+<script>
+  (function () {
+    var live = /(^|\.)slatesdesign\.com$/.test(location.hostname);
+    if (!live || /[?&]draft\b/.test(location.search)) {
+      document.documentElement.classList.add("show-drafts");
+    }
+  })();
+</script>
 <link rel="icon" href="favicon.ico" sizes="any"/>
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"/>
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png"/>
@@ -155,6 +166,109 @@
 </div>
 </div>
 </section>
+<!-- ============================================================
+     DRAFT CHAPTER: selected work. Hidden on the live site until
+     launch (see the draft-chapter note in <head>). To go live,
+     remove " draft-chapter" from the class below.
+     ============================================================ -->
+<section class="accordion draft-chapter">
+<div class="accordion-grid">
+<button aria-label="Toggle chapter" class="accordion-toggle story-trigger" aria-expanded="false">
+<svg aria-hidden="true" class="accordion-icon" viewbox="0 0 126.29 121.53" xmlns="http://www.w3.org/2000/svg">
+<path d="M106.43,46.5h-23.91c-2.42,0-4.38-1.96-4.38-4.38v-23.91c0-7.88-6.05-14.68-13.92-15.02-8.35-.37-15.24,6.29-15.24,14.57v24.37c0,2.42-1.96,4.38-4.38,4.38h-23.91c-7.88,0-14.68,6.05-15.02,13.92-.37,8.35,6.29,15.24,14.57,15.24h24.37c2.42,0,4.38,1.96,4.38,4.38v23.91c0,7.88,6.05,14.68,13.92,15.02,8.35.37,15.24-6.29,15.24-14.57v-24.37c0-2.42,1.96-4.38,4.38-4.38h24.37c8.27,0,14.93-6.89,14.57-15.24-.35-7.87-7.15-13.92-15.02-13.92Z" fill="currentColor">
+</path>
+</svg>
+</button>
+<div class="accordion-main">
+<h2 class="accordion-title story-trigger" style="cursor:pointer;">
+        Show, don’t tell
+       </h2>
+<div class="accordion-content">
+<div class="accordion-rule">
+</div>
+<p class="body-copy">
+         Enough words for a moment. Here are a few projects I’ve worked on, from election coverage to interactive explainers. Each one was a chance to make something complex a little clearer for the people reading it.
+        </p>
+</div>
+<div class="story-panel">
+<div class="story-wide">
+<div class="work-showcase">
+
+<!-- Featured project: full width -->
+<article class="work-item work-feature">
+<!-- Explorable 3D model, built by assets/three.js (same behaviour as Auckland).
+     The election graphics are parked in assets/work/election/feature-snippet.html
+     until after the election. -->
+<div class="story-stage">
+<div class="story-scene" id="wellington-scene">
+</div>
+<div class="scene-hint" id="wellington-hint" aria-hidden="true">
+<svg viewbox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 5 12l4 6"></path><path d="m15 6 4 6-4 6"></path></svg>
+<span>Drag to explore</span>
+</div>
+</div>
+<div class="work-caption">
+<p class="work-tag">3D · Work in progress</p>
+<h3 class="work-title">Wellington in 3D</h3>
+<p class="work-context">A work in progress, testing how a whole city can be built from open data. The model combines data from Land Information New Zealand (LINZ) with LiDAR elevation surveys to recreate Wellington’s terrain, streets and buildings.</p>
+</div>
+</article>
+
+<!-- Supporting projects: two-up on desktop, stacked on mobile -->
+<div class="work-grid">
+<article class="work-item">
+<div class="work-media">
+<video class="work-loop" muted loop playsinline preload="none" aria-label="Animation of a ‘wobble’ seam delivery: the ball is bowled with the fingers spread either side of the seam, so the seam wobbles slightly on its way down.">
+<source src="https://insights.nzherald.co.nz/data/media/67a3e171ebe3-Comp-1_1.mp4" type="video/mp4"/>
+</video>
+</div>
+<div class="work-caption">
+<p class="work-tag">Motion graphics · Sport</p>
+<h3 class="work-title">How the wobble seam works</h3>
+<p class="work-context">An animated explainer showing why a ‘wobble’ seam delivery is so hard for a batsman to read.</p>
+</div>
+</article>
+<article class="work-item">
+<a class="work-media work-media-top" href="https://www.nzherald.co.nz/viva/food-drink/the-viva-top-50-auckland-restaurants-2025/premium/CYNLC3WLTJFPLMJL3GXCHBHXQQ/" target="_blank" rel="noopener noreferrer">
+<img src="assets/work/viva-top-50.jpg" alt="The Viva Top 50 interactive: a grid of restaurant photos, with the top 10 Auckland restaurants listed alphabetically and Tala marked as supreme winner." loading="lazy"/>
+</a>
+<div class="work-caption">
+<p class="work-tag">Interactive design · Food</p>
+<h3 class="work-title">Viva Top 50 Auckland Restaurants 2025</h3>
+<p class="work-context"><em>Viva</em>, NZ Herald. I designed the interactive guide to the city’s best restaurants in Figma, which was then built by the development team.</p>
+<a class="work-link" href="https://www.nzherald.co.nz/viva/food-drink/the-viva-top-50-auckland-restaurants-2025/premium/CYNLC3WLTJFPLMJL3GXCHBHXQQ/" target="_blank" rel="noopener noreferrer">View the live story</a>
+</div>
+</article>
+<article class="work-item">
+<div class="work-media work-media-wide">
+<video controls preload="none" poster="assets/images/turning-ideas-poster.jpg" aria-label="Motion graphic explaining the growing impact of fentanyl in New Zealand">
+<source src="assets/images/turning-ideas.mp4" type="video/mp4"/>
+</video>
+</div>
+<div class="work-caption">
+<p class="work-tag">Motion graphics · Health</p>
+<h3 class="work-title">Fentanyl in New Zealand: A Crisis Waiting to Happen</h3>
+<p class="work-context">A motion graphic explaining the growing impact of fentanyl in New Zealand.</p>
+</div>
+</article>
+<article class="work-item">
+<div class="work-media work-media-wide work-media-print">
+<img src="assets/work/nbr-covers.jpg" alt="Four covers of The National Business Review Magazine, including a Luxury issue and the Flights of Fancy cover" loading="lazy"/>
+</div>
+<div class="work-caption">
+<p class="work-tag">Print · Magazine design</p>
+<h3 class="work-title">The National Business Review Magazine</h3>
+<p class="work-context">Cover designs for <em>The National Business Review</em>’s magazine.</p>
+</div>
+</article>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section class="accordion">
 <div class="accordion-grid">
 <button aria-label="Toggle chapter" class="accordion-toggle story-trigger" aria-expanded="false">
@@ -251,6 +365,22 @@ I’m still just as curious today. New technology doesn’t feel like a threat, 
           FOR EXAMPLE...
          </p>
 <h3>
+          The World’s Biggest Newspaper
+         </h3>
+<img alt="Two IFC in Hong Kong wrapped from top to bottom in a giant reproduction of the Financial Times front page" class="story-image" src="assets/images/ft-two-ifc.jpg" loading="lazy"/>
+<p>
+          When the <em>Financial Times</em> launched its new Hong Kong headquarters at Two IFC, it announced its arrival in spectacular fashion, wrapping almost the entire building in a giant reproduction of the newspaper.
+         </p>
+<p>
+          Working as Design Editor for the FT’s Asia bureau, I was involved in the project alongside the external agency team and supplied the artwork that was used to create the building wrap. It was a remarkable piece of production, taking the familiar visual language of the newspaper and scaling it up to cover almost 20,000 square metres of one of Hong Kong’s most recognisable buildings.
+         </p>
+<p>
+          At the time, the installation was recognised as the world’s largest advertisement on a building.
+         </p>
+<p>
+          It was also a memorable example of the kind of project I have always enjoyed: taking an idea beyond the expected, working with people from different disciplines and figuring out how to make something ambitious actually happen.
+         </p>
+<h3 class="story-next">
           Connecting the Dots
          </h3>
 
@@ -357,8 +487,8 @@ For many years, print was my canvas. Today it might be an interactive graphic, d
          </h3>
 </div>
 <div class="story-wide"><div class="story-video">
-<video class="story-video-el" controls preload="none" poster="assets/images/turning-ideas-poster.jpg">
-<source src="assets/images/turning-ideas.mp4" type="video/mp4"/>
+<video class="story-video-el" controls preload="none" poster="assets/images/mmp-poster.jpg">
+<source src="assets/images/mmp-explainer.mp4" type="video/mp4"/>
 </video>
 </div></div>
 <div class="story-content">
@@ -366,7 +496,7 @@ For many years, print was my canvas. Today it might be an interactive graphic, d
           Great storytelling isn't defined by the platform it's published on, but by how effectively it communicates an idea. Over the years I've explored a wide range of formats, from long-form scrollytelling and immersive features to motion graphics and animated explainers, always looking for the best way to help audiences understand complex topics.
          </p>
 <p>
-          The projects below demonstrate that evolution. Whether explaining the growing impact of fentanyl in New Zealand or breaking down how a Shahed drone operates, the challenge was the same: take a complicated subject and present it in a way that is clear, engaging and visually memorable. Combining research, illustration, animation and interaction allows information to become more accessible without sacrificing accuracy.
+          The projects below demonstrate that evolution. Whether explaining how MMP turns votes into seats in Parliament or breaking down how a Shahed drone operates, the challenge was the same: take a complicated subject and present it in a way that is clear, engaging and visually memorable. Combining research, illustration, animation and interaction allows information to become more accessible without sacrificing accuracy.
          </p>
 <p>
           While I once relied on specialist storytelling platforms to create rich digital experiences, I now prefer to build those experiences myself. Designing every interaction from the ground up provides complete creative freedom and ensures the storytelling serves the content, rather than the limitations of the technology.

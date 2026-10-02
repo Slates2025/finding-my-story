@@ -13,3 +13,16 @@ assets/images/Paul_Slater (2).jpg
 # Drone graphic v2 source files (After Effects, Blender, video exports) —
 # the web-ready drone-embed.html + DRONE5.mp4 are copied into assets/images.
 assets/DRONE VERSION 2/
+
+# Local preview/test pages
+_*.html
+
+# Unpublished election graphics: keep out of the public repo until after the election
+assets/work/election/
+
+# Full-size originals — the web-optimised copies are committed instead
+# (MMP.mp4 is also over GitHub's 100MB file limit, so it can't be pushed)
+assets/MMP.mp4
+assets/images/FT.jpg
+assets/images/Viva.png
+assets/wellington.glb

@@ -1600,3 +1600,32 @@ a.work-media:hover img{
         padding-top:12px;
     }
 }
+
+/* ---- Cut-out portrait in the masthead ----
+   Replaces the round avatar. The cut-out sits on the bottom edge of the grey
+   cog band, with the top of the head almost reaching the band's top edge.
+   Negative margins let it fill the band's padding without making the band
+   any taller (it still takes up the old avatar's height in the layout). */
+.hero-avatar.hero-cutout{
+    width:auto;
+    height:145px;               /* band: 28px + 95px + 28px, less a 6px gap at the top */
+    margin:-22px 0 -28px;
+    border:0;
+    border-radius:0;
+    object-fit:contain;
+    align-self:flex-end;
+    flex-shrink:0;
+}
+
+@media (max-width:700px){
+    .hero-avatar.hero-cutout{
+        height:86px;            /* band: 12.8px + 66px + 12.8px, less a 6px gap */
+        margin:-7px 0 -12.8px;
+    }
+}
+
+/* Wobble seam: inset slightly so its heading and the H logo aren't tight
+   against the frame edge. */
+.work-grid .work-media-inset video{
+    padding:4%;
+}

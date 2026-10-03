@@ -1629,3 +1629,32 @@ a.work-media:hover img{
 .work-grid .work-media-inset video{
     padding:4%;
 }
+
+/* Line the cog network up so the large 28-tooth cog sits centred behind the
+   head in the cut-out portrait. The network is anchored to the left edge of
+   the band (rather than centred), so the cog stays behind the head whatever
+   the window width. Cog centre: x = 212.4 of the 220-high viewBox.
+   Desktop: band 152px tall → cog 147px in; head centre 89px in → shift -58px.
+   Mobile:  band ~92px tall → cog 89px in; head centre 77px in → shift -12px. */
+.hero-cogs{
+    left:0;
+    transform:translateX(-58px);
+}
+
+@media (max-width:700px){
+    .hero-cogs{
+        transform:translateX(-12px);
+    }
+}
+
+/* Name and title sit closer to the cut-out portrait (the band's gap is 20px
+   on desktop and 14px on mobile; this brings both down to about 6px). */
+.hero-avatar.hero-cutout{
+    margin-right:-14px;
+}
+
+@media (max-width:700px){
+    .hero-avatar.hero-cutout{
+        margin-right:-8px;
+    }
+}

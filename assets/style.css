@@ -1658,3 +1658,9 @@ a.work-media:hover img{
         margin-right:-8px;
     }
 }
+
+/* Editorial slideshow closing "Show, don't tell": same full width as the
+   featured model above, with its caption tucked up underneath. */
+.work-feature .story-slideshow{
+    margin:0 auto;
+}

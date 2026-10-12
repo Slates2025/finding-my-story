@@ -1677,3 +1677,20 @@ a.work-media:hover img{
     border:0;
     display:block;
 }
+
+/* Caption under a full-width chapter slideshow (e.g. the illustration
+   slideshow in "Connecting the dots"): same style as the work-card captions,
+   centred in the text column and tucked up under the slideshow. */
+.story-caption{
+    margin:-18px auto 28px;
+}
+
+/* When the caption introduces the slideshow (sits above it): a clear gap
+   after the preceding paragraph, a small gap before the slides. */
+.story-caption.story-caption-above{
+    margin:2.5rem auto 0;
+    padding-top:0;
+}
+.story-caption-above + .story-wide .story-slideshow{
+    margin-top:18px;
+}

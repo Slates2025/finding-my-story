@@ -1664,3 +1664,16 @@ a.work-media:hover img{
 .work-feature .story-slideshow{
     margin:0 auto;
 }
+
+/* An embedded page (the editorial slideshow) filling a card's 16:9 frame. */
+.work-media-frame{
+    position:relative;
+}
+.work-media-frame iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+    display:block;
+}

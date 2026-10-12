@@ -1694,3 +1694,11 @@ a.work-media:hover img{
 .story-caption-above + .story-wide .story-slideshow{
     margin-top:18px;
 }
+
+/* The "Ideas on deadline" intro text matches the "For example" body copy. */
+.story-caption .work-context{
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:500;
+    line-height:1.8;
+    color:#3f3f3f;
+}

@@ -1756,3 +1756,9 @@ a.work-media:hover img{
         transform:translateX(-15px);
     }
 }
+
+/* "FOR EXAMPLE..." sits inside .story-content, whose paragraph colour was
+   overriding the accent; this selector is specific enough to win. */
+.story-content .story-label{
+    color:var(--accent);
+}

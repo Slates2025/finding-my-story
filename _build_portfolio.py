@@ -131,7 +131,7 @@ page = '''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul Slater | Portfolio</title>
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=20">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=21">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -176,5 +176,14 @@ page = '''<!DOCTYPE html>
 </body>
 </html>
 ''' % {'V': V, 'header': header, 'sections': sections}
+# Tile icons: line icons in the same style as the arrow on the orange buttons
+_svg = lambda d: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="%s"></path></svg>' % d
+ICONS = {
+    '\u2197': _svg('M7 17 17 7M8 7h9v9'),                                  # open in a new tab
+    '\u2922': _svg('M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5'),     # expand
+    '\u25B6': _svg('M8 5.5v13l10.5-6.5z'),                                 # play
+}
+for ch, svg in ICONS.items():
+    page = page.replace('<span class="pf-icon" aria-hidden="true">%s</span>' % ch, '<span class="pf-icon" aria-hidden="true">%s</span>' % svg)
 open('portfolio.html', 'w').write(page)
 print('ok', len(page))

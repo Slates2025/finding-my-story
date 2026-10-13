@@ -641,3 +641,5 @@ body.pf-locked{ overflow:hidden; }
     .pf-grid .pf-cap span{ color:var(--accent); }
 }
 .pf-head .pf-lede{ grid-column:1 / -1; }
+
+.pf-icon svg{ display:block; }

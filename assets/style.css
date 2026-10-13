@@ -1736,10 +1736,6 @@ a.work-media:hover img{
 .work-link:hover{
     color:var(--accent);
 }
-.project-button,
-.story-showcase-open{
-    background:var(--accent);
-}
 .thought-dot,
 .hero-ticker .thought-dot,
 .hero-ticker .cursor{

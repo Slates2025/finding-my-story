@@ -68,8 +68,8 @@ def stile(it, label=None):
     cls = 'pf-feature' if it['feature'] else 'pf-mtile'
     t, m = html.escape(it.get('title', '')), html.escape(it.get('medium', ''))
     meta = '<span>%s</span>' % m if m else ''
-    return ('<button type="button" class="pf-tile %s pf-reveal" style="--ar:%s" data-group="studio" data-full="assets/portfolio/full/%s.jpg" '
-            'data-title="%s" data-meta="%s" aria-label="%s"><img src="assets/portfolio/thumbs/%s.jpg" alt="%s" loading="lazy"/>'
+    return ('<button type="button" class="pf-tile %s pf-reveal" style="--ar:%s" data-group="studio" data-full="assets/portfolio/full/%s.jpg?v=2" '
+            'data-title="%s" data-meta="%s" aria-label="%s"><img src="assets/portfolio/thumbs/%s.jpg?v=2" alt="%s" loading="lazy"/>'
             '<span class="pf-cap"><b>%s</b>%s</span></button>') % (cls, it['ar'], it['name'], t, m, (t + (', ' + m if m else '')), it['name'], t, t, meta)
 def studio_group(g, sub):
     items = [x for x in studio if x['group'] == g]

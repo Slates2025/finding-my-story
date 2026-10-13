@@ -117,6 +117,24 @@
 "medium": "Oil"
 },
 {
+"name": "studio-38",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 0.753,
+"title": "Matt Smith",
+"medium": "Colour pencil"
+},
+{
+"name": "studio-39",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 1.456,
+"title": "The Joker",
+"medium": "Colour pencil"
+},
+{
 "name": "studio-13",
 "kind": "Pencil drawing",
 "group": "people",
@@ -186,6 +204,15 @@
 "feature": false,
 "ar": 0.686,
 "title": "Tom Hiddleston",
+"medium": "Pencil"
+},
+{
+"name": "studio-40",
+"kind": "Pencil drawing",
+"group": "people",
+"feature": false,
+"ar": 1.632,
+"title": "My kids",
 "medium": "Pencil"
 },
 {
@@ -330,6 +357,15 @@
 "feature": false,
 "ar": 0.763,
 "title": "Oil",
+"medium": ""
+},
+{
+"name": "studio-41",
+"kind": "Wildlife",
+"group": "pets",
+"feature": false,
+"ar": 0.89,
+"title": "Watercolour",
 "medium": ""
 }
 ]

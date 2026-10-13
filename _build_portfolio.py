@@ -41,7 +41,8 @@ digital = [
  tile('', 'mmp', 'What is MMP?', 'Motion graphics · Explainer', 'dig', video='assets/images/mmp-explainer.mp4', preview='assets/images/mmp-explainer.mp4', icon=PLAY),
  tile('', 'viva', 'Viva Top 50 Auckland Restaurants', 'Interactive design · Figma', 'dig', href=VIVA, icon=OUT, ext=True, top=True),
  tile('', 'drone', 'Iran’s Shahed-136 drone', 'Interactive graphic · 3D', 'dig', video='assets/images/DRONE5.mp4', preview='assets/images/DRONE5.mp4', icon=PLAY),
- tile('wide', 'auckland', 'Auckland in 3D', '3D · Blender · three.js', 'dig', full='assets/images/model-placeholder.jpg', href='index.html', icon=ZOOM),
+ tile('', 'wellington', 'Wellington in 3D', '3D · Open data', 'dig', full='assets/images/Welly.jpg', href='index.html', icon='\u2922'),
+ tile('', 'auckland', 'Auckland in 3D', '3D · Blender · three.js', 'dig', full='assets/images/model-placeholder.jpg', href='index.html', icon=ZOOM),
  tile('', 'deep-trouble', 'Deep Trouble', 'Immersive long-form', 'dig', href='assets/images/shorthand-showcase.html', icon=OUT, ext=True),
  tile('', None, 'How the wobble seam works', 'Motion graphics · Sport', 'dig', video=WOB, icon=PLAY),
 ]

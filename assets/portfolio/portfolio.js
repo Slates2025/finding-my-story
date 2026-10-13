@@ -241,6 +241,7 @@
             img: tile.dataset.full,
             video: tile.dataset.video,
             frame: tile.dataset.frame,
+            loop: !!tile.dataset.loop,
             title: tile.dataset.title || "",
             meta: tile.dataset.meta || "",
             href: tile.dataset.href || ""
@@ -260,8 +261,9 @@
             el.appendChild(f);
         } else if (d.video) {
             el = document.createElement("video");
-            el.src = d.video; el.controls = true; el.playsInline = true;
-            el.autoplay = true;
+            el.src = d.video; el.playsInline = true; el.autoplay = true;
+            if (d.loop) { el.loop = true; el.muted = true; }   // GIF-style clip
+            else el.controls = true;
         } else {
             el = document.createElement("img");
             el.src = d.img; el.alt = d.title;

@@ -45,7 +45,7 @@ digital = [
  tile('', 'wellington', 'Wellington in 3D', '3D · Open data', 'dig', frame='model.html?city=wellington', icon='\u2922'),
  tile('', 'auckland', 'Auckland in 3D', '3D · Blender · three.js', 'dig', frame='model.html?city=auckland', icon='\u2922'),
  tile('', 'deep-trouble', 'Deep Trouble', 'Immersive long-form', 'dig', href='assets/images/shorthand-showcase.html', icon=OUT, ext=True),
- '<div class="pf-tile pf-reveal pf-loop" aria-label="How the wobble seam works"><video src="%s" muted loop playsinline preload="metadata" aria-hidden="true"></video><span class="pf-cap"><b>How the wobble seam works</b><span>Motion graphics · Sport</span></span></div>' % WOB,
+ '<button type="button" class="pf-tile pf-reveal pf-loop" data-group="dig" data-video="%s" data-loop="1" data-title="How the wobble seam works" data-meta="Motion graphics · Sport" aria-label="How the wobble seam works"><video src="%s" muted loop playsinline preload="metadata" aria-hidden="true"></video><span class="pf-icon" aria-hidden="true">⤢</span><span class="pf-cap"><b>How the wobble seam works</b><span>Motion graphics · Sport</span></span></button>' % (WOB, WOB),
 ]
 
 prnt = [tile('lg', 'print-11', 'Weekend Herald and Canvas relaunch', '[Role, year] · Redesign', 'prn', full='assets/images/HZ11.jpg', icon=ZOOM),
@@ -129,7 +129,7 @@ page = '''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul Slater | Portfolio</title>
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=14">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=15">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -170,7 +170,7 @@ page = '''<!DOCTYPE html>
 </div>
 
 <script src="assets/script.js?v=%(V)s"></script>
-<script src="assets/portfolio/portfolio.js?v=10"></script>
+<script src="assets/portfolio/portfolio.js?v=11"></script>
 </body>
 </html>
 ''' % {'V': V, 'header': header, 'sections': sections}

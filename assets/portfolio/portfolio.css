@@ -530,7 +530,7 @@ body.pf-locked{ overflow:hidden; }
     border:0;
 }
 /* Looping clip tiles: no click, the clip just plays */
-.pf-loop{ cursor:default; background:#fff; }
+.pf-loop{ background:#fff; }
 .pf-loop video{ object-fit:contain; }
 
 /* Viewer: a live 3D city, widescreen and dark */

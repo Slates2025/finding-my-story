@@ -1785,3 +1785,6 @@ a.work-media:hover img{
 @media (max-width:700px){
     .top-nav{ gap:1.4rem; }
 }
+
+/* White screenshots get a hairline edge so they don't melt into the page */
+.media-framed{ border:1px solid var(--line); }

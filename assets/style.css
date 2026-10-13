@@ -1776,3 +1776,12 @@ a.work-media:hover img{
 @media (max-width:700px){
     .home-outro{ margin-left:calc(20px + .5rem); }
 }
+
+/* Main nav aligned to the left edge of the column (lines up with the
+   masthead text and the column below) */
+.top-nav{
+    justify-content:flex-start;
+}
+@media (max-width:700px){
+    .top-nav{ gap:1.4rem; }
+}

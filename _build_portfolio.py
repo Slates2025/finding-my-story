@@ -8,7 +8,7 @@ header = re.sub(r'\s*<p class="standfirst standfirst-bold">.*?</p>', '', header,
 import re
 header = re.sub(r'(<h2>\s*)Contact(\s*</h2>)', r'\1Portfolio\2', header)
 header = re.sub(r'\s*<div class="standfirst hero-strap hero-ticker">.*?</div>\s*</div>\s*</div>', '', header, flags=re.S)
-V = '20261014'
+V = '20261014b'
 
 def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, preview=None, top=False, icon=None, ext=False, frame=None):
     a = ['class="pf-tile pf-reveal %s%s"' % (cls, ' top' if top else ''), 'data-group="%s"' % group,
@@ -118,7 +118,7 @@ def section(sid, num, title, count, lede, body):
 
 PRINTCAP = '<p class="pf-slidecap" id="printCap" aria-live="polite" data-items="%s"></p>' % html.escape(open('assets/portfolio/print.json').read().replace('\n', ''))
 sections = (
-    section('digital', '01', 'Digital', '10 projects', 'Interactive graphics, motion explainers and 3D. Hover over a motion piece to preview it.', '<div class="pf-grid">' + ''.join(digital) + '</div>') +
+    section('digital', '01', 'Digital', '10 projects', 'Interactive graphics, motion explainers and 3D. <span class="pf-hover-only">Hover over a motion piece to preview it.</span><span class="pf-touch-only">Tap any piece to open it.</span>', '<div class="pf-grid">' + ''.join(digital) + '</div>') +
     section('print', '02', 'Print', '36 pieces', 'Newspaper and magazine design: covers, features, special reports, infographics and full redesigns.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-print-portfolio.html?v=3" title="Print: a slideshow of newspaper and magazine design" loading="lazy" scrolling="no"></iframe></div>' + PRINTCAP) +
     section('illustration', '03', 'Illustration', '38 illustrations', 'Editorial illustration on deadline: ideas created to stop readers and sell the story, often in hours rather than weeks.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-illustrations.html?v=3" title="Editorial illustration: a slideshow of 38 illustrations" loading="lazy" scrolling="no"></iframe></div>') +
     section('studio', '04', 'Studio', 'Commissions open', 'Paintings in oils: the films, music and people that resonate with me, and portraits of much-loved pets.', gal + commission)
@@ -131,7 +131,7 @@ page = '''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul Slater | Portfolio</title>
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=18">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=20">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">

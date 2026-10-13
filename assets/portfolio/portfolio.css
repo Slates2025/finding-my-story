@@ -576,3 +576,68 @@ body.pf-locked{ overflow:hidden; }
     border-radius:inherit;
     pointer-events:none;
 }
+
+/* Section descriptions run the width of the work below (a little narrower on
+   very wide screens, so lines don't get too long to read) */
+.pf-lede{ max-width:none; }
+@media (min-width:1025px){
+    .pf-lede{ max-width:66%; }
+}
+/* Mouse vs touch wording */
+.pf-touch-only{ display:none; }
+@media (hover:none){
+    .pf-touch-only{ display:inline; }
+    .pf-hover-only{ display:none; }
+}
+
+/* ---- Digital on phones: one column, every project the same 16:9 size,
+   title and tag underneath the image rather than over it ---- */
+@media (max-width:700px){
+    .pf-grid{
+        grid-template-columns:1fr;
+        grid-auto-rows:auto;
+        gap:1.6rem;
+    }
+    .pf-grid .lg,
+    .pf-grid .wide,
+    .pf-grid .tall,
+    .pf-grid .lg.right{
+        grid-column:auto;
+        grid-row:auto;
+    }
+    .pf-grid .pf-tile{
+        height:auto;
+        background:transparent;
+        color:var(--ink);
+        overflow:visible;
+    }
+    .pf-grid .pf-tile > img,
+    .pf-grid .pf-tile > video{
+        position:relative;
+        inset:auto;
+        width:100%;
+        height:auto;
+        aspect-ratio:16 / 9;
+        object-fit:cover;
+        border-radius:4px;
+        background:#e6e8eb;
+    }
+    .pf-grid .pf-loop > video{ object-fit:contain; background:#fff; }
+    .pf-grid .pf-tile > .pf-preview{ position:absolute; inset:0; height:auto; aspect-ratio:16 / 9; }
+    .pf-grid .pf-tile.framed::after{ display:none; }
+    .pf-grid .pf-tile.framed > img{ box-shadow:inset 0 0 0 1px var(--line); border:1px solid var(--line); }
+    .pf-grid .pf-cap{
+        position:static;
+        transform:none;
+        opacity:1;
+        padding:.65rem 0 0;
+        background:none;
+    }
+    .pf-grid .pf-cap b,
+    .pf-grid .lg .pf-cap b{
+        font-size:1.05rem;
+        color:var(--ink);
+    }
+    .pf-grid .pf-cap span{ color:var(--accent); }
+}
+.pf-head .pf-lede{ grid-column:1 / -1; }

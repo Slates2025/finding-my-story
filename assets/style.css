@@ -1714,7 +1714,6 @@ a.work-media:hover img{
 }
 .top-nav .active{
     color:var(--accent);
-    box-shadow:inset 0 -2px 0 var(--accent);
 }
 .top-nav a:hover{
     color:var(--accent);

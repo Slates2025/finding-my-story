@@ -47,7 +47,7 @@ digital = [
  tile('lg right framed', 'minwage', 'Can you live on the minimum wage?', 'Data interactive · Concept', 'dig', href='assets/work/minwage-interactive.html', icon='\u2197', ext=True, top=True),
  '<button type="button" class="pf-tile pf-reveal pf-loop" data-group="dig" data-video="%s" data-loop="1" data-title="How the wobble seam works" data-meta="Motion graphics · Sport" aria-label="How the wobble seam works"><video src="%s" muted loop playsinline preload="metadata" aria-hidden="true"></video><span class="pf-icon" aria-hidden="true">⤢</span><span class="pf-cap"><b>How the wobble seam works</b><span>Motion graphics · Sport</span></span></button>' % (WOB, WOB),
  tile('', 'deep-trouble', 'Deep Trouble', 'Immersive long-form', 'dig', href='assets/images/shorthand-showcase.html', icon=OUT, ext=True),
- '<div class="pf-tile pf-tile--todo pf-reveal">Shorthand story to come</div>',
+ tile('', 'the-spy', 'The Spy', 'Immersive long-form', 'dig', href='assets/images/shorthand-the-spy.html', icon='\u2197', ext=True),
 ]
 
 prnt = [tile('lg', 'print-11', 'Weekend Herald and Canvas relaunch', '[Role, year] · Redesign', 'prn', full='assets/images/HZ11.jpg', icon=ZOOM),
@@ -120,7 +120,7 @@ PRINTCAP = '<p class="pf-slidecap" id="printCap" aria-live="polite" data-items="
 sections = (
     section('digital', '01', 'Digital', '10 projects', 'Interactive graphics, motion explainers and 3D. Hover over a motion piece to preview it.', '<div class="pf-grid">' + ''.join(digital) + '</div>') +
     section('print', '02', 'Print', '36 pieces', 'Newspaper and magazine design: covers, features, special reports, infographics and full redesigns.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-print-portfolio.html?v=3" title="Print: a slideshow of newspaper and magazine design" loading="lazy" scrolling="no"></iframe></div>' + PRINTCAP) +
-    section('illustration', '03', 'Illustration', '37 illustrations', 'Editorial illustration on deadline: ideas created to stop readers and sell the story, often in hours rather than weeks.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-illustrations.html?v=2" title="Editorial illustration: a slideshow of 37 illustrations" loading="lazy" scrolling="no"></iframe></div>') +
+    section('illustration', '03', 'Illustration', '38 illustrations', 'Editorial illustration on deadline: ideas created to stop readers and sell the story, often in hours rather than weeks.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-illustrations.html?v=3" title="Editorial illustration: a slideshow of 38 illustrations" loading="lazy" scrolling="no"></iframe></div>') +
     section('studio', '04', 'Studio', 'Commissions open', 'Paintings in oils: the films, music and people that resonate with me, and portraits of much-loved pets.', gal + commission)
 )
 

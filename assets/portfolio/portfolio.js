@@ -254,7 +254,7 @@
         if (d.frame) {
             // A live interactive (e.g. the drone graphic) in a scrollable panel.
             el = document.createElement("div");
-            el.className = "pf-lb-frame";
+            el.className = "pf-lb-frame" + (/model\.html/.test(d.frame) ? " pf-lb-frame--3d" : "");
             const f = document.createElement("iframe");
             f.src = d.frame; f.title = d.title; f.setAttribute("scrolling", "no");
             el.appendChild(f);

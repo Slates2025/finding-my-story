@@ -42,8 +42,8 @@ digital = [
  tile('', 'mmp', 'What is MMP?', 'Motion graphics · Explainer', 'dig', video='assets/images/mmp-explainer.mp4', preview='assets/images/mmp-explainer.mp4', icon=PLAY),
  tile('', 'viva', 'Viva Top 50 Auckland Restaurants', 'Interactive design · Figma', 'dig', href=VIVA, icon=OUT, ext=True, top=True),
  tile('', 'drone', 'Iran’s Shahed-136 drone', 'Interactive graphic · 3D', 'dig', frame='assets/images/drone-embed.html', preview='assets/images/DRONE5.mp4', icon='\u2922'),
- tile('', 'wellington', 'Wellington in 3D', '3D · Open data', 'dig', full='assets/images/Welly.jpg', href='index.html', icon='\u2922'),
- tile('', 'auckland', 'Auckland in 3D', '3D · Blender · three.js', 'dig', full='assets/images/model-placeholder.jpg', href='index.html', icon=ZOOM),
+ tile('', 'wellington', 'Wellington in 3D', '3D · Open data', 'dig', frame='model.html?city=wellington', icon='\u2922'),
+ tile('', 'auckland', 'Auckland in 3D', '3D · Blender · three.js', 'dig', frame='model.html?city=auckland', icon='\u2922'),
  tile('', 'deep-trouble', 'Deep Trouble', 'Immersive long-form', 'dig', href='assets/images/shorthand-showcase.html', icon=OUT, ext=True),
  '<div class="pf-tile pf-reveal pf-loop" aria-label="How the wobble seam works"><video src="%s" muted loop playsinline preload="metadata" aria-hidden="true"></video><span class="pf-cap"><b>How the wobble seam works</b><span>Motion graphics · Sport</span></span></div>' % WOB,
 ]
@@ -129,7 +129,7 @@ page = '''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul Slater | Portfolio</title>
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=13">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=14">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -170,7 +170,7 @@ page = '''<!DOCTYPE html>
 </div>
 
 <script src="assets/script.js?v=%(V)s"></script>
-<script src="assets/portfolio/portfolio.js?v=9"></script>
+<script src="assets/portfolio/portfolio.js?v=10"></script>
 </body>
 </html>
 ''' % {'V': V, 'header': header, 'sections': sections}

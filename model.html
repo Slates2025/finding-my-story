@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex"/>
+<title>Paul Slater | 3D city</title>
+<!--
+  A full-window 3D city, used by the Portfolio page's viewer.
+  model.html?city=wellington  or  model.html?city=auckland
+  The city itself is built by assets/three.js (same behaviour as the homepage).
+-->
+<link href="assets/style.css?v=20261013f" rel="stylesheet"/>
+<style>
+  html, body { margin:0; height:100%; background:#111; overflow:hidden; }
+  .model-stage { position:fixed; inset:0; }
+  .model-stage .story-scene { position:absolute; inset:0; width:100%; height:100%; border:0; }
+</style>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.179.1/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.179.1/examples/jsm/"
+    }
+  }
+</script>
+</head>
+<body>
+<div class="model-stage">
+  <div class="story-scene" id="city-scene"></div>
+  <div class="scene-hint" id="city-hint" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 5 12l4 6"></path><path d="m15 6 4 6-4 6"></path></svg>
+    <span>Drag to explore</span>
+  </div>
+</div>
+<script>
+  // Give the scene the id three.js looks for, based on ?city=
+  (function () {
+    var city = (new URLSearchParams(location.search).get("city") || "wellington").toLowerCase();
+    if (city !== "auckland") city = "wellington";
+    document.getElementById("city-scene").id = city + "-scene";
+    document.getElementById("city-hint").id = city === "auckland" ? "scene-hint" : "wellington-hint";
+    if (city === "auckland") {
+      document.getElementById("auckland-scene").style.background =
+        "#111 url('assets/images/model-placeholder.jpg') center / cover no-repeat";
+    }
+  })();
+</script>
+<script src="assets/three.js?v=20261013f" type="module"></script>
+</body>
+</html>

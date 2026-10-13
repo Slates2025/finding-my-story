@@ -532,3 +532,13 @@ body.pf-locked{ overflow:hidden; }
 /* Looping clip tiles: no click, the clip just plays */
 .pf-loop{ cursor:default; background:#fff; }
 .pf-loop video{ object-fit:contain; }
+
+/* Viewer: a live 3D city, widescreen and dark */
+.pf-lb-stage .pf-lb-frame--3d{
+    width:min(1200px, 100%, calc((100vh - 9rem) * 16 / 9));
+    aspect-ratio:16 / 9;
+    padding:0;
+    overflow:hidden;
+    background:#111;
+}
+.pf-lb-frame--3d iframe{ height:100%; }

@@ -118,10 +118,10 @@ def section(sid, num, title, count, lede, body):
 
 PRINTCAP = '<p class="pf-slidecap" id="printCap" aria-live="polite" data-items="%s"></p>' % html.escape(open('assets/portfolio/print.json').read().replace('\n', ''))
 sections = (
-    section('digital', '01', 'Digital', '10 projects', 'Interactive graphics, motion explainers and 3D. <span class="pf-hover-only">Hover over a motion piece to preview it.</span><span class="pf-touch-only">Tap any piece to open it.</span>', '<div class="pf-grid">' + ''.join(digital) + '</div>') +
+    section('digital', '01', 'Digital', '10 projects', 'Interactive graphics, data interactives, motion explainers and 3D. <span class="pf-hover-only">Hover over a motion piece to preview it.</span><span class="pf-touch-only">Tap any piece to open it.</span>', '<div class="pf-grid">' + ''.join(digital) + '</div>') +
     section('print', '02', 'Print', '36 pieces', 'Newspaper and magazine design: covers, features, special reports, infographics and full redesigns.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-print-portfolio.html?v=3" title="Print: a slideshow of newspaper and magazine design" loading="lazy" scrolling="no"></iframe></div>' + PRINTCAP) +
     section('illustration', '03', 'Illustration', '38 illustrations', 'Editorial illustration on deadline: ideas created to stop readers and sell the story, often in hours rather than weeks.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-illustrations.html?v=3" title="Editorial illustration: a slideshow of 38 illustrations" loading="lazy" scrolling="no"></iframe></div>') +
-    section('studio', '04', 'Studio', 'Commissions open', 'Paintings in oils: the films, music and people that resonate with me, and portraits of much-loved pets.', gal + commission)
+    section('studio', '04', 'Studio', 'Commissions open', 'Paintings and drawings: the films, music and people that resonate with me, and portraits of much-loved pets.', gal + commission)
 )
 
 page = '''<!DOCTYPE html>

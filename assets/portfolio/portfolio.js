@@ -268,15 +268,36 @@
             el = document.createElement("img");
             el.src = d.img; el.alt = d.title;
         }
-        el.style.opacity = "0";
-        stage.appendChild(el);
-        if (old) {
-            old.classList.add("is-leaving");
-            if (old.tagName === "VIDEO") old.pause();
-            setTimeout(() => old.remove(), 260);
+        // Same layered crossfade as the slideshows: the new slide fades in on
+        // top while the old one stays fully visible underneath, then the old
+        // one is removed. Nothing shifts or flashes mid-transition.
+        const slide = document.createElement("div");
+        slide.className = "pf-lb-slide";
+        slide.appendChild(el);
+        const olds = [...stage.querySelectorAll(".pf-lb-slide")];
+        olds.forEach(o => { o.style.zIndex = "0"; o.querySelectorAll("video").forEach(v => v.pause()); });
+        slide.style.zIndex = "1";
+        stage.appendChild(slide);
+        const show = () => requestAnimationFrame(() => requestAnimationFrame(() => {
+            slide.classList.add("is-active");
+            setTimeout(() => olds.forEach(o => o.remove()), 660);
+        }));
+        // Wait until the new piece has something to show before fading it in:
+        // the image has loaded, the video has its first frame, or the
+        // interactive has loaded (with a short fallback so nothing hangs).
+        let shown = false;
+        const go = () => { if (!shown) { shown = true; show(); } };
+        if (el.tagName === "IMG") {
+            if (el.complete) go();
+            else { el.addEventListener("load", go, { once: true }); el.addEventListener("error", go, { once: true }); }
+        } else if (el.tagName === "VIDEO") {
+            if (el.readyState >= 2) go();
+            else { el.addEventListener("loadeddata", go, { once: true }); el.addEventListener("error", go, { once: true }); }
+        } else {
+            const f = el.querySelector("iframe");
+            if (f) f.addEventListener("load", go, { once: true });
         }
-        const show = () => requestAnimationFrame(() => { el.style.opacity = "1"; });
-        if (el.tagName === "IMG" && !el.complete) el.addEventListener("load", show, { once: true }); else show();
+        setTimeout(go, 1500);
 
         capTitle.textContent = d.title;
         capMeta.textContent = d.meta;
@@ -320,7 +341,7 @@
     lb.querySelector(".pf-lb-close").addEventListener("click", close);
     lb.querySelector(".pf-lb-prev").addEventListener("click", () => step(-1));
     lb.querySelector(".pf-lb-next").addEventListener("click", () => step(1));
-    lb.addEventListener("click", e => { if (e.target === lb || e.target === stage) close(); });
+    lb.addEventListener("click", e => { if (e.target === lb || e.target === stage || e.target.classList.contains("pf-lb-slide")) close(); });
     document.addEventListener("keydown", e => {
         if (!lb.classList.contains("is-open")) return;
         if (e.key === "Escape") close();

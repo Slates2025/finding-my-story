@@ -542,3 +542,21 @@ body.pf-locked{ overflow:hidden; }
     background:#111;
 }
 .pf-lb-frame--3d iframe{ height:100%; }
+
+/* Viewer slides stack and crossfade like the slideshows
+   (600ms, same easing as --ss-ease in the slideshow player). */
+.pf-lb-slide{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    transition:opacity 600ms cubic-bezier(.2,.8,.2,1);
+}
+.pf-lb-slide.is-active{ opacity:1; }
+.pf-lb-slide > img,
+.pf-lb-slide > video{ transition:none; }
+@media (prefers-reduced-motion: reduce){
+    .pf-lb-slide{ transition:none; }
+}

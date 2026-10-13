@@ -129,7 +129,7 @@ page = '''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul Slater | Portfolio</title>
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=15">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=16">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -170,7 +170,7 @@ page = '''<!DOCTYPE html>
 </div>
 
 <script src="assets/script.js?v=%(V)s"></script>
-<script src="assets/portfolio/portfolio.js?v=11"></script>
+<script src="assets/portfolio/portfolio.js?v=14"></script>
 </body>
 </html>
 ''' % {'V': V, 'header': header, 'sections': sections}

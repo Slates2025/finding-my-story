@@ -1788,3 +1788,8 @@ a.work-media:hover img{
 
 /* White screenshots get a hairline edge so they don't melt into the page */
 .media-framed{ border:1px solid var(--line); }
+
+/* Screenshot with its call-to-action button sitting centred on the bottom
+   edge (same treatment as the Deep Trouble "Read the full story" button) */
+.media-cta{ position:relative; }
+.media-cta .story-showcase-open{ bottom:22px; }

@@ -560,3 +560,19 @@ body.pf-locked{ overflow:hidden; }
 @media (prefers-reduced-motion: reduce){
     .pf-lb-slide{ transition:none; }
 }
+
+/* A large tile anchored to the right-hand side of the grid */
+.pf-grid .lg.right{ grid-column:2 / span 2; }
+@media (max-width:700px){
+    .pf-grid .lg.right{ grid-column:span 2; }
+}
+
+/* Light screenshots get a hairline edge so they don't melt into the page */
+.pf-tile.framed::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border:1px solid var(--line);
+    border-radius:inherit;
+    pointer-events:none;
+}

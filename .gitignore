@@ -39,3 +39,7 @@ assets/images/PORTRAITS/
 
 # Print work originals — web copies are in assets/images/print
 assets/PRINT WORK/
+
+# Original Herald CMS fragment of the minimum wage interactive (the site uses assets/work/minwage-interactive.html)
+assets/work/Minimum-wage.html
+assets/images/Minimum-wage

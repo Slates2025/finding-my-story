@@ -339,7 +339,7 @@ const auckland = createCityScene({
     }
 });
 
-// Wellington — "Show, don't tell". Matches the Blender view: from out over the
+// Wellington — "I never stop learning" (and the Portfolio viewer). Matches the Blender view: from out over the
 // harbour, looking straight back across the water to the CBD with the hills
 // behind, the near edge of the tile running across the bottom of the frame.
 // A narrower lens (30°) gives Blender's flatter 50mm look. The tile runs 0–4000

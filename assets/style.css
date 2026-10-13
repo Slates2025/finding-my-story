@@ -1763,3 +1763,16 @@ a.work-media:hover img{
 .story-showcase-open{
     background:var(--accent);
 }
+
+/* A second example that follows a floated portrait starts on a clean line */
+.story-content h3.story-next{ clear:both; }
+
+/* Closing line and button at the end of the homepage */
+.home-outro{
+    padding:2.6rem 0 1rem;
+    margin-left:calc(32px + 1rem);      /* lines up with the chapter titles */
+}
+.home-outro .body-copy{ margin:0; }
+@media (max-width:700px){
+    .home-outro{ margin-left:calc(20px + .5rem); }
+}

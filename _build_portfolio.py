@@ -8,7 +8,7 @@ header = re.sub(r'\s*<p class="standfirst standfirst-bold">.*?</p>', '', header,
 import re
 header = re.sub(r'(<h2>\s*)Contact(\s*</h2>)', r'\1Portfolio\2', header)
 header = re.sub(r'\s*<div class="standfirst hero-strap hero-ticker">.*?</div>\s*</div>\s*</div>', '', header, flags=re.S)
-V = '20261013f'
+V = '20261014'
 
 def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, preview=None, top=False, icon=None, ext=False, frame=None):
     a = ['class="pf-tile pf-reveal %s%s"' % (cls, ' top' if top else ''), 'data-group="%s"' % group,
@@ -40,12 +40,14 @@ digital = [
  tile('lg', 'whenua', 'Whenua: Our Land, Our History', 'Design lead · Interactive', 'dig', href=NZH_W, icon=OUT, ext=True),
  tile('', 'fentanyl', 'Fentanyl in New Zealand', 'Motion graphics', 'dig', video='assets/images/turning-ideas.mp4', preview='assets/images/turning-ideas.mp4', icon=PLAY),
  tile('', 'mmp', 'What is MMP?', 'Motion graphics · Explainer', 'dig', video='assets/images/mmp-explainer.mp4', preview='assets/images/mmp-explainer.mp4', icon=PLAY),
- tile('', 'viva', 'Viva Top 50 Auckland Restaurants', 'Interactive design · Figma', 'dig', href=VIVA, icon=OUT, ext=True, top=True),
- tile('', 'drone', 'Iran’s Shahed-136 drone', 'Interactive graphic · 3D', 'dig', frame='assets/images/drone-embed.html', preview='assets/images/DRONE5.mp4', icon='\u2922'),
- tile('', 'wellington', 'Wellington in 3D', '3D · Open data', 'dig', frame='model.html?city=wellington', icon='\u2922'),
+ tile('wide', 'wellington', 'Wellington in 3D', '3D · Open data', 'dig', frame='model.html?city=wellington', icon='\u2922'),
  tile('', 'auckland', 'Auckland in 3D', '3D · Blender · three.js', 'dig', frame='model.html?city=auckland', icon='\u2922'),
- tile('', 'deep-trouble', 'Deep Trouble', 'Immersive long-form', 'dig', href='assets/images/shorthand-showcase.html', icon=OUT, ext=True),
+ tile('framed', 'viva', 'Viva Top 50 Auckland Restaurants', 'Interactive design · Figma', 'dig', href=VIVA, icon=OUT, ext=True, top=True),
+ tile('', 'drone', 'Iran’s Shahed-136 drone', 'Interactive graphic · 3D', 'dig', frame='assets/images/drone-embed.html', preview='assets/images/DRONE5.mp4', icon='\u2922'),
+ tile('lg right framed', 'minwage', 'Can you live on the minimum wage?', 'Data interactive · Concept', 'dig', href='assets/work/minwage-interactive.html', icon='\u2197', ext=True, top=True),
  '<button type="button" class="pf-tile pf-reveal pf-loop" data-group="dig" data-video="%s" data-loop="1" data-title="How the wobble seam works" data-meta="Motion graphics · Sport" aria-label="How the wobble seam works"><video src="%s" muted loop playsinline preload="metadata" aria-hidden="true"></video><span class="pf-icon" aria-hidden="true">⤢</span><span class="pf-cap"><b>How the wobble seam works</b><span>Motion graphics · Sport</span></span></button>' % (WOB, WOB),
+ tile('', 'deep-trouble', 'Deep Trouble', 'Immersive long-form', 'dig', href='assets/images/shorthand-showcase.html', icon=OUT, ext=True),
+ '<div class="pf-tile pf-tile--todo pf-reveal">Shorthand story to come</div>',
 ]
 
 prnt = [tile('lg', 'print-11', 'Weekend Herald and Canvas relaunch', '[Role, year] · Redesign', 'prn', full='assets/images/HZ11.jpg', icon=ZOOM),
@@ -116,7 +118,7 @@ def section(sid, num, title, count, lede, body):
 
 PRINTCAP = '<p class="pf-slidecap" id="printCap" aria-live="polite" data-items="%s"></p>' % html.escape(open('assets/portfolio/print.json').read().replace('\n', ''))
 sections = (
-    section('digital', '01', 'Digital', '9 projects', 'Interactive graphics, motion explainers and 3D. Hover over a motion piece to preview it.', '<div class="pf-grid">' + ''.join(digital) + '</div>') +
+    section('digital', '01', 'Digital', '10 projects', 'Interactive graphics, motion explainers and 3D. Hover over a motion piece to preview it.', '<div class="pf-grid">' + ''.join(digital) + '</div>') +
     section('print', '02', 'Print', '36 pieces', 'Newspaper and magazine design: covers, features, special reports, infographics and full redesigns.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-print-portfolio.html?v=3" title="Print: a slideshow of newspaper and magazine design" loading="lazy" scrolling="no"></iframe></div>' + PRINTCAP) +
     section('illustration', '03', 'Illustration', '37 illustrations', 'Editorial illustration on deadline: ideas created to stop readers and sell the story, often in hours rather than weeks.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-illustrations.html?v=2" title="Editorial illustration: a slideshow of 37 illustrations" loading="lazy" scrolling="no"></iframe></div>') +
     section('studio', '04', 'Studio', 'Commissions open', 'Paintings in oils: the films, music and people that resonate with me, and portraits of much-loved pets.', gal + commission)
@@ -129,7 +131,7 @@ page = '''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul Slater | Portfolio</title>
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=16">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=18">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">

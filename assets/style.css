@@ -1757,3 +1757,9 @@ a.work-media:hover img{
 .story-content .story-label{
     color:var(--accent);
 }
+
+/* Buttons in the accent orange (darkening to ink on hover) */
+.project-button,
+.story-showcase-open{
+    background:var(--accent);
+}

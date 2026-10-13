@@ -33,10 +33,9 @@ assets/MMP-VISITOR-JOHN.mp4
 assets/Illustrations/
 assets/images/paul-colour
 
-# DRAFT portfolio page: local only until approved (remove these lines to launch)
-portfolio.html
-assets/portfolio/
-_build_portfolio.py
 
 # Full-size portrait/painting originals (116MB) — web copies are in assets/portfolio
 assets/images/PORTRAITS/
+
+# Print work originals — web copies are in assets/images/print
+assets/PRINT WORK/

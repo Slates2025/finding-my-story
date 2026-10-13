@@ -1,0 +1,335 @@
+[
+{
+"name": "studio-01",
+"kind": "Painting",
+"group": "people",
+"feature": true,
+"ar": 1.543,
+"title": "It\u2019s a Wonderful Life",
+"medium": "Oil"
+},
+{
+"name": "studio-02",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 0.755,
+"title": "David Bowie",
+"medium": "Oil"
+},
+{
+"name": "studio-03",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 0.662,
+"title": "Self portrait",
+"medium": "Pastel"
+},
+{
+"name": "studio-04",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 0.697,
+"title": "My Dad",
+"medium": "Oil"
+},
+{
+"name": "studio-05",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 0.739,
+"title": "Harrison Ford",
+"medium": "Oil"
+},
+{
+"name": "studio-06",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 1.333,
+"title": "Pedro Pascal",
+"medium": "Oil"
+},
+{
+"name": "studio-07",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 0.707,
+"title": "Peter Capaldi",
+"medium": "Oil"
+},
+{
+"name": "studio-08",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 0.717,
+"title": "Kurt Cobain",
+"medium": "Oil"
+},
+{
+"name": "studio-09",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 1.515,
+"title": "Robert Shaw",
+"medium": "Oil"
+},
+{
+"name": "studio-10",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 0.714,
+"title": "Daniel Craig",
+"medium": "Oil"
+},
+{
+"name": "studio-11",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 1.0,
+"title": "Jack Nicholson",
+"medium": "Oil"
+},
+{
+"name": "studio-12",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 0.745,
+"title": "Steve McQueen",
+"medium": "Oil"
+},
+{
+"name": "studio-17",
+"kind": "Painting",
+"group": "people",
+"feature": false,
+"ar": 0.548,
+"title": "Louis Armstrong",
+"medium": "Oil"
+},
+{
+"name": "studio-13",
+"kind": "Pencil drawing",
+"group": "people",
+"feature": false,
+"ar": 1.435,
+"title": "Ray Charles",
+"medium": "Pencil"
+},
+{
+"name": "studio-14",
+"kind": "Pencil drawing",
+"group": "people",
+"feature": false,
+"ar": 0.685,
+"title": "Aaron Paul and Bryan Cranston",
+"medium": "Pencil"
+},
+{
+"name": "studio-15",
+"kind": "Pencil drawing",
+"group": "people",
+"feature": false,
+"ar": 0.693,
+"title": "Cillian Murphy",
+"medium": "Pencil"
+},
+{
+"name": "studio-16",
+"kind": "Pencil drawing",
+"group": "people",
+"feature": false,
+"ar": 0.68,
+"title": "Jessica Chastain",
+"medium": "Pencil"
+},
+{
+"name": "studio-18",
+"kind": "Pencil drawing",
+"group": "people",
+"feature": false,
+"ar": 0.683,
+"title": "Margot Robbie",
+"medium": "Pencil"
+},
+{
+"name": "studio-19",
+"kind": "Pencil drawing",
+"group": "people",
+"feature": false,
+"ar": 0.687,
+"title": "Snoop Dogg",
+"medium": "Pencil"
+},
+{
+"name": "studio-20",
+"kind": "Pencil drawing",
+"group": "people",
+"feature": false,
+"ar": 0.714,
+"title": "Sean Connery",
+"medium": "Pencil"
+},
+{
+"name": "studio-21",
+"kind": "Pencil drawing",
+"group": "people",
+"feature": false,
+"ar": 0.686,
+"title": "Tom Hiddleston",
+"medium": "Pencil"
+},
+{
+"name": "studio-22",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": true,
+"ar": 0.724,
+"title": "Pastel",
+"medium": ""
+},
+{
+"name": "studio-23",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 1.1,
+"title": "Digital",
+"medium": ""
+},
+{
+"name": "studio-24",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.704,
+"title": "Pastel",
+"medium": ""
+},
+{
+"name": "studio-25",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.705,
+"title": "Pastel",
+"medium": ""
+},
+{
+"name": "studio-26",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.702,
+"title": "Colour pencil",
+"medium": ""
+},
+{
+"name": "studio-27",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.672,
+"title": "Colour pencil",
+"medium": ""
+},
+{
+"name": "studio-28",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 1.101,
+"title": "Digital",
+"medium": ""
+},
+{
+"name": "studio-29",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.749,
+"title": "Colour pencil",
+"medium": ""
+},
+{
+"name": "studio-30",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.794,
+"title": "Colour pencil",
+"medium": ""
+},
+{
+"name": "studio-31",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.719,
+"title": "Colour pencil",
+"medium": ""
+},
+{
+"name": "studio-32",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.794,
+"title": "Pastel",
+"medium": ""
+},
+{
+"name": "studio-33",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.767,
+"title": "Colour pencil",
+"medium": ""
+},
+{
+"name": "studio-34",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.968,
+"title": "Colour pencil",
+"medium": ""
+},
+{
+"name": "studio-35",
+"kind": "Pet portrait",
+"group": "pets",
+"feature": false,
+"ar": 0.823,
+"title": "Colour pencil",
+"medium": ""
+},
+{
+"name": "studio-36",
+"kind": "Wildlife",
+"group": "pets",
+"feature": false,
+"ar": 0.988,
+"title": "Pastel",
+"medium": ""
+},
+{
+"name": "studio-37",
+"kind": "Wildlife",
+"group": "pets",
+"feature": false,
+"ar": 0.763,
+"title": "Oil",
+"medium": ""
+}
+]

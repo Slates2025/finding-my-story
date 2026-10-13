@@ -1,0 +1,513 @@
+/* ==========================================================
+   PORTFOLIO PAGE (draft)
+   Builds on style.css (masthead, nav, colours). Everything here is
+   scoped to the portfolio page with a pf- prefix.
+========================================================== */
+
+:root{
+    --pf-w:min(1200px, calc(100vw - 48px));
+    --pf-gap:16px;
+    --pf-ease:cubic-bezier(.22,.61,.36,1);
+    --nav-h:44px;               /* set exactly by portfolio.js */
+}
+
+/* Full-width band that escapes the 760px text column (no transform, so the
+   sticky section bar inside it still works). */
+.pf-wide{
+    width:100vw;
+    margin-left:calc(50% - 50vw);
+}
+.pf-inner{
+    width:var(--pf-w);
+    margin:0 auto;
+}
+
+.pf-intro{
+    margin:0 0 2rem;
+}
+
+/* ---- Section navigation in the black strip ----
+   On this page the masthead's black strip holds the section links instead of
+   the typing ticker, and pins under the main nav as you scroll. */
+.pf-page .hero{ margin-bottom:0; }
+.pf-strapnav{
+    position:sticky;
+    top:var(--nav-h);
+    z-index:95;
+    margin-top:-1px;            /* flush under the grey band */
+    padding-top:0 !important;
+    padding-bottom:0 !important;
+}
+.pf-strapnav ul{
+    position:relative;
+    display:flex;
+    gap:2.2rem;
+    list-style:none;
+    margin:0;
+    padding:0;
+    overflow-x:auto;
+    scrollbar-width:none;
+}
+.pf-strapnav ul::-webkit-scrollbar{ display:none; }
+.pf-strapnav a{
+    display:block;
+    padding:.95rem 0 .85rem;
+    color:var(--paper);
+    text-decoration:none;
+    font-weight:600;
+    white-space:nowrap;
+    transition:color var(--transition);
+}
+.pf-strapnav a:hover,
+.pf-strapnav a.is-current{
+    color:var(--accent-light);
+}
+/* Sliding orange marker under the current section */
+.pf-marker{
+    position:absolute;
+    bottom:0;
+    left:0;
+    height:3px;
+    width:0;
+    background:var(--accent-light);
+    transition:transform 420ms var(--pf-ease), width 420ms var(--pf-ease);
+}
+.pf-intro{ margin-top:1.8rem; }
+
+/* ---- Sections ---- */
+.pf-section{
+    padding:4.5rem 0 1rem;
+    scroll-margin-top:calc(var(--nav-h) + 56px);
+}
+.pf-head{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:end;
+    gap:0 1.5rem;
+    margin-bottom:2rem;
+    padding-bottom:1.2rem;
+    border-bottom:1px solid var(--line);
+}
+.pf-num{
+    font-size:.85rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    color:var(--accent);
+    padding-bottom:.55rem;
+}
+.pf-title{
+    margin:0;
+    font-size:clamp(2rem, 4.2vw, 3.2rem);
+    font-weight:700;
+    letter-spacing:-.03em;
+    line-height:1;
+    color:var(--ink);
+}
+.pf-count{
+    font-size:.85rem;
+    color:var(--steel);
+    padding-bottom:.55rem;
+    white-space:nowrap;
+}
+.pf-lede{
+    grid-column:2 / 4;
+    margin:.9rem 0 0;
+    max-width:40rem;
+    color:#3f3f3f;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:500;
+    line-height:1.7;
+}
+
+/* ---- Bento grid ---- */
+.pf-grid{
+    --cols:3;
+    display:grid;
+    grid-template-columns:repeat(var(--cols), 1fr);
+    grid-auto-rows:calc((var(--pf-w) - (var(--cols) - 1) * var(--pf-gap)) / var(--cols) * 9 / 16);
+    grid-auto-flow:dense;
+    gap:var(--pf-gap);
+}
+.pf-grid--4{ --cols:4; }
+.pf-grid .lg  { grid-column:span 2; grid-row:span 2; }
+.pf-grid .wide{ grid-column:span 2; }
+.pf-grid .tall{ grid-row:span 2; }
+
+/* ---- Tiles ---- */
+.pf-tile{
+    position:relative;
+    display:block;
+    overflow:hidden;
+    border-radius:4px;
+    background:#e6e8eb;
+    cursor:pointer;
+    color:#fff;
+    text-decoration:none;
+    border:0;
+    padding:0;
+    font:inherit;
+    text-align:left;
+    width:100%;
+    height:100%;
+}
+.pf-tile img,
+.pf-tile video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform 700ms var(--pf-ease), opacity 400ms ease;
+}
+.pf-tile.top img{ object-position:top center; }
+.pf-tile .pf-preview{ opacity:0; }
+.pf-tile.is-previewing .pf-preview{ opacity:1; }
+
+/* Caption: a gradient panel on the tile. Always visible on touch screens;
+   slides up on hover where a mouse is available. */
+.pf-cap{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    padding:2.4rem 1rem .9rem;
+    background:linear-gradient(to top, rgba(10,12,16,.82), rgba(10,12,16,0));
+    transition:transform 420ms var(--pf-ease), opacity 420ms var(--pf-ease);
+}
+.pf-cap b{
+    display:block;
+    font-size:1rem;
+    font-weight:600;
+    line-height:1.25;
+}
+.pf-grid .lg .pf-cap b{ font-size:1.35rem; }
+.pf-cap span{
+    display:block;
+    margin-top:.25rem;
+    font-size:.72rem;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--accent-light);
+}
+.pf-icon{
+    position:absolute;
+    top:.7rem; right:.7rem;
+    display:flex; align-items:center; justify-content:center;
+    width:34px; height:34px;
+    border-radius:50%;
+    background:rgba(0,0,0,.55);
+    color:#fff;
+    font-size:.85rem;
+    transition:background var(--transition), transform 420ms var(--pf-ease);
+}
+
+@media (hover:hover){
+    .pf-cap{ transform:translateY(101%); opacity:0; }
+    .pf-tile:hover .pf-cap,
+    .pf-tile:focus-visible .pf-cap{ transform:none; opacity:1; }
+    .pf-tile:hover img{ transform:scale(1.04); }
+    .pf-tile:hover .pf-icon{ background:var(--accent); transform:scale(1.08); }
+}
+.pf-tile:focus-visible{ outline:3px solid var(--accent); outline-offset:3px; }
+
+/* Placeholder tile for work still to come */
+.pf-tile--todo{
+    display:flex; align-items:center; justify-content:center;
+    background:#eef0f2;
+    border:1px dashed #c3c8cf;
+    color:var(--steel);
+    font-size:.85rem;
+    cursor:default;
+}
+
+/* ---- Painting gallery: equal heights, natural widths ---- */
+.pf-gallery{
+    display:flex;
+    gap:24px;
+}
+.pf-gallery .pf-tile{
+    flex:var(--ar) 1 0;
+    aspect-ratio:var(--ar);
+    height:auto;
+    background:#fff;
+}
+.pf-gallery .pf-tile img{ object-fit:contain; }
+
+/* Commissions: a simple headline, a line of text and the site's standard button */
+.pf-commission{
+    max-width:40rem;
+    margin:3rem 0 1rem;
+}
+.pf-commission h3{
+    margin:0 0 .6rem;
+    font-size:1.6rem;
+    font-weight:700;
+    letter-spacing:-.02em;
+    color:var(--ink);
+}
+.pf-commission p{
+    margin:0;
+    color:#3f3f3f;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:500;
+    line-height:1.7;
+}
+
+/* ---- Reveal on scroll ---- */
+.pf-reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 700ms var(--pf-ease), transform 700ms var(--pf-ease);
+}
+.pf-reveal.is-in{
+    opacity:1;
+    transform:none;
+}
+
+/* ---- Lightbox ---- */
+.pf-lightbox{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:4.5rem 5rem 2rem;
+    background:rgba(12,13,16,.94);
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 350ms ease, visibility 0s linear 350ms;
+}
+.pf-lightbox.is-open{
+    opacity:1;
+    visibility:visible;
+    transition:opacity 350ms ease;
+}
+.pf-lb-stage{
+    position:relative;
+    flex:1;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:0;
+}
+.pf-lb-stage img,
+.pf-lb-stage video{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+    border-radius:2px;
+    box-shadow:0 20px 60px rgba(0,0,0,.45);
+    transition:opacity 260ms ease, transform 420ms var(--pf-ease);
+}
+.pf-lb-stage .is-leaving{ opacity:0; transform:scale(.985); }
+.pf-lb-cap{
+    margin-top:1.1rem;
+    text-align:center;
+    color:#fff;
+    max-width:44rem;
+}
+.pf-lb-cap b{ display:block; font-size:1.05rem; font-weight:600; }
+.pf-lb-cap span{
+    display:block; margin-top:.3rem;
+    font-size:.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--accent-light);
+}
+.pf-lb-cap a{ color:#fff; margin-top:.6rem; display:inline-block; font-size:.9rem; }
+.pf-lb-count{
+    position:absolute; top:1.4rem; left:1.6rem;
+    color:#aeb4bd; font-size:.85rem; letter-spacing:.04em;
+}
+.pf-lb-btn{
+    position:absolute;
+    display:flex; align-items:center; justify-content:center;
+    width:48px; height:48px;
+    border:0; border-radius:50%;
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    cursor:pointer;
+    transition:background var(--transition);
+}
+.pf-lb-btn:hover{ background:var(--accent); }
+.pf-lb-close{ top:1rem; right:1.2rem; }
+.pf-lb-prev{ left:1.2rem; top:50%; transform:translateY(-50%); }
+.pf-lb-next{ right:1.2rem; top:50%; transform:translateY(-50%); }
+body.pf-locked{ overflow:hidden; }
+
+/* ---- Small screens ---- */
+@media (max-width:700px){
+    :root{ --pf-w:calc(100vw - 3rem); --pf-gap:10px; }
+    .pf-section{ padding-top:3rem; }
+    .pf-head{ grid-template-columns:1fr auto; }
+    .pf-num{ grid-column:1 / 3; padding:0 0 .3rem; }
+    .pf-lede{ grid-column:1 / 3; }
+    .pf-grid,
+    .pf-grid--4{ --cols:2; }
+    .pf-grid .lg{ grid-column:span 2; grid-row:span 2; }
+    .pf-strapnav ul{ gap:1.5rem; }
+    .pf-strapnav{ white-space:nowrap; overflow:visible; }
+    .pf-gallery{ flex-direction:column; }
+    .pf-gallery .pf-tile{ flex:none; width:100%; }
+    .pf-lightbox{ padding:4rem .8rem 1.4rem; }
+    .pf-lb-prev, .pf-lb-next{ top:auto; bottom:1rem; transform:none; }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .pf-reveal{ opacity:1; transform:none; transition:none; }
+    .pf-tile img, .pf-cap, .pf-marker, .pf-lb-stage img{ transition:none; }
+}
+
+/* Illustration: the same slideshow as the homepage, at full portfolio width */
+.pf-slideshow{
+    position:relative;
+    width:100%;
+    aspect-ratio:16 / 9;
+    border-radius:4px;
+    overflow:hidden;
+}
+.pf-slideshow iframe{
+    position:absolute;
+    inset:-1px;
+    width:calc(100% + 2px);
+    height:calc(100% + 2px);
+    border:0;
+    display:block;
+}
+
+/* ---- Studio: a large feature piece, then a masonry wall ----
+   Paintings and drawings are never cropped: each keeps its own shape. */
+.pf-subhead{
+    margin:2.6rem 0 1.2rem;
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+}
+.pf-section .pf-subhead:first-of-type{ margin-top:0; }
+.pf-feature{
+    display:block;
+    width:auto;
+    height:auto;
+    max-width:100%;
+    margin:0 auto var(--pf-gap);
+    background:transparent;
+}
+.pf-feature img{
+    position:static;
+    width:auto;
+    height:auto;
+    max-width:100%;
+    max-height:78vh;
+    margin:0 auto;
+}
+/* Justified rows: keeps Paul's order left to right, every piece at its own
+   shape, all pieces in a row the same height. Each tile's width grows in
+   proportion to its aspect ratio (--ar), so heights stay equal. */
+.pf-masonry{
+    --row:300px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:var(--pf-gap);
+}
+.pf-masonry::after{
+    content:"";
+    flex-grow:999;          /* stops the last row stretching */
+}
+.pf-mtile{
+    flex-grow:var(--ar);
+    flex-basis:calc(var(--ar) * var(--row));
+    aspect-ratio:var(--ar);
+    height:auto;
+    background:transparent;
+}
+.pf-mtile img{
+    object-fit:contain;
+}
+@media (max-width:700px){
+    .pf-masonry{ --row:160px; }
+}
+.pf-masonry + .pf-masonry{ margin-top:var(--pf-gap); }
+
+/* Pets: the bulldog large on the left, with pets in two rows beside it */
+.pf-featurerow{
+    display:grid;
+    grid-template-columns:38% 1fr;
+    gap:var(--pf-gap);
+    margin-bottom:var(--pf-gap);
+}
+.pf-featurerow .pf-feature{
+    margin:0;
+    width:100%;
+    height:100%;
+}
+.pf-featurerow .pf-feature img{
+    width:100%;
+    height:100%;
+    max-height:none;
+    object-fit:contain;
+    object-position:center top;
+}
+.pf-beside{
+    --row:calc(var(--pf-w) * .22);
+    align-content:flex-start;
+}
+@media (max-width:700px){
+    .pf-featurerow{ grid-template-columns:1fr; }
+    .pf-featurerow .pf-feature{ height:auto; }
+    .pf-featurerow .pf-feature img{ height:auto; }
+    .pf-beside{ --row:160px; }
+}
+
+/* Row heights for the justified layout (read by portfolio.js) */
+.pf-masonry{ --row-px:290; }
+.pf-beside{ --row-px:260; }
+@media (max-width:700px){
+    .pf-masonry{ --row-px:150; }
+    .pf-beside{ --row-px:150; }
+}
+.pf-mtile{ aspect-ratio:auto; }
+
+.pf-featurerow{ align-items:start; }
+.pf-featurerow .pf-feature img{ object-fit:cover; }
+
+/* Caption under the print slideshow */
+.pf-slidecap{
+    display:flex;
+    align-items:baseline;
+    gap:.7rem;
+    margin:.8rem 0 0;
+    min-height:1.6em;
+    font-size:.95rem;
+    color:#3f3f3f;
+}
+.pf-slidecap b{ font-weight:700; color:var(--ink); }
+.pf-slidecap span{ color:var(--steel); }
+.pf-slidecap em{ margin-left:auto; font-style:normal; font-size:.8rem; color:var(--steel); }
+
+/* Section header: number above the title, count on the right */
+.pf-head{
+    grid-template-columns:1fr auto;
+    grid-template-areas:
+        "num   count"
+        "title count"
+        "lede  lede";
+    align-items:end;
+}
+.pf-num  { grid-area:num; padding:0 0 .35rem; }
+.pf-title{ grid-area:title; }
+.pf-count{ grid-area:count; align-self:end; }
+.pf-lede { grid-area:lede; grid-column:auto; }
+@media (max-width:700px){
+    .pf-head{ grid-template-columns:1fr auto; }
+    .pf-num{ grid-column:auto; }
+    .pf-lede{ grid-column:auto; }
+}
+
+/* No rule between the section header and the work */
+.pf-head{
+    border-bottom:0;
+    padding-bottom:0;
+}

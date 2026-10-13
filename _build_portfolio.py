@@ -10,14 +10,15 @@ header = re.sub(r'(<h2>\s*)Contact(\s*</h2>)', r'\1Portfolio\2', header)
 header = re.sub(r'\s*<div class="standfirst hero-strap hero-ticker">.*?</div>\s*</div>\s*</div>', '', header, flags=re.S)
 V = '20261013f'
 
-def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, preview=None, top=False, icon=None, ext=False):
+def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, preview=None, top=False, icon=None, ext=False, frame=None):
     a = ['class="pf-tile pf-reveal %s%s"' % (cls, ' top' if top else ''), 'data-group="%s"' % group,
          'data-title="%s"' % html.escape(title), 'data-meta="%s"' % html.escape(meta)]
     if full: a.append('data-full="%s"' % full)
     if video: a.append('data-video="%s"' % video)
+    if frame: a.append('data-frame="%s"' % frame)
     if preview: a.append('data-preview="%s"' % preview)
     tag, close = 'button type="button"', 'button'
-    if href and not full and not video:
+    if href and not full and not video and not frame:
         tag = 'a href="%s"' % href + (' target="_blank" rel="noopener noreferrer"' if ext else '')
         close = 'a'
     elif href:
@@ -40,11 +41,11 @@ digital = [
  tile('', 'fentanyl', 'Fentanyl in New Zealand', 'Motion graphics', 'dig', video='assets/images/turning-ideas.mp4', preview='assets/images/turning-ideas.mp4', icon=PLAY),
  tile('', 'mmp', 'What is MMP?', 'Motion graphics · Explainer', 'dig', video='assets/images/mmp-explainer.mp4', preview='assets/images/mmp-explainer.mp4', icon=PLAY),
  tile('', 'viva', 'Viva Top 50 Auckland Restaurants', 'Interactive design · Figma', 'dig', href=VIVA, icon=OUT, ext=True, top=True),
- tile('', 'drone', 'Iran’s Shahed-136 drone', 'Interactive graphic · 3D', 'dig', video='assets/images/DRONE5.mp4', preview='assets/images/DRONE5.mp4', icon=PLAY),
+ tile('', 'drone', 'Iran’s Shahed-136 drone', 'Interactive graphic · 3D', 'dig', frame='assets/images/drone-embed.html', preview='assets/images/DRONE5.mp4', icon='\u2922'),
  tile('', 'wellington', 'Wellington in 3D', '3D · Open data', 'dig', full='assets/images/Welly.jpg', href='index.html', icon='\u2922'),
  tile('', 'auckland', 'Auckland in 3D', '3D · Blender · three.js', 'dig', full='assets/images/model-placeholder.jpg', href='index.html', icon=ZOOM),
  tile('', 'deep-trouble', 'Deep Trouble', 'Immersive long-form', 'dig', href='assets/images/shorthand-showcase.html', icon=OUT, ext=True),
- tile('', None, 'How the wobble seam works', 'Motion graphics · Sport', 'dig', video=WOB, icon=PLAY),
+ '<div class="pf-tile pf-reveal pf-loop" aria-label="How the wobble seam works"><video src="%s" muted loop playsinline preload="metadata" aria-hidden="true"></video><span class="pf-cap"><b>How the wobble seam works</b><span>Motion graphics · Sport</span></span></div>' % WOB,
 ]
 
 prnt = [tile('lg', 'print-11', 'Weekend Herald and Canvas relaunch', '[Role, year] · Redesign', 'prn', full='assets/images/HZ11.jpg', icon=ZOOM),
@@ -128,7 +129,7 @@ page = '''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul Slater | Portfolio</title>
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=12">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=13">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -169,7 +170,7 @@ page = '''<!DOCTYPE html>
 </div>
 
 <script src="assets/script.js?v=%(V)s"></script>
-<script src="assets/portfolio/portfolio.js?v=8"></script>
+<script src="assets/portfolio/portfolio.js?v=9"></script>
 </body>
 </html>
 ''' % {'V': V, 'header': header, 'sections': sections}

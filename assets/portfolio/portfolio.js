@@ -204,6 +204,29 @@
         });
     }
 
+
+    /* ---- Embedded interactives report their height (drone graphic) ---- */
+    window.addEventListener("message", e => {
+        const h = e.data && typeof e.data.height === "number" ? e.data.height : 0;
+        if (!h) return;
+        document.querySelectorAll(".pf-lb-frame iframe").forEach(f => {
+            if (f.contentWindow === e.source) f.style.height = h + "px";
+        });
+    });
+
+    /* ---- Looping tiles: silent clips that play in place while on screen ---- */
+    const loops = document.querySelectorAll(".pf-loop video");
+    if (loops.length && !reduceMotion && "IntersectionObserver" in window) {
+        const lo = new IntersectionObserver(entries => {
+            entries.forEach(en => {
+                const v = en.target;
+                if (en.isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+                else v.pause();
+            });
+        }, { threshold: .3 });
+        loops.forEach(v => { v.muted = true; lo.observe(v); });
+    }
+
     /* ---- Full-screen viewer ---- */
     const lb = document.querySelector(".pf-lightbox");
     const stage = lb.querySelector(".pf-lb-stage");
@@ -217,6 +240,7 @@
         return {
             img: tile.dataset.full,
             video: tile.dataset.video,
+            frame: tile.dataset.frame,
             title: tile.dataset.title || "",
             meta: tile.dataset.meta || "",
             href: tile.dataset.href || ""
@@ -227,7 +251,14 @@
         const d = itemData(group[index]);
         const old = stage.firstElementChild;
         let el;
-        if (d.video) {
+        if (d.frame) {
+            // A live interactive (e.g. the drone graphic) in a scrollable panel.
+            el = document.createElement("div");
+            el.className = "pf-lb-frame";
+            const f = document.createElement("iframe");
+            f.src = d.frame; f.title = d.title; f.setAttribute("scrolling", "no");
+            el.appendChild(f);
+        } else if (d.video) {
             el = document.createElement("video");
             el.src = d.video; el.controls = true; el.playsInline = true;
             el.autoplay = true;
@@ -262,7 +293,7 @@
 
     function open(tile) {
         group = [...document.querySelectorAll('.pf-tile[data-group="' + tile.dataset.group + '"]')]
-            .filter(t => t.dataset.full || t.dataset.video);
+            .filter(t => t.dataset.full || t.dataset.video || t.dataset.frame);
         index = group.indexOf(tile);
         lastFocus = tile;
         stage.innerHTML = "";
@@ -281,7 +312,7 @@
     }
     function step(n) { index = (index + n + group.length) % group.length; render(n); }
 
-    document.querySelectorAll(".pf-tile[data-full], .pf-tile[data-video]").forEach(tile => {
+    document.querySelectorAll(".pf-tile[data-full], .pf-tile[data-video], .pf-tile[data-frame]").forEach(tile => {
         tile.addEventListener("click", e => { e.preventDefault(); open(tile); });
     });
     lb.querySelector(".pf-lb-close").addEventListener("click", close);

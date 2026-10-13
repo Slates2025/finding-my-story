@@ -1702,3 +1702,57 @@ a.work-media:hover img{
     line-height:1.8;
     color:#3f3f3f;
 }
+
+/* ---- Accent colour: burnt orange ----
+   One restrained accent, used for navigation and labels only, so the work
+   stays the colourful thing on the page. #B4501A passes WCAG AA for text on
+   the off-white paper (5:1); the lighter tint is for the dots on the black
+   ticker strip. */
+:root{
+    --accent:#B4501A;
+    --accent-light:#F08A4B;
+}
+.top-nav .active{
+    color:var(--accent);
+    box-shadow:inset 0 -2px 0 var(--accent);
+}
+.top-nav a:hover{
+    color:var(--accent);
+}
+.accordion:hover .accordion-icon,
+.accordion.open .accordion-icon,
+.accordion.open .accordion-title{
+    color:var(--accent);
+}
+.accordion-rule{
+    background:var(--accent);
+    height:2px;
+    width:48px;
+}
+.story-label,
+.work-tag{
+    color:var(--accent);
+}
+.work-link,
+.work-link:hover{
+    color:var(--accent);
+}
+.project-button,
+.story-showcase-open{
+    background:var(--accent);
+}
+.thought-dot,
+.hero-ticker .thought-dot,
+.hero-ticker .cursor{
+    background:var(--accent-light);
+}
+
+/* Colour portrait: re-centre the large cog behind the head. */
+.hero-cogs{
+    transform:translateX(-63px);
+}
+@media (max-width:700px){
+    .hero-cogs{
+        transform:translateX(-15px);
+    }
+}

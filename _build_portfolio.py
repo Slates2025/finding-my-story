@@ -142,7 +142,7 @@ page = '''<!DOCTYPE html>
 <nav class="top-nav">
 <a href="index.html">Home</a>
 <a href="portfolio.html" class="active">Portfolio</a>
-<a href="cv.html">CV</a>
+<a href="cv.html">Resumé</a>
 <a href="contact.html">Contact</a>
 </nav>
 %(header)s

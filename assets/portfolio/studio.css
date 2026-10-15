@@ -309,3 +309,9 @@
 .st-digital.has-media{ grid-template-columns:minmax(0, 1.2fr) minmax(0, 1fr); }
 .st-digital-media img{ max-width:440px; margin-left:auto; }
 @media (max-width:700px){ .st-digital-media img{ max-width:none; } }
+/* Phones: the picture leads the panel, full width inside the box */
+@media (max-width:700px){
+    .st-digital.has-media{ grid-template-columns:1fr; gap:1.2rem; }
+    .st-digital-media{ order:-1; }
+    .st-digital-media img{ width:100%; max-width:none; margin:0; }
+}

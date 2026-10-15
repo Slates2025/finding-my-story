@@ -1,0 +1,232 @@
+/* ==========================================================
+   STUDIO PAGE
+   Builds on style.css + portfolio.css. A charcoal page (the cog
+   colour) with off-white text and white mounts around the artwork.
+========================================================== */
+
+.st-page{
+    --st-bg:#24272E;
+    --st-text:#E6E8EB;
+    --st-soft:#AEB4BE;
+    --st-line:rgba(255,255,255,.14);
+    background:var(--st-bg);
+    color:var(--st-text);
+    /* No orange on this page: the accent becomes a light grey */
+    --accent:#C9CDD4;
+    --accent-light:#C9CDD4;
+}
+
+/* Main nav on charcoal */
+.st-page .top-nav::before{ background:var(--st-bg); }
+.st-page .top-nav a{ color:var(--st-soft); }
+.st-page .top-nav a:hover,
+.st-page .top-nav .active{ color:#fff; }
+.st-page .pf-strapnav a:hover,
+.st-page .pf-strapnav a.is-current{ color:#fff; }
+
+/* ---- Intro ---- */
+.st-intro{ padding:2.4rem 0 .5rem; }
+.st-intro h2{
+    margin:0 0 1rem;
+    font-size:clamp(1.9rem, 4vw, 2.6rem);
+    font-weight:700;
+    letter-spacing:-.03em;
+    line-height:1.1;
+    color:#fff;
+}
+.st-intro p{
+    color:var(--st-soft);
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:500;
+    line-height:1.7;
+    margin:0 0 1rem;
+}
+.st-intro .standfirst-bold{ color:var(--st-text); }
+.st-page .pf-intro a,
+.st-page p a{ color:#fff; }
+
+/* Buttons: the orange, lightening on hover (the ink hover would vanish here) */
+.st-page .project-button{ background:#E6E8EB; color:var(--st-bg); }
+.st-page .project-button:hover{ background:#fff; color:var(--st-bg); }
+
+/* ---- Section heads on charcoal ---- */
+.st-page .pf-title{ color:#fff; }
+.st-page .pf-lede{ color:var(--st-soft); }
+.st-page .pf-section{ padding-top:3.6rem; }
+.st-section + .st-section{ border-top:1px solid var(--st-line); margin-top:2.4rem; }
+.st-page .pf-subhead{ color:var(--accent-light); }
+
+/* ---- Pricing ---- */
+.st-prices{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:var(--pf-gap);
+}
+.st-price{
+    display:flex;
+    flex-direction:column;
+    padding:1.5rem 1.6rem 1.4rem;
+    border:1px solid var(--st-line);
+    border-radius:4px;
+}
+.st-what{ font-weight:700; color:#fff; font-size:1.05rem; }
+.st-size{
+    margin-top:1.4rem;
+    font-size:.72rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--st-soft);
+}
+.st-price b{
+    font-size:clamp(2.2rem, 4vw, 3rem);
+    font-weight:700;
+    letter-spacing:-.03em;
+    line-height:1.05;
+    color:#fff;
+}
+.st-notes{
+    max-width:46rem;
+    margin-top:1.6rem;
+}
+.st-notes p{
+    margin:0 0 .7rem;
+    color:var(--st-soft);
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:500;
+    line-height:1.7;
+}
+
+/* ---- How it works: five steps in a row ---- */
+.st-steps{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:var(--pf-gap);
+    counter-reset:none;
+}
+.st-steps li{
+    padding-top:1rem;
+    border-top:2px solid var(--accent-light);
+}
+.st-n{
+    display:block;
+    font-size:.8rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    color:var(--accent-light);
+}
+.st-steps b{
+    display:block;
+    margin:.45rem 0 .45rem;
+    font-size:1.05rem;
+    color:#fff;
+    line-height:1.3;
+}
+.st-steps p{
+    margin:0;
+    font-size:.92rem;
+    color:var(--st-soft);
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:500;
+    line-height:1.6;
+}
+
+/* ---- Gallery: white mounts around every piece ---- */
+.st-page .pf-tile{ background:transparent; border-radius:0; }
+.st-page .pf-tile img{ border-radius:0; }
+.st-page .pf-mtile::after,
+.st-page .pf-feature::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border:4px solid #fff;
+    pointer-events:none;
+    z-index:2;
+}
+/* A standalone feature piece shrinks to the size of its picture */
+.st-page .pf-section > .pf-inner > .pf-feature{ width:fit-content; }
+.st-page .pf-cap{ z-index:3; }
+.st-page .pf-tile:focus-visible{ outline-color:var(--accent-light); }
+
+/* ---- Kind words ---- */
+.st-quotes{
+    columns:3 18rem;
+    column-gap:2.4rem;
+}
+.st-quote{
+    break-inside:avoid;
+    margin:0 0 2rem;
+    padding-left:1.1rem;
+    border-left:2px solid var(--accent-light);
+}
+.st-quote blockquote{
+    margin:0;
+    font-size:1.08rem;
+    line-height:1.55;
+    color:var(--st-text);
+}
+.st-quote figcaption{
+    margin-top:.6rem;
+    font-size:.72rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--st-soft);
+}
+
+/* ---- Closing call to action ---- */
+.st-cta{
+    margin:2.6rem 0 2rem;
+    padding:2.6rem 2rem;
+    text-align:center;
+    background:var(--ink);
+    border-radius:4px;
+}
+.st-cta h2{
+    margin:0 0 .7rem;
+    font-size:clamp(1.7rem, 3.4vw, 2.3rem);
+    letter-spacing:-.02em;
+    color:#fff;
+}
+.st-cta p{
+    max-width:36rem;
+    margin:0 auto;
+    color:var(--st-soft);
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:500;
+    line-height:1.7;
+}
+
+/* ---- Tablets and phones ---- */
+@media (max-width:900px){
+    .st-steps{ grid-template-columns:1fr 1fr; row-gap:1.8rem; }
+}
+@media (max-width:700px){
+    .st-prices{ grid-template-columns:1fr; }
+    .st-price{ flex-direction:row; flex-wrap:wrap; align-items:baseline; gap:0 .6rem; padding:1rem 1.1rem; }
+    .st-what{ flex:1 0 100%; }
+    .st-size{ margin-top:.4rem; }
+    .st-price b{ font-size:1.9rem; }
+    .st-steps{ grid-template-columns:1fr; }
+    .st-page .pf-mtile::after,
+    .st-page .pf-feature::after{ border-width:3px; }
+    .st-cta{ padding:2rem 1.2rem; margin-left:-1.5rem; margin-right:-1.5rem; border-radius:0; }
+}
+
+/* Intro buttons: the commission button plus a quiet jump to pricing */
+.st-actions{ display:flex; align-items:center; flex-wrap:wrap; gap:.4rem 1.4rem; }
+.st-actions .project-button{ margin-top:1.25rem; }
+.st-textlink{
+    margin-top:1.25rem;
+    color:var(--st-text);
+    font-size:.95rem;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    text-decoration-color:var(--st-line);
+}
+.st-textlink:hover{ color:#fff; text-decoration-color:#fff; }
+.st-intro{ padding-bottom:0; }
+.st-section:first-child{ padding-top:2.6rem; }

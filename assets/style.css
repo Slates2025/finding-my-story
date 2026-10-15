@@ -1793,3 +1793,12 @@ a.work-media:hover img{
    edge (same treatment as the Deep Trouble "Read the full story" button) */
 .media-cta{ position:relative; }
 .media-cta .story-showcase-open{ bottom:22px; }
+
+/* Five nav links: tighten on phones so they fit one line */
+@media (max-width:700px){
+    .top-nav{ gap:1.1rem; }
+}
+@media (max-width:400px){
+    .top-nav{ gap:.85rem; }
+    .top-nav a{ font-size:.88rem; }
+}

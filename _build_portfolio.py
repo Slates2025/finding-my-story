@@ -8,7 +8,7 @@ header = re.sub(r'\s*<p class="standfirst standfirst-bold">.*?</p>', '', header,
 import re
 header = re.sub(r'(<h2>\s*)Contact(\s*</h2>)', r'\1Portfolio\2', header)
 header = re.sub(r'\s*<div class="standfirst hero-strap hero-ticker">.*?</div>\s*</div>\s*</div>', '', header, flags=re.S)
-V = '20261014d'
+V = '20261016a'
 
 def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, preview=None, top=False, icon=None, ext=False, frame=None):
     a = ['class="pf-tile pf-reveal %s%s"' % (cls, ' top' if top else ''), 'data-group="%s"' % group,
@@ -94,7 +94,7 @@ def runs(items):
         if out and out[-1][0]['kind'] == x['kind']: out[-1].append(x)
         else: out.append([x])
     return out
-gal = studio_group('people', 'People') + studio_group('pets', 'Pets')
+gal = studio_group('pets', 'Pets and wildlife') + studio_group('people', 'People')
 
 commission = '''<div class="pf-commission pf-reveal">
 <h3>Commission a portrait</h3>
@@ -120,8 +120,7 @@ PRINTCAP = '<p class="pf-slidecap" id="printCap" aria-live="polite" data-items="
 sections = (
     section('digital', '01', 'Digital', '10 projects', 'Interactive graphics, data interactives, motion explainers and 3D. <span class="pf-hover-only">Hover over a motion piece to preview it.</span><span class="pf-touch-only">Tap any piece to open it.</span>', '<div class="pf-grid">' + ''.join(digital) + '</div>') +
     section('print', '02', 'Print', '36 pieces', 'Newspaper and magazine design: covers, features, special reports, infographics and full redesigns.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-print-portfolio.html?v=3" title="Print: a slideshow of newspaper and magazine design" loading="lazy" scrolling="no"></iframe></div>' + PRINTCAP) +
-    section('illustration', '03', 'Illustration', '38 illustrations', 'Editorial illustration on deadline: ideas created to stop readers and sell the story, often in hours rather than weeks.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-illustrations.html?v=3" title="Editorial illustration: a slideshow of 38 illustrations" loading="lazy" scrolling="no"></iframe></div>') +
-    section('studio', '04', 'Studio', 'Commissions open', 'Paintings and drawings: the films, music and people that resonate with me, and portraits of much-loved pets.', gal + commission)
+    section('illustration', '03', 'Illustration', '38 illustrations', 'Editorial illustration on deadline: ideas created to stop readers and sell the story, often in hours rather than weeks.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-illustrations.html?v=3" title="Editorial illustration: a slideshow of 38 illustrations" loading="lazy" scrolling="no"></iframe></div>')
 )
 
 page = '''<!DOCTYPE html>
@@ -142,6 +141,7 @@ page = '''<!DOCTYPE html>
 <nav class="top-nav">
 <a href="index.html">Home</a>
 <a href="portfolio.html" class="active">Portfolio</a>
+<a href="studio.html">Studio</a>
 <a href="cv.html">Resumé</a>
 <a href="contact.html">Contact</a>
 </nav>
@@ -151,11 +151,10 @@ page = '''<!DOCTYPE html>
 <li><a href="#digital">Digital</a></li>
 <li><a href="#print">Print</a></li>
 <li><a href="#illustration">Illustration</a></li>
-<li><a href="#studio">Studio</a></li>
 <li class="pf-marker" aria-hidden="true"></li>
 </ul>
 </nav>
-<p class="standfirst standfirst-bold pf-intro">A selection of my work across digital, print, editorial illustration and painting. Select any piece to see it larger.</p>
+<p class="standfirst standfirst-bold pf-intro">A selection of my work across digital, print and editorial illustration. Select any piece to see it larger. For paintings, drawings and portrait commissions, visit the <a href="studio.html">Studio</a>.</p>
 
 <div class="pf-wide">
 %(sections)s
@@ -187,3 +186,4 @@ for ch, svg in ICONS.items():
     page = page.replace('<span class="pf-icon" aria-hidden="true">%s</span>' % ch, '<span class="pf-icon" aria-hidden="true">%s</span>' % svg)
 open('portfolio.html', 'w').write(page)
 print('ok', len(page))
+exec(open('_build_studio.py').read())

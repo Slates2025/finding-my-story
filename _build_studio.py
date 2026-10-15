@@ -16,6 +16,12 @@ PRICES = [  # (what, size, price)
     ('Pet portraits', 'A4 from', '$350'),
     ('People portraits', 'A4 from', '$400'),
     ('Oil paintings', 'A4 from', '$450'),
+    ('Digital portraits', 'Prices start at', '$350'),
+]
+# Digital portraits: images to show beside the text. Add file paths, e.g.
+# 'assets/images/digital-canvas.jpg'; leave empty to show the text on its own.
+DIGITAL_IMAGES = [  # (file, description for screen readers)
+    ('assets/images/Digital-artwork.webp', 'A pug sitting beside a large canvas print of its digital portrait'),
 ]
 STEPS = [
     ('Get in touch', 'Send me a short note with a photo or two and an idea of what you’d like. I’ll confirm pricing and timing.'),
@@ -43,6 +49,13 @@ notes = '''<div class="st-notes pf-reveal">
 <p>Prices include materials and a high-resolution digital copy of the finished portrait. Postage, packing and framing aren’t included.</p>
 <p>Based in Auckland. I ship within New Zealand, and overseas on request.</p>
 </div>'''
+digital = ('<div class="st-digital pf-reveal%s">' % (' has-media' if DIGITAL_IMAGES else '') +
+    '<div class="st-digital-text"><h3>Digital portraits</h3>'
+    '<p>This isn\u2019t a filter or an AI-generated image. Every digital portrait is drawn by hand, stroke by stroke, with a digital pencil. Only the medium changes, not the craft.</p>'
+    '<p>Priced the same as a drawing. You\u2019ll receive a high-resolution image file and an A4 print of your portrait.</p>'
+    '<p>Because the file is high resolution, you can scale it up and print it on canvas at whatever size you like, for real high-impact artwork on your wall. Or print it on whatever you like, from mugs to T-shirts.</p></div>' +
+    (('<div class="st-digital-media">' + ''.join('<img src="%s" alt="%s" loading="lazy">' % (f, html.escape(a)) for f, a in DIGITAL_IMAGES) + '</div>') if DIGITAL_IMAGES else '') +
+    '</div>')
 steps = '<ol class="st-steps">' + ''.join(
     '<li class="pf-reveal"><span class="st-n">%02d</span><b>%s</b><p>%s</p></li>' % (i + 1, t, d)
     for i, (t, d) in enumerate(STEPS)) + '</ol>'
@@ -71,7 +84,7 @@ def st_section(sid, title, lede, body):
 st_sections = (
     st_section('gallery', 'Gallery', 'Commissioned pet portraits, plus the films, music and people that resonate with me. Select any piece to see it larger.', gal) +
     st_section('kind-words', 'Kind words', '', quotes) +
-    st_section('pricing', 'Pricing', 'Every portrait starts with a good photo and a conversation about what makes them who they are: the look in their eyes, the tilt of their head, the personality that only you would recognise. I work in colour pencil, pastel, pencil and oils, and I take on a small number of commissions at a time so each one gets the attention it deserves.', prices + notes) +
+    st_section('pricing', 'Pricing', 'Every portrait starts with a good photo and a conversation about what makes them who they are: the look in their eyes, the tilt of their head, the personality that only you would recognise. I work in colour pencil, pastel, pencil and oils, and I take on a small number of commissions at a time so each one gets the attention it deserves.', prices + notes + digital) +
     st_section('process', 'How it works', '', steps + cta)
 )
 
@@ -84,7 +97,7 @@ st_page = '''<!DOCTYPE html>
 <meta name="description" content="Hand-drawn and painted portraits of pets and people by Auckland artist Paul Slater. A4 commissions from $350.">
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
 <link rel="stylesheet" href="assets/portfolio/portfolio.css?v=22">
-<link rel="stylesheet" href="assets/portfolio/studio.css?v=11">
+<link rel="stylesheet" href="assets/portfolio/studio.css?v=13">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">

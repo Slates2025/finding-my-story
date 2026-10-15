@@ -83,7 +83,7 @@ st_page = '''<!DOCTYPE html>
 <title>Paul Slater | Studio: portrait commissions</title>
 <meta name="description" content="Hand-drawn and painted portraits of pets and people by Auckland artist Paul Slater. A4 commissions from $350.">
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=21">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=22">
 <link rel="stylesheet" href="assets/portfolio/studio.css?v=3">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">

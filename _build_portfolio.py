@@ -130,7 +130,7 @@ page = '''<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul Slater | Portfolio</title>
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=21">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=22">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">

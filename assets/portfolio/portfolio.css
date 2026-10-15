@@ -316,6 +316,7 @@
     color:var(--accent-light);
 }
 .pf-lb-cap a{ color:#fff; margin-top:.6rem; display:inline-block; font-size:.9rem; }
+.pf-lb-cap a[hidden]{ display:none; }
 .pf-lb-count{
     position:absolute; top:1.4rem; left:1.6rem;
     color:#aeb4bd; font-size:.85rem; letter-spacing:.04em;

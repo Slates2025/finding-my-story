@@ -315,3 +315,13 @@
     .st-digital-media{ order:-1; }
     .st-digital-media img{ width:100%; max-width:none; margin:0; }
 }
+
+/* Name in orange: the one accent on this page */
+.st-page .hero h1{ color:#F08A4B; }
+
+/* Calmer top of page: orange name leads, then the white heading; the rest is grey */
+.st-page .hero h2{ color:var(--st-soft); }
+.st-page .pf-strapnav a{ color:var(--st-soft); }
+.st-page .pf-strapnav a:hover,
+.st-page .pf-strapnav a.is-current{ color:#fff; }
+.st-page .st-intro .standfirst-bold{ color:var(--st-soft); }

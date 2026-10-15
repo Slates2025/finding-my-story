@@ -230,3 +230,13 @@
 .st-textlink:hover{ color:#fff; text-decoration-color:#fff; }
 .st-intro{ padding-bottom:0; }
 .st-section:first-child{ padding-top:2.6rem; }
+
+/* Full-screen viewer: the same white mount around each piece */
+.st-page .pf-lb-stage img{
+    border:6px solid #fff;
+    border-radius:0;
+    background:#fff;
+}
+@media (max-width:700px){
+    .st-page .pf-lb-stage img{ border-width:4px; }
+}

@@ -240,3 +240,22 @@
 @media (max-width:700px){
     .st-page .pf-lb-stage img{ border-width:4px; }
 }
+
+/* Masthead: a strip of the artwork in place of the cogs */
+.st-page .hero-cogs{ display:none; }
+.st-page .hero-branding::before{
+    content:"";
+    position:absolute;
+    top:0; bottom:0;
+    left:50%;
+    width:100vw;
+    transform:translateX(-50%);
+    background:var(--ink) url("../images/studio-header.jpg?v=2") center / auto 100% no-repeat;
+    z-index:0;
+    pointer-events:none;
+}
+@media (max-width:700px){
+    .st-page .hero-branding::before{
+        background:var(--ink) url("../images/studio-header-mobile.jpg?v=1") left center / cover no-repeat;
+    }
+}

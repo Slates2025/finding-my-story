@@ -16,7 +16,7 @@ PRICES = [  # (what, size, price)
     ('Pet portraits', 'A4 from', '$350'),
     ('People portraits', 'A4 from', '$400'),
     ('Oil paintings', 'A4 from', '$450'),
-    ('Digital portraits', 'Prices start at', '$350'),
+    ('Digital pet portraits', 'Prices start at', '$350'),
 ]
 # Digital portraits: images to show beside the text. Add file paths, e.g.
 # 'assets/images/digital-canvas.jpg'; leave empty to show the text on its own.
@@ -50,9 +50,9 @@ notes = '''<div class="st-notes pf-reveal">
 <p>Based in Auckland. I ship within New Zealand, and overseas on request.</p>
 </div>'''
 digital = ('<div class="st-digital pf-reveal%s">' % (' has-media' if DIGITAL_IMAGES else '') +
-    '<div class="st-digital-text"><h3>Digital portraits</h3>'
-    '<p>This isn\u2019t a filter or an AI-generated image. Every digital portrait is drawn by hand, stroke by stroke, with a digital pencil. Only the medium changes, not the craft.</p>'
-    '<p>Priced the same as a drawing. You\u2019ll receive a high-resolution image file and an A4 print of your portrait.</p>'
+    '<div class="st-digital-text"><h3>Digital pet portraits</h3>'
+    '<p>This isn\u2019t a filter or an AI-generated image. Every digital pet portrait is drawn by hand, stroke by stroke, with a digital pencil. Only the medium changes, not the craft.</p>'
+    '<p>Priced the same as a drawn pet portrait. You\u2019ll receive a high-resolution image file and an A4 print of your pet\u2019s portrait.</p>'
     '<p>Because the file is high resolution, you can scale it up and print it on canvas at whatever size you like, for real high-impact artwork on your wall. Or print it on whatever you like, from mugs to T-shirts.</p></div>' +
     (('<div class="st-digital-media">' + ''.join('<img src="%s" alt="%s" loading="lazy">' % (f, html.escape(a)) for f, a in DIGITAL_IMAGES) + '</div>') if DIGITAL_IMAGES else '') +
     '</div>')

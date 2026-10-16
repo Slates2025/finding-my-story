@@ -129,6 +129,19 @@ page = '''<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paul Slater | Portfolio</title>
+<!-- Link preview (LinkedIn, Facebook, messages, email). Image: assets/images/share-site.jpg, 1200 x 630. -->
+<link rel="canonical" href="https://slatesdesign.com/portfolio.html">
+<meta name="description" content="Interactive graphics, data interactives, motion explainers, 3D, print design and editorial illustration by Paul Slater.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Paul Slater">
+<meta property="og:url" content="https://slatesdesign.com/portfolio.html">
+<meta property="og:title" content="Paul Slater | Portfolio">
+<meta property="og:description" content="Interactive graphics, data interactives, motion explainers, 3D, print design and editorial illustration by Paul Slater.">
+<meta property="og:image" content="https://slatesdesign.com/assets/images/share-site.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Paul Slater, visual storyteller">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
 <link rel="stylesheet" href="assets/portfolio/portfolio.css?v=22">
 <link rel="icon" href="favicon.ico" sizes="any">

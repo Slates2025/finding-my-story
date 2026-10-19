@@ -185,6 +185,8 @@ page = '''<!DOCTYPE html>
 
 <script src="assets/script.js?v=%(V)s"></script>
 <script src="assets/portfolio/portfolio.js?v=14"></script>
+<!-- Cloudflare Web Analytics (free, no cookies). Dashboard: dash.cloudflare.com > Web Analytics -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "823ba0a74bb848538b2c510ffbc7a151"}'></script>
 </body>
 </html>
 ''' % {'V': V, 'header': header, 'sections': sections}

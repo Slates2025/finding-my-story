@@ -326,7 +326,7 @@ function createCityScene(opts) {
 // The cities
 // =============================================================================
 
-// Auckland — "I think by making". Hand-tuned composition.
+// Auckland — "See it before you build it". Hand-tuned composition.
 const auckland = createCityScene({
     containerId: 'auckland-scene',
     hintId: 'scene-hint',

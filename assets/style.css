@@ -1802,3 +1802,23 @@ a.work-media:hover img{
     .top-nav{ gap:.85rem; }
     .top-nav a{ font-size:.88rem; }
 }
+
+/* Studio sits last in the nav, after a thin divider, apart from the
+   professional pages (Home · Portfolio · Resumé · Contact | Studio) */
+.top-nav{ --nav-gap:2rem; }
+.top-nav .nav-studio{
+    position:relative;
+    margin-left:var(--nav-gap);
+}
+.top-nav .nav-studio::before{
+    content:"";
+    position:absolute;
+    left:calc(var(--nav-gap) * -1 - .5px);
+    top:50%;
+    height:1.05em;
+    transform:translateY(-50%);
+    border-left:1px solid #b9bec6;
+    pointer-events:none;
+}
+@media (max-width:700px){ .top-nav{ --nav-gap:1.1rem; } }
+@media (max-width:400px){ .top-nav{ --nav-gap:.85rem; } }

@@ -8,7 +8,7 @@ header = re.sub(r'\s*<p class="standfirst standfirst-bold">.*?</p>', '', header,
 import re
 header = re.sub(r'(<h2>\s*)Contact(\s*</h2>)', r'\1Portfolio\2', header)
 header = re.sub(r'\s*<div class="standfirst hero-strap hero-ticker">.*?</div>\s*</div>\s*</div>', '', header, flags=re.S)
-V = '20261016a'
+V = '20261023a'
 
 def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, preview=None, top=False, icon=None, ext=False, frame=None):
     a = ['class="pf-tile pf-reveal %s%s"' % (cls, ' top' if top else ''), 'data-group="%s"' % group,
@@ -154,9 +154,9 @@ page = '''<!DOCTYPE html>
 <nav class="top-nav">
 <a href="index.html">Home</a>
 <a href="portfolio.html" class="active">Portfolio</a>
-<a href="studio.html">Studio</a>
 <a href="cv.html">Resumé</a>
 <a href="contact.html">Contact</a>
+<a href="studio.html" class="nav-studio">Studio</a>
 </nav>
 %(header)s
 <nav class="standfirst hero-strap pf-strapnav" aria-label="Portfolio sections">

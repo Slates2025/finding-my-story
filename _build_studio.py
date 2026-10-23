@@ -109,7 +109,7 @@ st_page = '''<!DOCTYPE html>
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
 <link rel="stylesheet" href="assets/portfolio/portfolio.css?v=22">
-<link rel="stylesheet" href="assets/portfolio/studio.css?v=17">
+<link rel="stylesheet" href="assets/portfolio/studio.css?v=18">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -120,9 +120,9 @@ st_page = '''<!DOCTYPE html>
 <nav class="top-nav">
 <a href="index.html">Home</a>
 <a href="portfolio.html">Portfolio</a>
-<a href="studio.html" class="active">Studio</a>
 <a href="cv.html">Resumé</a>
 <a href="contact.html">Contact</a>
+<a href="studio.html" class="nav-studio active">Studio</a>
 </nav>
 %(header)s
 <nav class="standfirst hero-strap pf-strapnav" aria-label="Studio sections">

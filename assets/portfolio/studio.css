@@ -325,3 +325,5 @@
 .st-page .pf-strapnav a:hover,
 .st-page .pf-strapnav a.is-current{ color:#fff; }
 .st-page .st-intro .standfirst-bold{ color:var(--st-soft); }
+
+.st-page .top-nav .nav-studio::before{ border-color:rgba(255,255,255,.25); }

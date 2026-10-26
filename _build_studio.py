@@ -120,7 +120,7 @@ st_page = '''<!DOCTYPE html>
 <nav class="top-nav">
 <a href="index.html">Home</a>
 <a href="portfolio.html">Portfolio</a>
-<a href="cv.html">Resumé</a>
+<a href="cv.html">CV</a>
 <a href="contact.html">Contact</a>
 <a href="studio.html" class="nav-studio active">Studio</a>
 </nav>

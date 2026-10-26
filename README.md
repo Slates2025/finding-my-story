@@ -15,7 +15,7 @@ I designed and built this site myself, rather than using a template or a website
 | [Home](https://slatesdesign.com) | My story, told in seven chapters that open like accordions, each with a real project as an example: interactive 3D cities, long-form digital stories, data interactives, motion graphics and illustration. |
 | [Portfolio](https://slatesdesign.com/portfolio.html) | The work: a bento grid of digital projects, a print slideshow and editorial illustration, with a full-screen viewer. |
 | [Studio](https://slatesdesign.com/studio.html) | Portrait commissions: a gallery of paintings and drawings, pricing, process and testimonials. |
-| [Resumé](https://slatesdesign.com/cv.html) | Three decades of roles, from the *Financial Times* in London and Hong Kong to NZME in Auckland. |
+| [CV](https://slatesdesign.com/cv.html) | Three decades of roles, from the *Financial Times* in London and Hong Kong to NZME in Auckland. |
 | [Contact](https://slatesdesign.com/contact.html) | How to get in touch. |
 
 ## How it's built

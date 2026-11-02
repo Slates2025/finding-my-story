@@ -107,6 +107,9 @@ st_page = '''<!DOCTYPE html>
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="A pastel portrait of a British bulldog and a pencil portrait of Ray Charles by Paul Slater">
 <meta name="twitter:card" content="summary_large_image">
+<!-- Fetch the masthead artwork early (it is a CSS background, which browsers otherwise find late) -->
+<link rel="preload" as="image" href="assets/images/studio-header.jpg?v=2" media="(min-width:701px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/images/studio-header-mobile.jpg?v=1" media="(max-width:700px)" fetchpriority="high">
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
 <link rel="stylesheet" href="assets/portfolio/portfolio.css?v=22">
 <link rel="stylesheet" href="assets/portfolio/studio.css?v=18">
@@ -161,5 +164,6 @@ st_page = '''<!DOCTYPE html>
 </body>
 </html>
 ''' % {'V': V, 'header': st_header, 'sections': st_sections, 'mailto': MAILTO, 'arrow': ARROW}
+st_page = eager(st_page, ['studio-22', 'studio-23', 'studio-24', 'studio-25', 'studio-26', 'studio-27', 'studio-28'])
 open('studio.html', 'w').write(st_page)
 print('ok studio', len(st_page))

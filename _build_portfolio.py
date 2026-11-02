@@ -197,8 +197,23 @@ ICONS = {
     '\u2922': _svg('M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5'),     # expand
     '\u25B6': _svg('M8 5.5v13l10.5-6.5z'),                                 # play
 }
+
+# Speed (Largest Contentful Paint): pieces visible as soon as the page opens load
+# straight away (no lazy loading) and skip the fade-in; the first gets top priority.
+def eager(html_text, names):
+    for i, n in enumerate(names):
+        m = re.search(r'<(?:a|button) [^>]*class="([^"]*pf-reveal[^"]*)"[^>]*><img src="assets/portfolio/thumbs/%s\.jpg[^"]*"[^>]*?loading="lazy"/>' % re.escape(n), html_text)
+        if not m:
+            print('eager: not found', n); continue
+        tag = m.group(0)
+        new = tag.replace(m.group(1), ' '.join(c for c in m.group(1).split() if c != 'pf-reveal'), 1)
+        new = new.replace(' loading="lazy"/>', ' fetchpriority="high"/>' if i == 0 else '/>')
+        html_text = html_text.replace(tag, new, 1)
+    return html_text
+
 for ch, svg in ICONS.items():
     page = page.replace('<span class="pf-icon" aria-hidden="true">%s</span>' % ch, '<span class="pf-icon" aria-hidden="true">%s</span>' % svg)
+page = eager(page, ['whenua', 'fentanyl', 'mmp'])
 open('portfolio.html', 'w').write(page)
 print('ok', len(page))
 exec(open('_build_studio.py').read())

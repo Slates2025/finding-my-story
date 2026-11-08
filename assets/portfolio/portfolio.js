@@ -244,7 +244,9 @@
             loop: !!tile.dataset.loop,
             title: tile.dataset.title || "",
             meta: tile.dataset.meta || "",
-            href: tile.dataset.href || ""
+            href: tile.dataset.href || "",
+            linktext: tile.dataset.linktext || "",
+            note: tile.dataset.note || ""
         };
     }
 
@@ -302,7 +304,18 @@
         capTitle.textContent = d.title;
         capMeta.textContent = d.meta;
         capLink.hidden = !d.href;
-        if (d.href) capLink.href = d.href;
+        if (d.href) {
+            capLink.href = d.href;
+            capLink.textContent = d.linktext || "View the project \u2197";
+        }
+        // Optional note under the caption (e.g. "this story is behind a paywall")
+        let note = lb.querySelector(".pf-lb-note");
+        if (!note && d.note) {
+            note = document.createElement("small");
+            note.className = "pf-lb-note";
+            lb.querySelector(".pf-lb-cap").appendChild(note);
+        }
+        if (note) { note.textContent = d.note; note.hidden = !d.note; }
         count.textContent = group.length > 1 ? (index + 1) + " / " + group.length : "";
         lb.querySelector(".pf-lb-prev").hidden = group.length < 2;
         lb.querySelector(".pf-lb-next").hidden = group.length < 2;

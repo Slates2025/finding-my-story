@@ -644,3 +644,54 @@ body.pf-locked{ overflow:hidden; }
 .pf-head .pf-lede{ grid-column:1 / -1; }
 
 .pf-icon svg{ display:block; }
+
+/* ---- Election 2026 block (top of Digital) ---- */
+.pf-elect{ margin:0 0 1.2rem; }
+.pf-elect-title{
+    margin:0 0 .5rem;
+    font-size:clamp(1.5rem, 2.6vw, 2rem);
+    font-weight:700;
+    letter-spacing:-.02em;
+    color:var(--ink);
+}
+.pf-elect-lede{
+    margin:0;
+    max-width:52rem;
+    color:#3f3f3f;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:500;
+    line-height:1.7;
+}
+.pf-grid--elect{ margin-bottom:0; }
+/* Full-width hero tile: all three columns, two rows tall */
+.pf-grid .full{ grid-column:1 / -1; grid-row:span 2; }
+.pf-grid .full .pf-cap b{ font-size:1.35rem; }
+.pf-section .pf-subhead.pf-more{ margin-top:4rem; }
+@media (max-width:700px){
+    .pf-grid .full{ grid-column:auto; grid-row:auto; }
+}
+/* Viewer: a small note under the caption */
+.pf-lb-note{
+    display:block;
+    margin-top:.45rem;
+    font-size:.8rem;
+    color:#aeb4bd;
+}
+.pf-lb-note[hidden]{ display:none; }
+
+/* Election grid: tiles keep their shape so a note can sit under one of them */
+.pf-grid--elect{ grid-auto-rows:auto; align-items:start; }
+.pf-grid--elect .pf-tile{ height:auto; aspect-ratio:16 / 9; }
+.pf-grid--elect .full{ grid-row:auto; aspect-ratio:2400 / 910; }
+.pf-cell{ min-width:0; }
+.pf-tilenote{
+    margin:.55rem 0 0;
+    font-size:.8rem;
+    line-height:1.4;
+    color:var(--steel);
+}
+@media (max-width:700px){
+    .pf-grid--elect .pf-tile,
+    .pf-grid--elect .full{ aspect-ratio:auto; }
+    .pf-tilenote{ margin-top:.3rem; }
+}

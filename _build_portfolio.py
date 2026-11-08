@@ -10,13 +10,15 @@ header = re.sub(r'(<h2>\s*)Contact(\s*</h2>)', r'\1Portfolio\2', header)
 header = re.sub(r'\s*<div class="standfirst hero-strap hero-ticker">.*?</div>\s*</div>\s*</div>', '', header, flags=re.S)
 V = '20261023a'
 
-def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, preview=None, top=False, icon=None, ext=False, frame=None):
+def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, preview=None, top=False, icon=None, ext=False, frame=None, linktext=None, note=None):
     a = ['class="pf-tile pf-reveal %s%s"' % (cls, ' top' if top else ''), 'data-group="%s"' % group,
          'data-title="%s"' % html.escape(title), 'data-meta="%s"' % html.escape(meta)]
     if full: a.append('data-full="%s"' % full)
     if video: a.append('data-video="%s"' % video)
     if frame: a.append('data-frame="%s"' % frame)
     if preview: a.append('data-preview="%s"' % preview)
+    if linktext: a.append('data-linktext="%s"' % html.escape(linktext))
+    if note: a.append('data-note="%s"' % html.escape(note))
     tag, close = 'button type="button"', 'button'
     if href and not full and not video and not frame:
         tag = 'a href="%s"' % href + (' target="_blank" rel="noopener noreferrer"' if ext else '')
@@ -39,7 +41,6 @@ WOB = "https://insights.nzherald.co.nz/data/media/67a3e171ebe3-Comp-1_1.mp4"
 digital = [
  tile('lg', 'whenua', 'Whenua: Our Land, Our History', 'Design lead · Interactive', 'dig', href=NZH_W, icon=OUT, ext=True),
  tile('', 'fentanyl', 'Fentanyl in New Zealand', 'Motion graphics', 'dig', video='assets/images/turning-ideas.mp4', preview='assets/images/turning-ideas.mp4', icon=PLAY),
- tile('', 'mmp', 'What is MMP?', 'Motion graphics · Explainer', 'dig', video='assets/images/mmp-explainer.mp4', preview='assets/images/mmp-explainer.mp4', icon=PLAY),
  tile('wide', 'wellington', 'Wellington in 3D', '3D · Open data', 'dig', frame='model.html?city=wellington', icon='\u2922'),
  tile('', 'auckland', 'Auckland in 3D', '3D · Blender · three.js', 'dig', frame='model.html?city=auckland', icon='\u2922'),
  tile('framed', 'viva', 'Viva Top 50 Auckland Restaurants', 'Interactive design · Figma', 'dig', href=VIVA, icon=OUT, ext=True, top=True),
@@ -47,8 +48,24 @@ digital = [
  tile('lg right framed', 'minwage', 'Can you live on the minimum wage?', 'Data interactive · Concept', 'dig', href='assets/work/minwage-interactive.html', icon='\u2197', ext=True, top=True),
  '<button type="button" class="pf-tile pf-reveal pf-loop" data-group="dig" data-video="%s" data-loop="1" data-title="How the wobble seam works" data-meta="Motion graphics · Sport" aria-label="How the wobble seam works"><video src="%s" muted loop playsinline preload="metadata" aria-hidden="true"></video><span class="pf-icon" aria-hidden="true">⤢</span><span class="pf-cap"><b>How the wobble seam works</b><span>Motion graphics · Sport</span></span></button>' % (WOB, WOB),
  tile('', 'deep-trouble', 'Deep Trouble', 'Immersive long-form', 'dig', href='assets/images/shorthand-showcase.html', icon=OUT, ext=True),
- tile('', 'the-spy', 'The Spy', 'Immersive long-form', 'dig', href='assets/images/shorthand-the-spy.html', icon='\u2197', ext=True),
+ tile('wide', 'the-spy', 'The Spy', 'Immersive long-form', 'dig', href='assets/images/shorthand-the-spy.html', icon='\u2197', ext=True),
 ]
+
+# ---- Election 2026: a full-width block at the top of Digital ----
+RESULTS = "https://www.nzherald.co.nz/nz/nz-election-results-live-explore-electorates-parliament-and-voting-places/ODTVE6BTZJDJ3ODDBMAYGLGWAY/"
+POLICY = "https://www.nzherald.co.nz/nz/politics/election-2026-education-health-housing-tax-every-major-party-policy-so-far/premium/FWB6GDGKLVAIRBHCPDWFQ7ISX4/"
+election = [
+ tile('full', 'elect-results', 'Election results live: electorates, Parliament and voting places', 'Design and build · Electorate map · 3D Parliament', 'elect', href=RESULTS, icon=OUT, ext=True),
+ ('<div class="pf-cell">' +
+  tile('', 'policy-grid', 'Every major party policy', 'Policy grid · With the Herald product team', 'elect', href=POLICY, icon=OUT, ext=True) +
+  '<p class="pf-tilenote">Subscriber story: this one sits behind the NZ Herald paywall.</p></div>'),
+ tile('', 'mmp', 'What is MMP?', 'Motion graphics · Explainer', 'elect', video='assets/images/mmp-explainer.mp4', preview='assets/images/mmp-explainer.mp4', icon=PLAY),
+ tile('', 'policy-match', 'Policy Match', 'Unpublished prototype · Design and build', 'elect', href='assets/work/policy-match.html', icon=OUT, ext=True),
+]
+ELECTION = ('<div class="pf-elect pf-reveal"><h3 class="pf-elect-title">Election 2026</h3>'
+    '<p class="pf-elect-lede">For the NZ Herald\u2019s 2026 election coverage I designed and built interactive graphics, most notably the live Electorate Map and a 3D seating plan of Parliament, using Figma, Blender, Illustrator and Claude Code.</p></div>'
+    '<div class="pf-grid pf-grid--elect">' + ''.join(election) + '</div>'
+    '<p class="pf-subhead pf-more">More digital work</p>')
 
 prnt = [tile('lg', 'print-11', 'Weekend Herald and Canvas relaunch', '[Role, year] · Redesign', 'prn', full='assets/images/HZ11.jpg', icon=ZOOM),
         tile('tall', 'ft-wrap', 'The world’s biggest newspaper', 'Financial Times · Building wrap', 'prn', full='assets/images/ft-two-ifc.jpg', icon=ZOOM, top=True)]
@@ -118,7 +135,7 @@ def section(sid, num, title, count, lede, body):
 
 PRINTCAP = '<p class="pf-slidecap" id="printCap" aria-live="polite" data-items="%s"></p>' % html.escape(open('assets/portfolio/print.json').read().replace('\n', ''))
 sections = (
-    section('digital', '01', 'Digital', '10 projects', 'Interactive graphics, data interactives, motion explainers and 3D. <span class="pf-hover-only">Hover over a motion piece to preview it.</span><span class="pf-touch-only">Tap any piece to open it.</span>', '<div class="pf-grid">' + ''.join(digital) + '</div>') +
+    section('digital', '01', 'Digital', '14 projects', 'Interactive graphics, data interactives, motion explainers and 3D. <span class="pf-hover-only">Hover over a motion piece to preview it.</span><span class="pf-touch-only">Tap any piece to open it.</span>', ELECTION + '<div class="pf-grid">' + ''.join(digital) + '</div>') +
     section('print', '02', 'Print', '36 pieces', 'Newspaper and magazine design: covers, features, special reports, infographics and full redesigns.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-print-portfolio.html?v=3" title="Print: a slideshow of newspaper and magazine design" loading="lazy" scrolling="no"></iframe></div>' + PRINTCAP) +
     section('illustration', '03', 'Illustration', '38 illustrations', 'Editorial illustration on deadline: ideas created to stop readers and sell the story, often in hours rather than weeks.', '<div class="pf-slideshow pf-reveal"><iframe src="assets/images/slideshow-illustrations.html?v=3" title="Editorial illustration: a slideshow of 38 illustrations" loading="lazy" scrolling="no"></iframe></div>')
 )
@@ -143,7 +160,7 @@ page = '''<!DOCTYPE html>
 <meta property="og:image:alt" content="Paul Slater, visual storyteller">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=22">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=26">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -184,7 +201,7 @@ page = '''<!DOCTYPE html>
 </div>
 
 <script src="assets/script.js?v=%(V)s"></script>
-<script src="assets/portfolio/portfolio.js?v=14"></script>
+<script src="assets/portfolio/portfolio.js?v=15"></script>
 <!-- Cloudflare Web Analytics (free, no cookies). Dashboard: dash.cloudflare.com > Web Analytics -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "823ba0a74bb848538b2c510ffbc7a151"}'></script>
 </body>
@@ -213,7 +230,7 @@ def eager(html_text, names):
 
 for ch, svg in ICONS.items():
     page = page.replace('<span class="pf-icon" aria-hidden="true">%s</span>' % ch, '<span class="pf-icon" aria-hidden="true">%s</span>' % svg)
-page = eager(page, ['whenua', 'fentanyl', 'mmp'])
+page = eager(page, ['elect-results', 'policy-grid', 'mmp', 'policy-match'])
 open('portfolio.html', 'w').write(page)
 print('ok', len(page))
 exec(open('_build_studio.py').read())

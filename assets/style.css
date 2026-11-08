@@ -1829,3 +1829,12 @@ a.work-media:hover img{
     width:100%;
     margin:20px 0 28px;
 }
+
+/* CV: the occasional "see the work" link, in the accent orange */
+.cv-link,
+.cv-link:visited{
+    color:var(--accent);
+    text-underline-offset:3px;
+    text-decoration-thickness:1px;
+}
+.cv-link:hover{ color:var(--ink); }

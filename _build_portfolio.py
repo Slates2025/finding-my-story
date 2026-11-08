@@ -8,7 +8,7 @@ header = re.sub(r'\s*<p class="standfirst standfirst-bold">.*?</p>', '', header,
 import re
 header = re.sub(r'(<h2>\s*)Contact(\s*</h2>)', r'\1Portfolio\2', header)
 header = re.sub(r'\s*<div class="standfirst hero-strap hero-ticker">.*?</div>\s*</div>\s*</div>', '', header, flags=re.S)
-V = '20261109a'
+V = '20261109b'
 
 def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, preview=None, top=False, icon=None, ext=False, frame=None, linktext=None, note=None):
     a = ['class="pf-tile pf-reveal %s%s"' % (cls, ' top' if top else ''), 'data-group="%s"' % group,
@@ -148,19 +148,19 @@ page = '''<!DOCTYPE html>
 <title>Paul Slater | Portfolio</title>
 <!-- Link preview (LinkedIn, Facebook, messages, email). Image: assets/images/share-site.jpg, 1200 x 630. -->
 <link rel="canonical" href="https://slatesdesign.com/portfolio.html">
-<meta name="description" content="Interactive graphics, data interactives, motion explainers, 3D, print design and editorial illustration by Paul Slater.">
+<meta name="description" content="Election graphics, data interactives, interactive graphics, motion explainers and 3D, plus print design and editorial illustration, by Paul Slater.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Paul Slater">
 <meta property="og:url" content="https://slatesdesign.com/portfolio.html">
 <meta property="og:title" content="Paul Slater | Portfolio">
-<meta property="og:description" content="Interactive graphics, data interactives, motion explainers, 3D, print design and editorial illustration by Paul Slater.">
+<meta property="og:description" content="Election graphics, data interactives, interactive graphics, motion explainers and 3D, plus print design and editorial illustration, by Paul Slater.">
 <meta property="og:image" content="https://slatesdesign.com/assets/images/share-site.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Paul Slater, visual storyteller">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=26">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=27">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">

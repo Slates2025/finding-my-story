@@ -695,3 +695,13 @@ body.pf-locked{ overflow:hidden; }
     .pf-grid--elect .full{ aspect-ratio:auto; }
     .pf-tilenote{ margin-top:.3rem; }
 }
+
+/* Links in the intro (e.g. "visit the Studio") in the accent orange */
+.pf-intro a,
+.pf-intro a:visited{
+    color:var(--accent);
+    text-decoration-thickness:1px;
+    text-underline-offset:3px;
+    transition:color var(--transition);
+}
+.pf-intro a:hover{ color:var(--ink); }

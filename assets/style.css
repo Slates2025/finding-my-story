@@ -1822,3 +1822,10 @@ a.work-media:hover img{
 }
 @media (max-width:700px){ .top-nav{ --nav-gap:1.1rem; } }
 @media (max-width:400px){ .top-nav{ --nav-gap:.85rem; } }
+
+/* A 3D scene sitting inside the text column rather than full width
+   (Auckland, after the election example in "See it before you build it") */
+.story-stage.story-stage--column{
+    width:100%;
+    margin:20px 0 28px;
+}

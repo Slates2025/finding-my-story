@@ -55,7 +55,7 @@ digital = [
 RESULTS = "https://www.nzherald.co.nz/nz/nz-election-results-live-explore-electorates-parliament-and-voting-places/ODTVE6BTZJDJ3ODDBMAYGLGWAY/"
 POLICY = "https://www.nzherald.co.nz/nz/politics/election-2026-education-health-housing-tax-every-major-party-policy-so-far/premium/FWB6GDGKLVAIRBHCPDWFQ7ISX4/"
 election = [
- tile('full', 'elect-results', 'Election results live: electorates, Parliament and voting places', 'Design and build · Electorate map · 3D Parliament', 'elect', href=RESULTS, icon=OUT, ext=True),
+ tile('full', 'elect-results', 'Election results live', 'Design and build · Electorate map · 3D Parliament', 'elect', href=RESULTS, icon=OUT, ext=True),
  ('<div class="pf-cell">' +
   tile('', 'policy-grid', 'Every major party policy', 'Policy grid · With the Herald product team', 'elect', href=POLICY, icon=OUT, ext=True) +
   '<p class="pf-tilenote">Subscriber story: this one sits behind the NZ Herald paywall.</p></div>'),
@@ -65,7 +65,7 @@ election = [
 ELECTION = ('<div class="pf-elect pf-reveal"><h3 class="pf-elect-title">Election 2026</h3>'
     '<p class="pf-elect-lede">For the NZ Herald\u2019s 2026 election coverage I designed and built interactive graphics, most notably the live Electorate Map and a 3D seating plan of Parliament, using Figma, Blender, Illustrator and Claude Code.</p></div>'
     '<div class="pf-grid pf-grid--elect">' + ''.join(election) + '</div>'
-    '<p class="pf-subhead pf-more">More digital work</p>')
+    '<h3 class="pf-more">More digital work</h3>')
 
 prnt = [tile('lg', 'print-11', 'Weekend Herald and Canvas relaunch', '[Role, year] · Redesign', 'prn', full='assets/images/HZ11.jpg', icon=ZOOM),
         tile('tall', 'ft-wrap', 'The world’s biggest newspaper', 'Financial Times · Building wrap', 'prn', full='assets/images/ft-two-ifc.jpg', icon=ZOOM, top=True)]
@@ -160,7 +160,7 @@ page = '''<!DOCTYPE html>
 <meta property="og:image:alt" content="Paul Slater, visual storyteller">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=27">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=30">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">

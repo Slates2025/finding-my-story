@@ -705,3 +705,21 @@ body.pf-locked{ overflow:hidden; }
     transition:color var(--transition);
 }
 .pf-intro a:hover{ color:var(--ink); }
+
+/* Phones: every Digital caption the same size, with a little more room
+   between the image and its title */
+@media (max-width:700px){
+    .pf-grid .pf-cap{ display:block; padding-top:.6rem; }
+    .pf-grid .full .pf-cap b{ font-size:1.05rem; }
+}
+
+/* "More digital work": the same heading style as the homepage examples
+   (e.g. "Election night, live") */
+.pf-section .pf-more{
+    margin:4rem 0 24px;
+    font-size:1.3rem;
+    font-weight:500;
+    letter-spacing:0;
+    text-transform:none;
+    color:var(--ink);
+}

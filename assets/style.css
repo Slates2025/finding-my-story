@@ -1874,3 +1874,10 @@ a.work-media:hover img{
 @media (max-width:700px){
     .home-outro .project-button{ transform:translateX(calc(-50% - (20px + .5rem) / 2)); }
 }
+
+/* Keyboard users: a clear focus ring on the chapter buttons */
+.accordion-toggle:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:4px;
+    border-radius:4px;
+}

@@ -10,6 +10,23 @@ header = re.sub(r'(<h2>\s*)Contact(\s*</h2>)', r'\1Portfolio\2', header)
 header = re.sub(r'\s*<div class="standfirst hero-strap hero-ticker">.*?</div>\s*</div>\s*</div>', '', header, flags=re.S)
 V = '20261109h'
 
+# Descriptions of each Digital image, for screen readers
+ALT = {
+ 'elect-results': 'Live election results: an electorate map beside a 3D horseshoe seating plan of Parliament',
+ 'policy-grid': 'The NZ Herald\u2019s party policy interactive, comparing parties\u2019 policies by topic',
+ 'mmp': 'Title card of an animated explainer: What is MMP? Mixed-Member-Proportional',
+ 'policy-match': 'Opening screen of a quiz: Which party matches your politics?',
+ 'whenua': 'Title artwork for Whenua: Your Land, Our History, showing an elder and a child walking towards a coastal landscape',
+ 'fentanyl': 'Illustration of a fentanyl pill pack: A Crisis Waiting to Happen',
+ 'wellington': '3D model of central Wellington and its harbour, built from open data',
+ 'auckland': '3D model of Auckland\u2019s CBD and waterfront',
+ 'viva': 'Grid of restaurant photos from the Viva Top 50 Auckland restaurants guide',
+ 'drone': '3D render of an Iranian Shahed-136 drone',
+ 'minwage': 'The minimum wage calculator, with hours worked and the income left at the end of the year',
+ 'deep-trouble': 'Cover of Deep Trouble: how climate change has reached the world\u2019s end, showing icy water under a green sky',
+ 'the-spy': 'Illustrated cover for The Spy Who Came in from the Cold, with a portrait of the spy and Vladimir Putin',
+}
+
 def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, preview=None, top=False, icon=None, ext=False, frame=None, linktext=None, note=None):
     a = ['class="pf-tile pf-reveal %s%s"' % (cls, ' top' if top else ''), 'data-group="%s"' % group,
          'data-title="%s"' % html.escape(title), 'data-meta="%s"' % html.escape(meta)]
@@ -26,7 +43,7 @@ def tile(cls, thumb, title, meta, group, full=None, video=None, href=None, previ
     elif href:
         a.append('data-href="%s"' % href)
     if thumb:
-        media = '<img src="assets/portfolio/thumbs/%s.jpg" alt="" loading="lazy"/>' % thumb
+        media = '<img src="assets/portfolio/thumbs/%s.jpg" alt="%s" loading="lazy"/>' % (thumb, html.escape(ALT.get(thumb, '')))
     else:
         media = '<video src="%s" muted playsinline preload="metadata"></video>' % video
     ic = '<span class="pf-icon" aria-hidden="true">%s</span>' % icon if icon else ''
@@ -84,10 +101,11 @@ studio = json.load(open('assets/portfolio/studio.json'))
 def stile(it, label=None):
     cls = 'pf-feature' if it['feature'] else 'pf-mtile'
     t, m = html.escape(it.get('title', '')), html.escape(it.get('medium', ''))
+    alt = html.escape(it.get('alt', '')) or t   # description for screen readers
     meta = '<span>%s</span>' % m if m else ''
     return ('<button type="button" class="pf-tile %s pf-reveal" style="--ar:%s" data-group="studio" data-full="assets/portfolio/full/%s.jpg?v=2" '
             'data-title="%s" data-meta="%s" aria-label="%s"><img src="assets/portfolio/thumbs/%s.jpg?v=2" alt="%s" loading="lazy"/>'
-            '<span class="pf-cap"><b>%s</b>%s</span></button>') % (cls, it['ar'], it['name'], t, m, (t + (', ' + m if m else '')), it['name'], t, t, meta)
+            '<span class="pf-cap"><b>%s</b>%s</span></button>') % (cls, it['ar'], it['name'], t, m, (alt + (', ' + m if m else '')), it['name'], alt, t, meta)
 def studio_group(g, sub):
     items = [x for x in studio if x['group'] == g]
     feat = [x for x in items if x['feature']]

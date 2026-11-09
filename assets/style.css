@@ -1901,3 +1901,20 @@ a.work-media:hover img{
     }
     .accordion-toggle::before{ top:11px; }   /* 16px icon, 3px down */
 }
+
+/* "Skip to content": hidden until a keyboard user tabs to it */
+.skip-link{
+    position:absolute;
+    left:12px;
+    top:-60px;
+    z-index:10001;
+    padding:.6rem 1rem;
+    border-radius:999px;
+    background:var(--accent);
+    color:#fff;
+    font-size:.95rem;
+    text-decoration:none;
+    transition:top 160ms ease;
+}
+.skip-link:focus{ top:12px; outline:2px solid var(--ink); outline-offset:2px; }
+main:focus{ outline:none; }

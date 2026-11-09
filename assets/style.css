@@ -1881,3 +1881,23 @@ a.work-media:hover img{
     outline-offset:4px;
     border-radius:4px;
 }
+
+/* Bigger tap targets (about 44px), with no visual change: invisible padding
+   around the nav links, and an invisible hit area around each chapter's + */
+.accordion-toggle{ position:relative; }
+.accordion-toggle::before{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:10px;                 /* centre of the 20px icon */
+    width:44px;
+    height:44px;
+    transform:translate(-50%, -50%);
+}
+@media (max-width:700px){
+    .top-nav a{
+        padding-block:13px;
+        margin-block:-13px;   /* the nav's height stays the same */
+    }
+    .accordion-toggle::before{ top:11px; }   /* 16px icon, 3px down */
+}

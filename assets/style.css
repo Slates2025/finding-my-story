@@ -1838,3 +1838,26 @@ a.work-media:hover img{
     text-decoration-thickness:1px;
 }
 .cv-link:hover{ color:var(--ink); }
+
+
+/* Latest work: a featured piece between the intro and the chapters.
+   Text lines up with the chapter titles; the image runs full width. */
+.latest-work{ padding:0 0 1.6rem; margin-top:-1.3rem; }   /* sits closer to the bold intro */
+.latest-work .story-content{
+    max-width:none;
+    margin:0 0 0 calc(32px + 1rem);
+}
+.latest-work .story-content p:last-child{ margin-bottom:0; }
+.latest-work .story-wide .project-media{ margin:18px auto 22px; }
+@media (max-width:700px){
+    .latest-work .story-content{ margin-left:calc(20px + .5rem); }
+}
+
+/* Latest work text in the lighter chapter body style, not the medium
+   "For example" style */
+.latest-work .story-content p.body-copy{
+    font-family:inherit;
+    font-weight:400;
+    color:var(--steel);
+    max-width:32rem;
+}

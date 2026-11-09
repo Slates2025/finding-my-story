@@ -21,8 +21,8 @@
 .st-page .top-nav a{ color:var(--st-soft); }
 .st-page .top-nav a:hover,
 .st-page .top-nav .active{ color:#fff; }
-.st-page .pf-strapnav a:hover,
 .st-page .pf-strapnav a.is-current{ color:#fff; }
+@media (hover:hover){ .st-page .pf-strapnav a:hover{ color:#fff; } }
 
 /* ---- Intro ---- */
 .st-intro{ padding:2.4rem 0 .5rem; }
@@ -322,8 +322,8 @@
 /* Calmer top of page: orange name leads, then the white heading; the rest is grey */
 .st-page .hero h2{ color:var(--st-soft); }
 .st-page .pf-strapnav a{ color:var(--st-soft); }
-.st-page .pf-strapnav a:hover,
 .st-page .pf-strapnav a.is-current{ color:#fff; }
+@media (hover:hover){ .st-page .pf-strapnav a:hover{ color:#fff; } }
 .st-page .st-intro .standfirst-bold{ color:var(--st-soft); }
 
 .st-page .top-nav .nav-studio::before{ border-color:rgba(255,255,255,.25); }

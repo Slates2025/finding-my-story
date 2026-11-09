@@ -58,9 +58,13 @@
     white-space:nowrap;
     transition:color var(--transition);
 }
-.pf-strapnav a:hover,
 .pf-strapnav a.is-current{
     color:var(--accent-light);
+}
+/* Hover colour only where there's a real mouse (on phones a tap would
+   otherwise leave the link stuck orange) */
+@media (hover:hover){
+    .pf-strapnav a:hover{ color:var(--accent-light); }
 }
 /* Sliding orange marker under the current section */
 .pf-marker{

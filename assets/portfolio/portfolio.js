@@ -34,11 +34,21 @@
         }
     }
 
+    // A tapped link becomes current straight away, and stays current while
+    // the page scrolls to it (so the marker doesn't flicker back on the way).
+    let clicked = null, clickTimer = 0;
+    function releaseClick() { clicked = null; updateCurrent(); }
     links.forEach((a, i) => a.addEventListener("click", e => {
         e.preventDefault();
+        clicked = a;
+        moveMarker(a);
+        a.blur();   // no stuck focus/hover colour on touch screens
         sections[i].scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
         history.replaceState(null, "", a.getAttribute("href"));
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(releaseClick, 1200);
     }));
+    window.addEventListener("scrollend", () => { if (clicked) { clearTimeout(clickTimer); clickTimer = setTimeout(releaseClick, 150); } });
 
     // Current section = the last one whose top has passed just under the
     // pinned nav + strip. Checked on scroll (once per frame) and on load.
@@ -46,9 +56,15 @@
     let ticking = false;
     function updateCurrent() {
         ticking = false;
+        if (clicked) return;
         const line = (nav ? nav.offsetHeight : 0) + (strap ? strap.offsetHeight : 0) + 80;
         let cur = links[0];
         sections.forEach((sec, i) => { if (sec && sec.getBoundingClientRect().top <= line) cur = links[i]; });
+        // At the very bottom of the page the last section can't scroll up to
+        // the line (e.g. on phones), so it counts as current once its top is on screen.
+        const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+        const last = sections.length - 1;
+        if (atBottom && sections[last] && sections[last].getBoundingClientRect().top < window.innerHeight) cur = links[last];
         if (!cur.classList.contains("is-current")) moveMarker(cur);
     }
     window.addEventListener("scroll", () => {

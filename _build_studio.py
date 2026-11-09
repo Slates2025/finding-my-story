@@ -111,8 +111,8 @@ st_page = '''<!DOCTYPE html>
 <link rel="preload" as="image" href="assets/images/studio-header.jpg?v=2" media="(min-width:701px)" fetchpriority="high">
 <link rel="preload" as="image" href="assets/images/studio-header-mobile.jpg?v=1" media="(max-width:700px)" fetchpriority="high">
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
-<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=30">
-<link rel="stylesheet" href="assets/portfolio/studio.css?v=20">
+<link rel="stylesheet" href="assets/portfolio/portfolio.css?v=31">
+<link rel="stylesheet" href="assets/portfolio/studio.css?v=21">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
@@ -161,7 +161,7 @@ st_page = '''<!DOCTYPE html>
 </div>
 
 <script src="assets/script.js?v=%(V)s"></script>
-<script src="assets/portfolio/portfolio.js?v=15"></script>
+<script src="assets/portfolio/portfolio.js?v=16"></script>
 <!-- Cloudflare Web Analytics (free, no cookies). Dashboard: dash.cloudflare.com > Web Analytics -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "823ba0a74bb848538b2c510ffbc7a151"}'></script>
 </body>

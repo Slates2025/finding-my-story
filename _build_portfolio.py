@@ -105,7 +105,7 @@ def stile(it, label=None):
     meta = '<span>%s</span>' % m if m else ''
     return ('<button type="button" class="pf-tile %s pf-reveal" style="--ar:%s" data-group="studio" data-full="assets/portfolio/full/%s.jpg?v=2" '
             'data-title="%s" data-meta="%s" aria-label="%s"><img src="assets/portfolio/thumbs/%s.jpg?v=2" alt="%s" loading="lazy"/>'
-            '<span class="pf-cap"><b>%s</b>%s</span></button>') % (cls, it['ar'], it['name'], t, m, (alt + (', ' + m if m else '')), it['name'], alt, t, meta)
+            '<span class="pf-cap"><b>%s</b>%s</span></button>') % (cls, it['ar'], it['name'], t, m, (alt + (', ' + (m or t) if (m or t) and alt != t else '')), it['name'], alt, t, meta)
 def studio_group(g, sub):
     items = [x for x in studio if x['group'] == g]
     feat = [x for x in items if x['feature']]

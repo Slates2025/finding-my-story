@@ -1918,3 +1918,11 @@ a.work-media:hover img{
 }
 .skip-link:focus{ top:12px; outline:2px solid var(--ink); outline-offset:2px; }
 main:focus{ outline:none; }
+
+/* Orange buttons sit centred on the page (CV download; the homepage
+   "See my work" is centred above) */
+.cv-download{
+    display:flex;
+    width:fit-content;
+    margin:1.6rem auto 0;
+}

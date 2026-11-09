@@ -327,3 +327,6 @@
 .st-page .st-intro .standfirst-bold{ color:var(--st-soft); }
 
 .st-page .top-nav .nav-studio::before{ border-color:rgba(255,255,255,.25); }
+
+/* Intro buttons centred, like the site's other orange buttons */
+.st-actions{ justify-content:center; }

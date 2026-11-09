@@ -112,7 +112,7 @@ st_page = '''<!DOCTYPE html>
 <link rel="preload" as="image" href="assets/images/studio-header-mobile.jpg?v=1" media="(max-width:700px)" fetchpriority="high">
 <link rel="stylesheet" href="assets/style.css?v=%(V)s">
 <link rel="stylesheet" href="assets/portfolio/portfolio.css?v=30">
-<link rel="stylesheet" href="assets/portfolio/studio.css?v=19">
+<link rel="stylesheet" href="assets/portfolio/studio.css?v=20">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">

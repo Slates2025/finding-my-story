@@ -230,6 +230,12 @@ function createCityScene(opts) {
     const loader = new GLTFLoader();
     loader.setMeshoptDecoder(MeshoptDecoder);
 
+    // Download the model only when the scene is about to be seen (its
+    // chapter has been opened and it's near the screen), not on page load.
+    let modelRequested = false;
+    function loadModel() {
+    if (modelRequested) return;
+    modelRequested = true;
     loader.load(
 
         opts.model,
@@ -268,6 +274,19 @@ function createCityScene(opts) {
         function (error) { console.error(error); }
 
     );
+    }
+
+    if (typeof IntersectionObserver !== 'undefined') {
+        const lazy = new IntersectionObserver(function (entries) {
+            if (entries.some(function (e) { return e.isIntersecting; })) {
+                lazy.disconnect();
+                loadModel();
+            }
+        }, { rootMargin: '300px 0px' });
+        lazy.observe(container);
+    } else {
+        loadModel();
+    }
 
     // -------------------------------------------------------------------------
     // Resize

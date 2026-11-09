@@ -1861,3 +1861,16 @@ a.work-media:hover img{
     color:var(--steel);
     max-width:32rem;
 }
+
+/* "See my work" button centred on the page at the end of the homepage
+   (the outro text is indented to line up with the chapter titles, so the
+   button shifts back by half that indent to sit on the page's centre line) */
+.home-outro .project-button{
+    position:relative;
+    left:50%;
+    transform:translateX(calc(-50% - (32px + 1rem) / 2));
+    margin-top:1.8rem;
+}
+@media (max-width:700px){
+    .home-outro .project-button{ transform:translateX(calc(-50% - (20px + .5rem) / 2)); }
+}

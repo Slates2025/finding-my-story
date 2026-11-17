@@ -6,7 +6,8 @@
   "feature": true,
   "ar": 1.543,
   "title": "It’s a Wonderful Life",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil painting of a scene from It’s a Wonderful Life by Paul Slater"
  },
  {
   "name": "studio-02",
@@ -15,7 +16,8 @@
   "feature": false,
   "ar": 0.755,
   "title": "David Bowie",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil portrait of David Bowie by Paul Slater"
  },
  {
   "name": "studio-03",
@@ -24,7 +26,8 @@
   "feature": false,
   "ar": 0.662,
   "title": "Self portrait",
-  "medium": "Pastel"
+  "medium": "Pastel",
+  "alt": "Pastel self-portrait by Paul Slater"
  },
  {
   "name": "studio-04",
@@ -33,7 +36,8 @@
   "feature": false,
   "ar": 0.697,
   "title": "My Dad",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil portrait of the artist’s father"
  },
  {
   "name": "studio-05",
@@ -42,7 +46,8 @@
   "feature": false,
   "ar": 0.739,
   "title": "Harrison Ford",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil portrait of Harrison Ford by Paul Slater"
  },
  {
   "name": "studio-06",
@@ -51,7 +56,8 @@
   "feature": false,
   "ar": 1.333,
   "title": "Pedro Pascal",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil portrait of Pedro Pascal by Paul Slater"
  },
  {
   "name": "studio-07",
@@ -60,7 +66,8 @@
   "feature": false,
   "ar": 0.707,
   "title": "Peter Capaldi",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil portrait of Peter Capaldi by Paul Slater"
  },
  {
   "name": "studio-08",
@@ -69,7 +76,8 @@
   "feature": false,
   "ar": 0.717,
   "title": "Kurt Cobain",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil portrait of Kurt Cobain by Paul Slater"
  },
  {
   "name": "studio-09",
@@ -78,7 +86,8 @@
   "feature": false,
   "ar": 1.515,
   "title": "Robert Shaw",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil portrait of Robert Shaw by Paul Slater"
  },
  {
   "name": "studio-10",
@@ -87,16 +96,18 @@
   "feature": false,
   "ar": 0.714,
   "title": "Daniel Craig",
-  "medium": "Colour pencil"
+  "medium": "Colour pencil",
+  "alt": "Colour pencil portrait of Daniel Craig by Paul Slater"
  },
  {
   "name": "studio-11",
   "kind": "Painting",
   "group": "people",
   "feature": false,
-  "ar": 1.0,
+  "ar": 1,
   "title": "Jack Nicholson",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil portrait of Jack Nicholson by Paul Slater"
  },
  {
   "name": "studio-12",
@@ -105,7 +116,8 @@
   "feature": false,
   "ar": 0.745,
   "title": "Steve McQueen",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil portrait of Steve McQueen by Paul Slater"
  },
  {
   "name": "studio-17",
@@ -114,7 +126,8 @@
   "feature": false,
   "ar": 0.548,
   "title": "Louis Armstrong",
-  "medium": "Oil"
+  "medium": "Oil",
+  "alt": "Oil portrait of Louis Armstrong by Paul Slater"
  },
  {
   "name": "studio-38",
@@ -123,7 +136,8 @@
   "feature": false,
   "ar": 0.753,
   "title": "Matt Smith",
-  "medium": "Colour pencil"
+  "medium": "Colour pencil",
+  "alt": "Colour pencil portrait of Matt Smith by Paul Slater"
  },
  {
   "name": "studio-39",
@@ -132,7 +146,8 @@
   "feature": false,
   "ar": 1.456,
   "title": "The Joker",
-  "medium": "Colour pencil"
+  "medium": "Colour pencil",
+  "alt": "Colour pencil portrait of the Joker by Paul Slater"
  },
  {
   "name": "studio-13",
@@ -141,7 +156,8 @@
   "feature": false,
   "ar": 1.435,
   "title": "Ray Charles",
-  "medium": "Pencil"
+  "medium": "Pencil",
+  "alt": "Pencil portrait of Ray Charles by Paul Slater"
  },
  {
   "name": "studio-14",
@@ -150,7 +166,8 @@
   "feature": false,
   "ar": 0.685,
   "title": "Aaron Paul and Bryan Cranston",
-  "medium": "Pencil"
+  "medium": "Pencil",
+  "alt": "Pencil drawing of Aaron Paul and Bryan Cranston by Paul Slater"
  },
  {
   "name": "studio-15",
@@ -159,7 +176,8 @@
   "feature": false,
   "ar": 0.693,
   "title": "Cillian Murphy",
-  "medium": "Pencil"
+  "medium": "Pencil",
+  "alt": "Pencil portrait of Cillian Murphy by Paul Slater"
  },
  {
   "name": "studio-16",
@@ -168,7 +186,8 @@
   "feature": false,
   "ar": 0.68,
   "title": "Jessica Chastain",
-  "medium": "Pencil"
+  "medium": "Pencil",
+  "alt": "Pencil portrait of Jessica Chastain by Paul Slater"
  },
  {
   "name": "studio-18",
@@ -177,7 +196,8 @@
   "feature": false,
   "ar": 0.683,
   "title": "Margot Robbie",
-  "medium": "Pencil"
+  "medium": "Pencil",
+  "alt": "Pencil portrait of Margot Robbie by Paul Slater"
  },
  {
   "name": "studio-19",
@@ -186,7 +206,8 @@
   "feature": false,
   "ar": 0.687,
   "title": "Snoop Dogg",
-  "medium": "Pencil"
+  "medium": "Pencil",
+  "alt": "Pencil portrait of Snoop Dogg by Paul Slater"
  },
  {
   "name": "studio-20",
@@ -195,7 +216,8 @@
   "feature": false,
   "ar": 0.714,
   "title": "Sean Connery",
-  "medium": "Pencil"
+  "medium": "Pencil",
+  "alt": "Pencil portrait of Sean Connery by Paul Slater"
  },
  {
   "name": "studio-21",
@@ -204,7 +226,8 @@
   "feature": false,
   "ar": 0.686,
   "title": "Tom Hiddleston",
-  "medium": "Pencil"
+  "medium": "Pencil",
+  "alt": "Pencil portrait of Tom Hiddleston by Paul Slater"
  },
  {
   "name": "studio-40",
@@ -213,7 +236,8 @@
   "feature": false,
   "ar": 1.632,
   "title": "My kids",
-  "medium": "Pencil"
+  "medium": "Pencil",
+  "alt": "Pencil drawing of the artist’s children"
  },
  {
   "name": "studio-22",

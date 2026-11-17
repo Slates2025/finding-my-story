@@ -82,7 +82,7 @@ def st_section(sid, title, lede, body):
 ''' % (sid, title, lede, body)
 
 st_sections = (
-    st_section('gallery', 'Gallery', 'Commissioned pet portraits, plus the films, music and people that resonate with me. Select any piece to see it larger.', gal) +
+    st_section('gallery', 'Gallery', 'Custom pet portraits and portraits of people, alongside personal studies inspired by film and music. Select any piece to see it larger.', gal) +
     st_section('kind-words', 'Kind words', '', quotes) +
     st_section('pricing', 'Pricing', 'Every portrait starts with a good photo and a conversation about what makes them who they are: the look in their eyes, the tilt of their head, the personality that only you would recognise. I work in colour pencil, pastel, pencil and oils, and I take on a small number of commissions at a time so each one gets the attention it deserves.', prices + notes + digital) +
     st_section('process', 'How it works', '', steps + cta)
@@ -93,15 +93,15 @@ st_page = '''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul Slater | Studio: portrait commissions</title>
-<meta name="description" content="Hand-drawn and painted portraits of pets and people by Auckland artist Paul Slater. A4 commissions from $350.">
+<title>Portrait Commissions for Pets &amp; People | Paul Slater</title>
+<meta name="description" content="Hand-drawn and painted pet and people portraits in Auckland, from your favourite photo. Pencil, pastel, colour pencil and oils. Commissions from $350.">
 <link rel="canonical" href="https://slatesdesign.com/studio.html">
 <!-- Link preview (Facebook, LinkedIn, Instagram, messages, email). Image: assets/images/share-studio.jpg, 1200 x 630. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Paul Slater">
 <meta property="og:url" content="https://slatesdesign.com/studio.html">
-<meta property="og:title" content="Paul Slater | Portrait commissions">
-<meta property="og:description" content="Pets and people, drawn and painted by hand in pencil, pastel and oils. Commissions from $350.">
+<meta property="og:title" content="Portrait Commissions for Pets &amp; People | Paul Slater">
+<meta property="og:description" content="Custom portraits of pets and people, drawn and painted by hand in Auckland. Commissions from $350.">
 <meta property="og:image" content="https://slatesdesign.com/assets/images/share-studio.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -140,8 +140,8 @@ st_page = '''<!DOCTYPE html>
 </nav>
 <main id="main" tabindex="-1">
 <div class="st-intro">
-<h2>Portraits, painted and drawn</h2>
-<p class="standfirst standfirst-bold">I paint and draw portraits of the people and animals that matter most: a much-loved dog, a family cat, someone you want to celebrate.</p>
+<h2>Custom portraits of pets and people, drawn and painted by hand</h2>
+<p class="standfirst standfirst-bold">From much-loved dogs and cats to family, friends and people you want to celebrate, I create individual portraits from your favourite photographs. Based in Auckland, I take commissions from across New Zealand.</p>
 <div class="st-actions"><a class="project-button" href="%(mailto)s">Start a commission%(arrow)s</a><a class="st-textlink" href="#pricing">See pricing</a></div>
 </div>
 
